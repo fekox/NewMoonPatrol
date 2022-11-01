@@ -19,7 +19,10 @@ void RunGame()
 
 	Player spaceShip;
 
+	Enemy enemy;
+
 	CreatePlayerShip(spaceShip);
+	CreateEnemy(enemy);
 
 	while (playingGame && !WindowShouldClose())
 	{
@@ -35,6 +38,7 @@ void RunGame()
 		DrawRectangle(-10, 675, GetScreenWidth() + 20, 100, GRAY);
 
 		DrawPlayerShip(spaceShip);
+		DrawEnemy(enemy);
 
 		DrawText("GAME VERSION 0.1", 10, 10, 20, GREEN);
 
