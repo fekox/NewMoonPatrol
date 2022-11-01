@@ -1,4 +1,6 @@
 #include "GameLoop.h"
+#include "Enemy.h"
+#include "Player.h"
 #include "raylib.h"
 
 static void Initialize();
@@ -15,13 +17,26 @@ void RunGame()
 
 	bool playingGame = true;
 
+	Player spaceShip;
+
+	CreatePlayerShip(spaceShip);
+
 	while (playingGame && !WindowShouldClose())
 	{
 		BeginDrawing();
 
 		ClearBackground(BLACK);
 
-		DrawText("VERSION 0.1", 10, 10, 20, GREEN);
+		if (IsKeyPressed(KEY_ENTER))
+		{
+			playingGame = false;
+		}
+
+		DrawRectangle(-10, 675, GetScreenWidth() + 20, 100, GRAY);
+
+		DrawPlayerShip(spaceShip);
+
+		DrawText("GAME VERSION 0.1", 10, 10, 20, GREEN);
 
 		EndDrawing();
 	}
