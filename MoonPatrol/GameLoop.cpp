@@ -13,6 +13,8 @@ void EnemyTp(Enemy& enemy);
 
 void GameCollisions(Player& spaceShip, Enemy enemy);
 
+void CheckInput(Player& spaceShip, bool& playingGame);
+
 void RunGame()
 {
 	Initialize();
@@ -36,13 +38,9 @@ void RunGame()
 
 		enemy.position.x += enemy.speed.x * GetFrameTime();
 
-		if (IsKeyPressed(KEY_ENTER))
-		{
-			playingGame = false;
-		}
-
-		EnemyTp(enemy);
+		CheckInput(spaceShip, playingGame);
 		GameCollisions(spaceShip, enemy);
+		EnemyTp(enemy);
 
 		DrawRectangle(-10, 675, GetScreenWidth() + 20, 100, GRAY);
 		if (spaceShip.isAlive)
@@ -93,6 +91,28 @@ void GameCollisions(Player& spaceShip, Enemy enemy)
 		if (CollisionRectangleRectangle(spaceShip.position.x, spaceShip.position.y, spaceShip.size.x, spaceShip.size.y, enemy.position.x, enemy.position.y, enemy.size.x, enemy.size.y))
 		{
 			spaceShip.isAlive = false;
+		}
+	}
+}
+
+void CheckInput(Player& spaceShip, bool& playingGame)
+{
+	if (IsKeyPressed(KEY_ENTER))
+	{
+		playingGame = false;
+	}
+
+	if (IsKeyPressed(KEY_SPACE))
+	{
+		spaceShip.isJumping = !spaceShip.isJumping;
+
+		if (spaceShip.isJumping)
+		{
+			spaceShip.position.y = 575;
+		}
+		else if(!spaceShip.isJumping)
+		{
+			spaceShip.position.y = 635;
 		}
 	}
 }
