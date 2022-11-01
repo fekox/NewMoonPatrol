@@ -9,6 +9,10 @@ static void Close();
 
 bool CollisionRectangleRectangle(float r1x, float r1y, float r1w, float r1h, float r2x, float r2y, float r2w, float r2h);
 
+void EnemyTp(Enemy& enemy);
+
+void GameCollisions(Player& spaceShip, Enemy enemy);
+
 void RunGame()
 {
 	Initialize();
@@ -30,14 +34,21 @@ void RunGame()
 
 		ClearBackground(BLACK);
 
+		enemy.position.x += enemy.speed.x * GetFrameTime();
+
 		if (IsKeyPressed(KEY_ENTER))
 		{
 			playingGame = false;
 		}
 
-		DrawRectangle(-10, 675, GetScreenWidth() + 20, 100, GRAY);
+		EnemyTp(enemy);
+		GameCollisions(spaceShip, enemy);
 
-		DrawPlayerShip(spaceShip);
+		DrawRectangle(-10, 675, GetScreenWidth() + 20, 100, GRAY);
+		if (spaceShip.isAlive)
+		{
+			DrawPlayerShip(spaceShip);
+		}
 		DrawEnemy(enemy);
 
 		DrawText("GAME VERSION 0.1", 10, 10, 20, GREEN);
@@ -65,4 +76,23 @@ bool CollisionRectangleRectangle(float r1x, float r1y, float r1w, float r1h, flo
 		return true;
 	}
 	return false;
+}
+
+void EnemyTp(Enemy& enemy)
+{
+	if (enemy.position.x < -50)
+	{
+		enemy.position.x = static_cast<float>(GetScreenWidth());
+	}
+}
+
+void GameCollisions(Player& spaceShip, Enemy enemy)
+{
+	if (spaceShip.isAlive)
+	{
+		if (CollisionRectangleRectangle(spaceShip.position.x, spaceShip.position.y, spaceShip.size.x, spaceShip.size.y, enemy.position.x, enemy.position.y, enemy.size.x, enemy.size.y))
+		{
+			spaceShip.isAlive = false;
+		}
+	}
 }

@@ -7,6 +7,7 @@ Enemy CreateEnemy(Enemy& enemy)
 	enemy.position.y = 635;
 	enemy.size.x = 40;
 	enemy.size.y = 40;
+	enemy.speed.x = -100;
 	enemy.isAlive = true;
 	enemy.enemyColor = RED;
 
