@@ -7,6 +7,7 @@ Player CreatePlayerShip(Player& spaceShip)
 	spaceShip.position.y = 635;
 	spaceShip.size.x = 40;
 	spaceShip.size.y = 40;
+	spaceShip.speed.x = 200;
 	spaceShip.isAlive = true;
 	spaceShip.playerColor = YELLOW;
 

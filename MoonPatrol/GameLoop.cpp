@@ -2,6 +2,7 @@
 #include "Enemy.h"
 #include "Player.h"
 #include "raylib.h"
+#include <iostream>
 
 static void Initialize();
 
@@ -113,6 +114,22 @@ void CheckInput(Player& spaceShip, bool& playingGame)
 		else if(!spaceShip.isJumping)
 		{
 			spaceShip.position.y = 635;
+		}
+	}
+
+	if (IsKeyDown(KEY_D))
+	{
+		if (spaceShip.position.x <= 400)
+		{
+			spaceShip.position.x += spaceShip.speed.x * GetFrameTime();
+		}
+	}
+
+	if (IsKeyDown(KEY_A))
+	{
+		if (spaceShip.position.x >= 0)
+		{
+			spaceShip.position.x -= spaceShip.speed.x * GetFrameTime();
 		}
 	}
 }
