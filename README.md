@@ -1,1 +1,1 @@
-# MoonPatrol
+# This is a re stylized copy of the famous game MoonPatrol
