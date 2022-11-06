@@ -92,25 +92,25 @@ void RunGame()
 				}
 			}
 
-			DrawText("Press 'ESC' to pause the game", static_cast<float>(GetScreenWidth() / 2) - 175, 30, 35, WHITE);
+			DrawText("Press 'ESC' to pause the game", static_cast<float>(GetScreenWidth() / 2) - 270, 10, 35, WHITE);
 
 			DrawRectangle(-10, 675, GetScreenWidth() + 20, 100, GRAY);
 			
 			if (exitWindow)
 			{
 				DrawRectangleRounded({ static_cast<float>(GetScreenWidth() / 2) - 250, static_cast<float>(GetScreenHeight() / 2) - 200, 500, 400 }, 0.5f, 1, BLACK);
-				DrawRectangleRounded({ static_cast<float>(GetScreenWidth() / 2) - 245, static_cast<float>(GetScreenHeight() / 2) - 195, 490, 390 }, 0.5f, 1, ORANGE);
+				DrawRectangleRounded({ static_cast<float>(GetScreenWidth() / 2) - 245, static_cast<float>(GetScreenHeight() / 2) - 195, 490, 390 }, 0.5f, 1, WHITE);
 
 				DrawText("Do you want to", static_cast<float>(GetScreenWidth() - 705), static_cast<float>(GetScreenHeight() / 2) - 150, 51.5f, BLACK);
 				DrawText("keep playing?", static_cast<float>(GetScreenWidth() - 685), static_cast<float>(GetScreenHeight() / 2) - 80, 51.5f, BLACK);
 
 				DrawRectangleRounded({ 350, 425, 150, 100 }, 0.5f, 1, BLACK);
-				DrawRectangleRounded({ 355, 430, 140, 90 }, 0.5f, 1, PINK);
+				DrawRectangleRounded({ 355, 430, 140, 90 }, 0.5f, 1, WHITE);
 
 				DrawText("YES", 390, 460, 35, BLACK);
 
 				DrawRectangleRounded({ 530, 425, 150, 100 }, 0.5f, 1, BLACK);
-				DrawRectangleRounded({ 535, 430, 140, 90 }, 0.5f, 1, PINK);
+				DrawRectangleRounded({ 535, 430, 140, 90 }, 0.5f, 1, WHITE);
 
 				DrawText("NO", 580, 460, 35, BLACK);
 			}
@@ -227,11 +227,6 @@ void GameCollisions(Player& spaceShip, Enemy enemy)
 
 void CheckInput(Player& spaceShip, bool& playingGame)
 {
-	if (IsKeyPressed(KEY_ENTER))
-	{
-		playingGame = false;
-	}
-
 	if (IsKeyPressed(KEY_SPACE))
 	{
 		spaceShip.isJumping = !spaceShip.isJumping;
