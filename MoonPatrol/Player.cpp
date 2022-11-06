@@ -3,11 +3,12 @@
 
 Player CreatePlayerShip(Player& spaceShip)
 {
-	spaceShip.position.x = 70;
-	spaceShip.position.y = 635;
-	spaceShip.size.x = 40;
-	spaceShip.size.y = 40;
+	spaceShip.position.x = 70.f;
+	spaceShip.position.y = 635.f;
+	spaceShip.size.x = 40.f;
+	spaceShip.size.y = 40.f;
 	spaceShip.speed.x = 200;
+	spaceShip.speed.y = 200;
 	spaceShip.isAlive = true;
 	spaceShip.playerColor = YELLOW;
 

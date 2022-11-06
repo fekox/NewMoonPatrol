@@ -19,11 +19,13 @@ void CheckInput(Player& spaceShip, bool& playingGame);
 void RunGame()
 {
 	Initialize();
-	HideCursor();
+	//HideCursor();
 	SetExitKey(KEY_NULL);
 
 	bool playingGame = true;
 
+	GameState gameState = GameState::CREDITS;
+	
 	Player spaceShip;
 
 	Enemy enemy;
@@ -31,24 +33,94 @@ void RunGame()
 	CreatePlayerShip(spaceShip);
 	CreateEnemy(enemy);
 
+	Vector2 mousePosition = GetMousePosition();
+
 	while (playingGame && !WindowShouldClose())
 	{
 		BeginDrawing();
 
 		ClearBackground(BLACK);
 
-		enemy.position.x += enemy.speed.x * GetFrameTime();
-
-		CheckInput(spaceShip, playingGame);
-		GameCollisions(spaceShip, enemy);
-		EnemyTp(enemy);
-
-		DrawRectangle(-10, 675, GetScreenWidth() + 20, 100, GRAY);
-		if (spaceShip.isAlive)
+		switch (gameState)
 		{
-			DrawPlayerShip(spaceShip);
+		case GameState::GAMETITLE:
+
+			mousePosition = GetMousePosition();
+
+			break;
+		case GameState::GAME:
+
+			mousePosition = GetMousePosition();
+
+			enemy.position.x += enemy.speed.x * GetFrameTime();
+
+			CheckInput(spaceShip, playingGame);
+			GameCollisions(spaceShip, enemy);
+			EnemyTp(enemy);
+
+			DrawRectangle(-10, 675, GetScreenWidth() + 20, 100, GRAY);
+			if (spaceShip.isAlive)
+			{
+				DrawPlayerShip(spaceShip);
+			}
+			DrawEnemy(enemy);
+
+			break;
+		case GameState::HOWTOPLAY:
+
+			mousePosition = GetMousePosition();
+
+			if (CheckCollisionPointRec(mousePosition, { 10, 40, 45, 45 }))
+			{
+				if (IsMouseButtonReleased(MOUSE_LEFT_BUTTON))
+				{
+					gameState = GameState::GAMETITLE;
+				}
+			}
+
+			DrawRectangle(10, 40, 45, 45, RED);
+			DrawText("x", 20, 35, 50, WHITE);
+
+			break;
+		case GameState::CREDITS:
+
+			mousePosition = GetMousePosition();
+
+			if (CheckCollisionPointRec(mousePosition, { static_cast<float>(GetScreenWidth() / 2) - 87.5f, static_cast<float>(GetScreenHeight() / 2) - 20, 190, 85 }))
+			{
+				if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON))
+				{
+					OpenURL("https://nicorm.itch.io/"); 
+				}
+			}
+
+			if (CheckCollisionPointRec(mousePosition, { 10, 40, 45, 45 }))
+			{
+				if (IsMouseButtonReleased(MOUSE_LEFT_BUTTON))
+				{
+					gameState = GameState::GAMETITLE;
+				}
+			}
+
+			DrawRectangle(0, 0, GetScreenWidth(), GetScreenHeight(), PINK);
+
+			DrawRectangle(10, 40, 45, 45, RED);
+			DrawText("x", 20, 35, 50, WHITE);
+
+			DrawRectangle(static_cast<float>(GetScreenWidth() / 2) - 0 - 87.5f, static_cast<float>(GetScreenHeight() / 2) - 20, 190, 85, BLACK);
+			DrawRectangle(static_cast<float>(GetScreenWidth() / 2) - 0 - 82.5f, static_cast<float>(GetScreenHeight() / 2) - 15, 180, 75, RED);
+			DrawText("Itch.io", static_cast<float>(GetScreenWidth() / 2) - MeasureText("Itch.io", 25), static_cast<float>(GetScreenHeight() / 2), 50, BLACK);
+			DrawRectangle(250, GetScreenHeight() / 2 - 115, 550, 85, BLACK);
+			DrawRectangle(255, GetScreenHeight() / 2 - 110, 540, 75, WHITE);
+			DrawText("Nicolas Ramos Marin", static_cast<float>(GetScreenWidth() / 2) - MeasureText("Nicolas Ramos Marin", 25), static_cast<float>(GetScreenHeight() / 2) - 100, 50, BLACK);
+
+			break;
+		case GameState::EXIT:
+
+			playingGame = false;
+
+			break;
 		}
-		DrawEnemy(enemy);
 
 		DrawText("GAME VERSION 0.1", 10, 10, 20, GREEN);
 

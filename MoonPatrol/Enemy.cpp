@@ -3,10 +3,10 @@
 
 Enemy CreateEnemy(Enemy& enemy)
 {
-	enemy.position.x = 800;
-	enemy.position.y = 635;
-	enemy.size.x = 40;
-	enemy.size.y = 40;
+	enemy.position.x = 800.f;
+	enemy.position.y = 635.f;
+	enemy.size.x = 40.f;
+	enemy.size.y = 40.f;
 	enemy.speed.x = -150;
 	enemy.isAlive = true;
 	enemy.enemyColor = RED;
