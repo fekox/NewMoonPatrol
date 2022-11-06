@@ -23,8 +23,11 @@ void RunGame()
 	SetExitKey(KEY_NULL);
 
 	bool playingGame = true;
+	bool isPaused = false;
+	bool exitWindow = false;
+	bool gameFinished = false;
 
-	GameState gameState = GameState::CREDITS;
+	GameState gameState = GameState::GAME;
 	
 	Player spaceShip;
 
@@ -52,17 +55,71 @@ void RunGame()
 
 			mousePosition = GetMousePosition();
 
-			enemy.position.x += enemy.speed.x * GetFrameTime();
+			if (!isPaused)
+			{
+				enemy.position.x += enemy.speed.x * GetFrameTime();
 
-			CheckInput(spaceShip, playingGame);
-			GameCollisions(spaceShip, enemy);
-			EnemyTp(enemy);
+				CheckInput(spaceShip, playingGame);
+				GameCollisions(spaceShip, enemy);
+				EnemyTp(enemy);
+			}
+			
+			if (IsKeyPressed(KEY_ESCAPE) && !gameFinished)
+			{
+				isPaused = true;
+				exitWindow = true;
+			}
+
+			if (exitWindow)
+			{
+				if (CheckCollisionPointRec(mousePosition, { 350, 425, 150, 100 }))
+				{
+					if (IsMouseButtonReleased(MOUSE_LEFT_BUTTON))
+					{
+						exitWindow = false;
+						isPaused = !isPaused;
+					}
+				}
+				if (CheckCollisionPointRec(mousePosition, { 530, 425, 150, 100 }))
+				{
+					if (IsMouseButtonReleased(MOUSE_LEFT_BUTTON))
+					{
+						gameState = GameState::GAMETITLE;
+
+						exitWindow = false;
+						isPaused = !isPaused;
+					}
+				}
+			}
+
+			DrawText("Press 'ESC' to pause the game", static_cast<float>(GetScreenWidth() / 2) - 175, 30, 35, WHITE);
 
 			DrawRectangle(-10, 675, GetScreenWidth() + 20, 100, GRAY);
+			
+			if (exitWindow)
+			{
+				DrawRectangleRounded({ static_cast<float>(GetScreenWidth() / 2) - 250, static_cast<float>(GetScreenHeight() / 2) - 200, 500, 400 }, 0.5f, 1, BLACK);
+				DrawRectangleRounded({ static_cast<float>(GetScreenWidth() / 2) - 245, static_cast<float>(GetScreenHeight() / 2) - 195, 490, 390 }, 0.5f, 1, ORANGE);
+
+				DrawText("Do you want to", static_cast<float>(GetScreenWidth() - 705), static_cast<float>(GetScreenHeight() / 2) - 150, 51.5f, BLACK);
+				DrawText("keep playing?", static_cast<float>(GetScreenWidth() - 685), static_cast<float>(GetScreenHeight() / 2) - 80, 51.5f, BLACK);
+
+				DrawRectangleRounded({ 350, 425, 150, 100 }, 0.5f, 1, BLACK);
+				DrawRectangleRounded({ 355, 430, 140, 90 }, 0.5f, 1, PINK);
+
+				DrawText("YES", 390, 460, 35, BLACK);
+
+				DrawRectangleRounded({ 530, 425, 150, 100 }, 0.5f, 1, BLACK);
+				DrawRectangleRounded({ 535, 430, 140, 90 }, 0.5f, 1, PINK);
+
+				DrawText("NO", 580, 460, 35, BLACK);
+			}
+
 			if (spaceShip.isAlive)
 			{
 				DrawPlayerShip(spaceShip);
 			}
+			
 			DrawEnemy(enemy);
 
 			break;
