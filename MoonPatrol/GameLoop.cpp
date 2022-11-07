@@ -4,6 +4,8 @@
 #include "raylib.h"
 #include <iostream>
 
+using namespace std;
+
 static void Initialize();
 
 static void Close();
@@ -277,23 +279,41 @@ void GameCollisions(Player& spaceShip, Enemy enemy)
 
 void CheckInput(Player& spaceShip, bool& playingGame)
 {
-	if (IsKeyPressed(KEY_SPACE))
+	if (IsKeyPressed(KEY_SPACE) && spaceShip.position.y == spaceShip.startJumpPosition)
 	{
-		spaceShip.isJumping = !spaceShip.isJumping;
+		spaceShip.isJumping = true;
+	}
 
-		if (spaceShip.isJumping)
+	if (spaceShip.isJumping)
+	{
+		do
 		{
-			spaceShip.position.y = 575;
-		}
-		else if(!spaceShip.isJumping)
+			spaceShip.position.y -= spaceShip.gravity * GetFrameTime();
+
+			if (spaceShip.position.y <= spaceShip.maxHeightJump)
+			{
+				spaceShip.isJumping = false;
+				break;
+			}
+		} while (spaceShip.position.y < spaceShip.maxHeightJump);
+	}
+	else if (!spaceShip.isJumping && spaceShip.position.y != spaceShip.startJumpPosition)
+	{
+		do
 		{
-			spaceShip.position.y = 635;
-		}
+			spaceShip.position.y += spaceShip.gravity * GetFrameTime();
+
+			if (spaceShip.position.y >= spaceShip.startJumpPosition)
+			{
+				spaceShip.position.y = spaceShip.startJumpPosition;
+				break;
+			}
+		} while (spaceShip.position.y > spaceShip.startJumpPosition);
 	}
 
 	if (IsKeyDown(KEY_D))
 	{
-		if (spaceShip.position.x <= 400)
+		if (spaceShip.position.x <= GetScreenWidth())
 		{
 			spaceShip.position.x += spaceShip.speed.x * GetFrameTime();
 		}
