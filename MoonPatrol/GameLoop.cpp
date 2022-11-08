@@ -28,7 +28,7 @@ void RunGame()
 	Initialize();
 	//HideCursor();
 	SetExitKey(KEY_NULL);
-
+	
 	bool playingGame = true;
 	bool isPaused = false;
 	bool exitWindow = false;
@@ -115,10 +115,10 @@ void RunGame()
 			if (!isPaused)
 			{
 				enemy.position.x += enemy.speed.x * GetFrameTime();
-
 				CheckInput(spaceShip, playingGame);
 				GameCollisions(spaceShip, enemy);
 				EnemyTp(enemy);
+				ParallaxBG(parallax);
 			}
 			
 			if (IsKeyPressed(KEY_ESCAPE) && !gameFinished)
@@ -211,7 +211,7 @@ void RunGame()
 			break;
 		}
 
-		DrawText("GAME VERSION 0.1", 10, 10, 20, GREEN);
+		DrawText("GAME VERSION 0.2", 10, 10, 20, GREEN);
 
 		EndDrawing();
 	}
@@ -273,7 +273,39 @@ bool CollisionRectangleRectangle(float r1x, float r1y, float r1w, float r1h, flo
 
 void ParallaxBG(Parallax& parallax)
 {
-	DrawParallax(parallax);
+	parallax.furtherPosition1.x += parallax.furtherSpeed * GetFrameTime();
+	parallax.furtherPosition2.x += parallax.furtherSpeed * GetFrameTime();
+	parallax.middlePosition1.x += parallax.middleSpeed * GetFrameTime();
+	parallax.middlePosition2.x += parallax.middleSpeed * GetFrameTime();
+	parallax.closerPosition1.x += parallax.closerSpeed * GetFrameTime();
+	parallax.closerPosition2.x += parallax.closerSpeed * GetFrameTime();
+	
+	if (parallax.furtherPosition1.x > GetScreenWidth())
+	{
+		parallax.furtherPosition1.x = -1024 + parallax.furtherSpeed * GetFrameTime();
+	}
+	if (parallax.furtherPosition2.x > GetScreenWidth())
+	{
+		parallax.furtherPosition2.x = -1024 + parallax.furtherSpeed * GetFrameTime();
+	}
+
+	if (parallax.middlePosition1.x > GetScreenWidth())
+	{
+		parallax.middlePosition1.x = -1024 + parallax.middleSpeed * GetFrameTime();
+	}
+	if (parallax.middlePosition2.x > GetScreenWidth())
+	{
+		parallax.middlePosition2.x = -1024 + parallax.middleSpeed * GetFrameTime();
+	}
+
+	if (parallax.closerPosition1.x > GetScreenWidth())
+	{
+		parallax.closerPosition1.x = -1024 + parallax.closerSpeed * GetFrameTime();
+	}
+	if (parallax.closerPosition2.x > GetScreenWidth())
+	{
+		parallax.closerPosition2.x = -1024 + parallax.closerSpeed * GetFrameTime();
+	}
 }
 
 void EnemyTp(Enemy& enemy)
