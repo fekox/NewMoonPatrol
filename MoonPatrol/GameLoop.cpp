@@ -1,6 +1,7 @@
 #include "GameLoop.h"
 #include "Enemy.h"
 #include "Player.h"
+#include "Parallax.h"
 #include "raylib.h"
 #include <iostream>
 
@@ -10,6 +11,8 @@ static void Initialize();
 
 static void Close();
 
+void ParallaxBG(Parallax& parallax);
+
 bool CollisionRectangleRectangle(float r1x, float r1y, float r1w, float r1h, float r2x, float r2y, float r2w, float r2h);
 
 void EnemyTp(Enemy& enemy);
@@ -17,6 +20,8 @@ void EnemyTp(Enemy& enemy);
 void GameCollisions(Player& spaceShip, Enemy enemy);
 
 void CheckInput(Player& spaceShip, bool& playingGame);
+
+void GameDraw(bool exitWindow, Player& spaceShip, const Enemy& enemy, Parallax& parallax);
 
 void RunGame()
 {
@@ -35,8 +40,11 @@ void RunGame()
 
 	Enemy enemy;
 
+	Parallax parallax;
+
 	CreatePlayerShip(spaceShip);
 	CreateEnemy(enemy);
+	CreateParallax(parallax);
 
 	Vector2 mousePosition = GetMousePosition();
 
@@ -141,35 +149,7 @@ void RunGame()
 				}
 			}
 
-			DrawText("Press 'ESC' to pause the game", static_cast<float>(GetScreenWidth() / 2) - 270, 10, 35, WHITE);
-
-			DrawRectangle(-10, 675, GetScreenWidth() + 20, 100, GRAY);
-			
-			if (exitWindow)
-			{
-				DrawRectangleRounded({ static_cast<float>(GetScreenWidth() / 2) - 250, static_cast<float>(GetScreenHeight() / 2) - 200, 500, 400 }, 0.5f, 1, BLACK);
-				DrawRectangleRounded({ static_cast<float>(GetScreenWidth() / 2) - 245, static_cast<float>(GetScreenHeight() / 2) - 195, 490, 390 }, 0.5f, 1, WHITE);
-
-				DrawText("Do you want to", static_cast<float>(GetScreenWidth() - 705), static_cast<float>(GetScreenHeight() / 2) - 150, 51.5f, BLACK);
-				DrawText("keep playing?", static_cast<float>(GetScreenWidth() - 685), static_cast<float>(GetScreenHeight() / 2) - 80, 51.5f, BLACK);
-
-				DrawRectangleRounded({ 350, 425, 150, 100 }, 0.5f, 1, BLACK);
-				DrawRectangleRounded({ 355, 430, 140, 90 }, 0.5f, 1, WHITE);
-
-				DrawText("YES", 390, 460, 35, BLACK);
-
-				DrawRectangleRounded({ 530, 425, 150, 100 }, 0.5f, 1, BLACK);
-				DrawRectangleRounded({ 535, 430, 140, 90 }, 0.5f, 1, WHITE);
-
-				DrawText("NO", 580, 460, 35, BLACK);
-			}
-
-			if (spaceShip.isAlive)
-			{
-				DrawPlayerShip(spaceShip);
-			}
-			
-			DrawEnemy(enemy);
+			GameDraw(exitWindow, spaceShip, enemy, parallax);
 
 			break;
 
@@ -239,6 +219,39 @@ void RunGame()
 	Close();
 }
 
+void GameDraw(bool exitWindow, Player& spaceShip, const Enemy& enemy, Parallax& parallax)
+{
+	DrawText("Press 'ESC' to pause the game", static_cast<float>(GetScreenWidth() / 2) - 270, 10, 35, WHITE);
+
+	DrawParallax(parallax);
+
+	if (exitWindow)
+	{
+		DrawRectangleRounded({ static_cast<float>(GetScreenWidth() / 2) - 250, static_cast<float>(GetScreenHeight() / 2) - 200, 500, 400 }, 0.5f, 1, BLACK);
+		DrawRectangleRounded({ static_cast<float>(GetScreenWidth() / 2) - 245, static_cast<float>(GetScreenHeight() / 2) - 195, 490, 390 }, 0.5f, 1, WHITE);
+
+		DrawText("Do you want to", static_cast<float>(GetScreenWidth() - 705), static_cast<float>(GetScreenHeight() / 2) - 150, 51.5f, BLACK);
+		DrawText("keep playing?", static_cast<float>(GetScreenWidth() - 685), static_cast<float>(GetScreenHeight() / 2) - 80, 51.5f, BLACK);
+
+		DrawRectangleRounded({ 350, 425, 150, 100 }, 0.5f, 1, BLACK);
+		DrawRectangleRounded({ 355, 430, 140, 90 }, 0.5f, 1, WHITE);
+
+		DrawText("YES", 390, 460, 35, BLACK);
+
+		DrawRectangleRounded({ 530, 425, 150, 100 }, 0.5f, 1, BLACK);
+		DrawRectangleRounded({ 535, 430, 140, 90 }, 0.5f, 1, WHITE);
+
+		DrawText("NO", 580, 460, 35, BLACK);
+	}
+
+	if (spaceShip.isAlive)
+	{
+		DrawPlayerShip(spaceShip);
+	}
+
+	DrawEnemy(enemy);
+}
+
 static void Initialize()
 {
 	InitWindow(1024, 768, "MoonPatrol");
@@ -256,6 +269,11 @@ bool CollisionRectangleRectangle(float r1x, float r1y, float r1w, float r1h, flo
 		return true;
 	}
 	return false;
+}
+
+void ParallaxBG(Parallax& parallax)
+{
+	DrawParallax(parallax);
 }
 
 void EnemyTp(Enemy& enemy)

@@ -9,12 +9,12 @@ Enemy CreateEnemy(Enemy& enemy)
 	enemy.size.y = 40.f;
 	enemy.speed.x = -150;
 	enemy.isAlive = true;
-	enemy.enemyColor = RED;
+	enemy.enemyColor = PURPLE;
 
 	return enemy;
 }
 
 void DrawEnemy(Enemy enemy)
 {
-	DrawRectangle(enemy.position.x, enemy.position.y, enemy.size.x, enemy.size.y, enemy.enemyColor);
+	DrawRectangle(static_cast<float>(enemy.position.x), static_cast<float>(enemy.position.y), static_cast<float>(enemy.size.x), static_cast<float>(enemy.size.y), enemy.enemyColor);
 }

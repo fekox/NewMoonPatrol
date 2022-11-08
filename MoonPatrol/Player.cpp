@@ -21,5 +21,5 @@ Player CreatePlayerShip(Player& spaceShip)
 
 void DrawPlayerShip(Player spaceShip)
 {
-	DrawRectangle(spaceShip.position.x, spaceShip.position.y, spaceShip.size.x, spaceShip.size.y, spaceShip.playerColor);
+	DrawRectangle(static_cast<float>(spaceShip.position.x), static_cast<float>(spaceShip.position.y), static_cast<float>(spaceShip.size.x), static_cast<float>(spaceShip.size.y), spaceShip.playerColor);
 }
