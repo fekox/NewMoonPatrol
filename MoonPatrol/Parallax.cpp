@@ -3,9 +3,9 @@
 
 Parallax CreateParallax(Parallax& parallax)
 {
-	parallax.furtherSpeed = 300;
-	parallax.middleSpeed = 400;
-	parallax.closerSpeed = 500;
+	parallax.furtherSpeed = 50;
+	parallax.middleSpeed = 100;
+	parallax.closerSpeed = 200;
 	parallax.furtherPosition1 = { 0, 0 };
 	parallax.furtherPosition2 = { -1024, 0 };
 	parallax.middlePosition1 = { 0, 350 };
