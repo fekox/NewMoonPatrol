@@ -1,8 +1,10 @@
 #include "GameLoop.h"
-#include "Enemy.h"
 #include "Player.h"
+#include "PlayerBullet.h"
+#include "Enemy.h"
 #include "Parallax.h"
 #include "raylib.h"
+
 #include <iostream>
 
 using namespace std;
@@ -26,7 +28,7 @@ void GameDraw(bool exitWindow, Player& spaceShip, const Enemy& enemy, Parallax& 
 void RunGame()
 {
 	Initialize();
-	//HideCursor();
+	HideCursor();
 	SetExitKey(KEY_NULL);
 	
 	bool playingGame = true;
