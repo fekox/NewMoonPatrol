@@ -25,7 +25,7 @@ void ParallaxBG(Parallax& parallax);
 
 bool CollisionRectangleRectangle(float r1x, float r1y, float r1w, float r1h, float r2x, float r2y, float r2w, float r2h);
 
-void EnemyTp(Enemy& enemy);
+void EnemyTp(Enemy& enemy, Player& spaceShip);
 
 void GameCollisions(Player& spaceShip, Enemy& enemy, PlayerBullet& playerBullet);
 
@@ -135,7 +135,7 @@ void RunGame()
 			{
 				CheckInput(spaceShip, playingGame, playerBullet);
 				GameCollisions(spaceShip, enemy, playerBullet);
-				EnemyTp(enemy);
+				EnemyTp(enemy, spaceShip);
 				ParallaxBG(parallax);
 				EnemyMovement(enemy);
 
@@ -172,6 +172,26 @@ void RunGame()
 
 						exitWindow = false;
 						isPaused = !isPaused;
+					}
+				}
+			}
+
+			if (!spaceShip.isAlive)
+			{
+				if (CheckCollisionPointRec(mousePosition, { 350, 425, 150, 100 }))
+				{
+					if (IsMouseButtonReleased(MOUSE_LEFT_BUTTON))
+					{
+						gameState = GameState::GAMETITLE;
+
+						spaceShip.isAlive;
+					}
+				}
+				if (CheckCollisionPointRec(mousePosition, { 530, 425, 150, 100 }))
+				{
+					if (IsMouseButtonReleased(MOUSE_LEFT_BUTTON))
+					{
+						gameState = GameState::EXIT;
 					}
 				}
 			}
@@ -293,6 +313,31 @@ void GameDraw(bool exitWindow, Player& spaceShip, const Enemy& enemy, Parallax& 
 			DrawEnemy(maximumFlyingEnemy[i]);
 		}
 	}
+
+	DrawText(TextFormat("score: %i", spaceShip.score), 50, 50, 50, BLACK);
+
+	if (!spaceShip.isAlive)
+	{
+		DrawRectangleRounded({ static_cast<float>(GetScreenWidth() / 2) - 250, static_cast<float>(GetScreenHeight() / 2) - 200, 500, 400 }, 0.5f, 1, BLACK);
+		DrawRectangleRounded({ static_cast<float>(GetScreenWidth() / 2) - 245, static_cast<float>(GetScreenHeight() / 2) - 195, 490, 390 }, 0.5f, 1, WHITE);
+
+		DrawText("GAME OVER", static_cast<float>(GetScreenWidth() - 650), static_cast<float>(GetScreenHeight() / 2) - 150, 50, BLACK);
+		DrawText(TextFormat("SCORE: %i", spaceShip.score), static_cast<float>(GetScreenWidth() - 600), static_cast<float>(GetScreenHeight() / 2) - 90, 40, BLACK);
+
+		DrawText("Do you want to", static_cast<float>(GetScreenWidth() - 620), static_cast<float>(GetScreenHeight() / 2) - 30, 30, BLACK);
+		DrawText("keep playing?", static_cast<float>(GetScreenWidth() - 610), static_cast<float>(GetScreenHeight() / 2), 30, BLACK);
+
+		DrawRectangleRounded({ 350, 425, 150, 100 }, 0.5f, 1, BLACK);
+		DrawRectangleRounded({ 355, 430, 140, 90 }, 0.5f, 1, WHITE);
+
+		DrawText("MAIN", 380, 440, 35, BLACK);
+		DrawText("MENU", 375, 480, 35, BLACK);
+
+		DrawRectangleRounded({ 530, 425, 150, 100 }, 0.5f, 1, BLACK);
+		DrawRectangleRounded({ 535, 430, 140, 90 }, 0.5f, 1, WHITE);
+
+		DrawText("EXIT", 565, 460, 35, BLACK);
+	}
 }
 
 static void Initialize()
@@ -371,11 +416,13 @@ void ParallaxBG(Parallax& parallax)
 	}
 }
 
-void EnemyTp(Enemy& enemy)
+void EnemyTp(Enemy& enemy, Player& spaceShip)
 {
 	if (enemy.position.x < -50)
 	{
 		enemy.position.x = static_cast<float>(GetScreenWidth());
+		
+		spaceShip.score++;
 	}
 
 	for (int i = 0; i < maxFlyingEnemy; i++)
@@ -405,6 +452,8 @@ void GameCollisions(Player& spaceShip, Enemy& enemy, PlayerBullet& playerBullet)
 			{
 				maximumFlyingEnemy[i].isAlive = false;
 				maximumPlayerBullets[j].isActive = false;
+
+				spaceShip.score++;
 			}
 		}
 	}

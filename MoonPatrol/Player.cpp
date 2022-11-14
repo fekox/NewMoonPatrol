@@ -12,6 +12,7 @@ Player CreatePlayerShip(Player& spaceShip)
 	spaceShip.startJumpPosition = 635.0f;
 	spaceShip.gravity = 175.0f;
 	spaceShip.jumpTimer = 0;
+	spaceShip.score = 0;
 	spaceShip.isAlive = true;
 	spaceShip.isJumping = false;
 	spaceShip.playerColor = YELLOW;

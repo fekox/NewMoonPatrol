@@ -12,6 +12,7 @@ struct Player
 	float jumpTimer;
 	bool isJumping;
 	bool isAlive;
+	int score;
 	Color playerColor;
 };
 
