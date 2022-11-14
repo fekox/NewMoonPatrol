@@ -1,17 +1,15 @@
+#include "Player.h"
 #include "PlayerBullet.h"
 #include "raylib.h"
 
-PlayerBullet CreatePlayerBullet(PlayerBullet& playerBullet)
+PlayerBullet CreatePlayerBullet(PlayerBullet playerBullet, Player spaceShip)
 {
-	playerBullet.position.x = 500;
-	playerBullet.position.y = 500;
+	playerBullet.position.x = spaceShip.position.x + 10;
+	playerBullet.position.y = spaceShip.position.y;
 	playerBullet.size.x = 20;
 	playerBullet.size.y = 20;
-	playerBullet.direction.x = 0;
-	playerBullet.direction.y = 0;
-	playerBullet.speed = 200;
+	playerBullet.speed = 500;
 	playerBullet.isActive = true;
-	playerBullet.isMoving = false;
 	playerBullet.bulletColor = ORANGE;
 
 	return playerBullet;

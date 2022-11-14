@@ -9,7 +9,6 @@
 
 using namespace std;
 
-const int maxPlayerBullets = 20;
 PlayerBullet playerBullets;
 PlayerBullet maximumPlayerBullets[maxPlayerBullets];
 int currentPlayerBullet = 0;
@@ -50,11 +49,6 @@ void RunGame()
 	Enemy enemy;
 
 	Parallax parallax;
-
-	for (int i = 0; i < maxPlayerBullets - 1; i++)
-	{
-		CreatePlayerBullet(maximumPlayerBullets[i]);
-	}
 
 	CreatePlayerShip(spaceShip);
 	CreateEnemy(enemy);
@@ -126,7 +120,7 @@ void RunGame()
 
 			mousePosition = GetMousePosition();
 
-			if (!isPaused)
+			if (!isPaused && spaceShip.isAlive)
 			{
 				enemy.position.x += enemy.speed.x * GetFrameTime();
 				CheckInput(spaceShip, playingGame, playerBullet);
@@ -136,16 +130,9 @@ void RunGame()
 
 				for (int i = 0; i < maxPlayerBullets; i++)
 				{
-					if (maximumPlayerBullets[i].isMoving == false)
+					if (maximumPlayerBullets[i].isActive)
 					{
-						maximumPlayerBullets[i].position.x = spaceShip.position.x + 10;
-						maximumPlayerBullets[i].position.y = spaceShip.position.y + 10;
-					}
-
-					if (maximumPlayerBullets[i].isMoving)
-					{
-						maximumPlayerBullets[i].position.x -= maximumPlayerBullets[i].direction.x * maximumPlayerBullets[i].speed * GetFrameTime();
-						maximumPlayerBullets[i].position.y -= maximumPlayerBullets[i].direction.y * maximumPlayerBullets[i].speed * GetFrameTime();
+						maximumPlayerBullets[i].position.y -= maximumPlayerBullets[i].speed * GetFrameTime();
 					}
 				}
 			}
@@ -273,18 +260,17 @@ void GameDraw(bool exitWindow, Player& spaceShip, const Enemy& enemy, Parallax& 
 		DrawText("NO", 580, 460, 35, BLACK);
 	}
 
-	for (int i = 0; i < maxPlayerBullets; i++)
-	{
-		if (maximumPlayerBullets[i].isActive)
-		{
-			DrawPlayerBullet(maximumPlayerBullets[i]);
-		}
-	}
-
 	if (spaceShip.isAlive)
 	{
+		for (int i = 0; i < maxPlayerBullets; i++)
+		{
+			if (maximumPlayerBullets[i].isActive)
+			{
+				DrawPlayerBullet(maximumPlayerBullets[i]);
+			}
+		}
+
 		DrawPlayerShip(spaceShip);
-		DrawPlayerBullet(playerBullet);
 	}
 
 	DrawEnemy(enemy);
@@ -417,17 +403,13 @@ void CheckInput(Player& spaceShip, bool& playingGame, PlayerBullet& playerBullet
 
 	if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT))
 	{
-		maximumPlayerBullets[currentPlayerBullet].isActive = true;
-
-		maximumPlayerBullets[currentPlayerBullet].isMoving = true;
-
-		maximumPlayerBullets[currentPlayerBullet].position.y -= maximumPlayerBullets[currentPlayerBullet].speed * GetFrameTime();
-
-		currentPlayerBullet++;
-
 		if (currentPlayerBullet >= maxPlayerBullets)
 		{
 			currentPlayerBullet = 0;
 		}
+
+		maximumPlayerBullets[currentPlayerBullet] = CreatePlayerBullet(maximumPlayerBullets[currentPlayerBullet], spaceShip);
+
+		currentPlayerBullet++;
 	}
 }
