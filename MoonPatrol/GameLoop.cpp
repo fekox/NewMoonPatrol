@@ -258,7 +258,7 @@ void RunGame()
 			break;
 		}
 
-		DrawText("GAME VERSION 0.2", 10, 10, 20, GREEN);
+		DrawText("GAME VERSION 0.3", 10, 10, 20, GREEN);
 
 		EndDrawing();
 	}
