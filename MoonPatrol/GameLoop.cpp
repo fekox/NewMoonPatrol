@@ -9,6 +9,11 @@
 
 using namespace std;
 
+const int maxPlayerBullets = 20;
+PlayerBullet playerBullets;
+PlayerBullet maximumPlayerBullets[maxPlayerBullets];
+int currentPlayerBullet = 0;
+
 static void Initialize();
 
 static void Close();
@@ -21,14 +26,14 @@ void EnemyTp(Enemy& enemy);
 
 void GameCollisions(Player& spaceShip, Enemy enemy);
 
-void CheckInput(Player& spaceShip, bool& playingGame);
+void CheckInput(Player& spaceShip, bool& playingGame, Vector2 mousePosition);
 
 void GameDraw(bool exitWindow, Player& spaceShip, const Enemy& enemy, Parallax& parallax);
 
 void RunGame()
 {
 	Initialize();
-	HideCursor();
+	//HideCursor();
 	SetExitKey(KEY_NULL);
 	
 	bool playingGame = true;
@@ -117,7 +122,7 @@ void RunGame()
 			if (!isPaused)
 			{
 				enemy.position.x += enemy.speed.x * GetFrameTime();
-				CheckInput(spaceShip, playingGame);
+				CheckInput(spaceShip, playingGame, mousePosition);
 				GameCollisions(spaceShip, enemy);
 				EnemyTp(enemy);
 				ParallaxBG(parallax);
@@ -329,7 +334,7 @@ void GameCollisions(Player& spaceShip, Enemy enemy)
 	}
 }
 
-void CheckInput(Player& spaceShip, bool& playingGame)
+void CheckInput(Player& spaceShip, bool& playingGame, Vector2 mousePosition)
 {
 	if (IsKeyPressed(KEY_SPACE) && spaceShip.position.y == spaceShip.startJumpPosition)
 	{
@@ -376,6 +381,23 @@ void CheckInput(Player& spaceShip, bool& playingGame)
 		if (spaceShip.position.x >= 0)
 		{
 			spaceShip.position.x -= spaceShip.speed.x * GetFrameTime();
+		}
+	}
+
+	if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT))
+	{
+		maximumPlayerBullets[currentPlayerBullet].isActive = true;
+
+		maximumPlayerBullets[currentPlayerBullet].isMoving = true;
+
+		maximumPlayerBullets[currentPlayerBullet].direction.x = mousePosition.x - maximumPlayerBullets[currentPlayerBullet].position.x;
+		maximumPlayerBullets[currentPlayerBullet].direction.y = mousePosition.y - maximumPlayerBullets[currentPlayerBullet].position.y;
+
+		currentPlayerBullet++;
+
+		if (currentPlayerBullet >= maxPlayerBullets)
+		{
+			currentPlayerBullet = 0;
 		}
 	}
 }

@@ -3,8 +3,9 @@
 
 struct PlayerBullet
 {
-	Vector2 poisition{};
+	Vector2 position{};
 	Vector2 size{};
+	Vector2 direction{};
 	float speed;
 	bool isMoving;
 	bool isActive;
