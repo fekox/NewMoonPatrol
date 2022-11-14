@@ -27,7 +27,7 @@ bool CollisionRectangleRectangle(float r1x, float r1y, float r1w, float r1h, flo
 
 void EnemyTp(Enemy& enemy);
 
-void GameCollisions(Player& spaceShip, Enemy enemy);
+void GameCollisions(Player& spaceShip, Enemy& enemy, PlayerBullet& playerBullet);
 
 void CheckInput(Player& spaceShip, bool& playingGame, PlayerBullet& playerBullet);
 
@@ -134,7 +134,7 @@ void RunGame()
 			if (!isPaused && spaceShip.isAlive)
 			{
 				CheckInput(spaceShip, playingGame, playerBullet);
-				GameCollisions(spaceShip, enemy);
+				GameCollisions(spaceShip, enemy, playerBullet);
 				EnemyTp(enemy);
 				ParallaxBG(parallax);
 				EnemyMovement(enemy);
@@ -288,7 +288,10 @@ void GameDraw(bool exitWindow, Player& spaceShip, const Enemy& enemy, Parallax& 
 	
 	for (int i = 0; i < maxFlyingEnemy; i++)
 	{
-		DrawEnemy(maximumFlyingEnemy[i]);
+		if (maximumFlyingEnemy[i].isAlive)
+		{
+			DrawEnemy(maximumFlyingEnemy[i]);
+		}
 	}
 }
 
@@ -384,13 +387,25 @@ void EnemyTp(Enemy& enemy)
 	}
 }
 
-void GameCollisions(Player& spaceShip, Enemy enemy)
+void GameCollisions(Player& spaceShip, Enemy& enemy, PlayerBullet& playerBullet)
 {
 	if (spaceShip.isAlive)
 	{
 		if (CollisionRectangleRectangle(spaceShip.position.x, spaceShip.position.y, spaceShip.size.x, spaceShip.size.y, enemy.position.x, enemy.position.y, enemy.size.x, enemy.size.y))
 		{
 			spaceShip.isAlive = false;
+		}
+	}
+
+	for (int i = 0; i < maxFlyingEnemy; i++)
+	{
+		for (int j = 0; j < maxPlayerBullets; j++)
+		{
+			if (CollisionRectangleRectangle(maximumFlyingEnemy[i].position.x, maximumFlyingEnemy[i].position.y, maximumFlyingEnemy[i].size.x, maximumFlyingEnemy[i].size.y, maximumPlayerBullets[j].position.x, maximumPlayerBullets[j].position.y, maximumPlayerBullets[j].size.x, maximumPlayerBullets[j].size.y) && maximumFlyingEnemy[i].isAlive)
+			{
+				maximumFlyingEnemy[i].isAlive = false;
+				maximumPlayerBullets[j].isActive = false;
+			}
 		}
 	}
 }
