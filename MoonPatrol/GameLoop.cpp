@@ -26,9 +26,9 @@ void EnemyTp(Enemy& enemy);
 
 void GameCollisions(Player& spaceShip, Enemy enemy);
 
-void CheckInput(Player& spaceShip, bool& playingGame, Vector2 mousePosition);
+void CheckInput(Player& spaceShip, bool& playingGame, PlayerBullet& playerBullet);
 
-void GameDraw(bool exitWindow, Player& spaceShip, const Enemy& enemy, Parallax& parallax);
+void GameDraw(bool exitWindow, Player& spaceShip, const Enemy& enemy, Parallax& parallax, PlayerBullet& playerBullet);
 
 void RunGame()
 {
@@ -45,9 +45,16 @@ void RunGame()
 	
 	Player spaceShip;
 
+	PlayerBullet playerBullet;
+
 	Enemy enemy;
 
 	Parallax parallax;
+
+	for (int i = 0; i < maxPlayerBullets - 1; i++)
+	{
+		CreatePlayerBullet(maximumPlayerBullets[i]);
+	}
 
 	CreatePlayerShip(spaceShip);
 	CreateEnemy(enemy);
@@ -122,10 +129,25 @@ void RunGame()
 			if (!isPaused)
 			{
 				enemy.position.x += enemy.speed.x * GetFrameTime();
-				CheckInput(spaceShip, playingGame, mousePosition);
+				CheckInput(spaceShip, playingGame, playerBullet);
 				GameCollisions(spaceShip, enemy);
 				EnemyTp(enemy);
 				ParallaxBG(parallax);
+
+				for (int i = 0; i < maxPlayerBullets; i++)
+				{
+					if (maximumPlayerBullets[i].isMoving == false)
+					{
+						maximumPlayerBullets[i].position.x = spaceShip.position.x + 10;
+						maximumPlayerBullets[i].position.y = spaceShip.position.y + 10;
+					}
+
+					if (maximumPlayerBullets[i].isMoving)
+					{
+						maximumPlayerBullets[i].position.x -= maximumPlayerBullets[i].direction.x * maximumPlayerBullets[i].speed * GetFrameTime();
+						maximumPlayerBullets[i].position.y -= maximumPlayerBullets[i].direction.y * maximumPlayerBullets[i].speed * GetFrameTime();
+					}
+				}
 			}
 			
 			if (IsKeyPressed(KEY_ESCAPE) && !gameFinished)
@@ -156,7 +178,7 @@ void RunGame()
 				}
 			}
 
-			GameDraw(exitWindow, spaceShip, enemy, parallax);
+			GameDraw(exitWindow, spaceShip, enemy, parallax, playerBullet);
 
 			break;
 
@@ -226,7 +248,7 @@ void RunGame()
 	Close();
 }
 
-void GameDraw(bool exitWindow, Player& spaceShip, const Enemy& enemy, Parallax& parallax)
+void GameDraw(bool exitWindow, Player& spaceShip, const Enemy& enemy, Parallax& parallax, PlayerBullet& playerBullet)
 {
 	DrawText("Press 'ESC' to pause the game", static_cast<float>(GetScreenWidth() / 2) - 270, 10, 35, WHITE);
 
@@ -251,9 +273,18 @@ void GameDraw(bool exitWindow, Player& spaceShip, const Enemy& enemy, Parallax& 
 		DrawText("NO", 580, 460, 35, BLACK);
 	}
 
+	for (int i = 0; i < maxPlayerBullets; i++)
+	{
+		if (maximumPlayerBullets[i].isActive)
+		{
+			DrawPlayerBullet(maximumPlayerBullets[i]);
+		}
+	}
+
 	if (spaceShip.isAlive)
 	{
 		DrawPlayerShip(spaceShip);
+		DrawPlayerBullet(playerBullet);
 	}
 
 	DrawEnemy(enemy);
@@ -334,7 +365,7 @@ void GameCollisions(Player& spaceShip, Enemy enemy)
 	}
 }
 
-void CheckInput(Player& spaceShip, bool& playingGame, Vector2 mousePosition)
+void CheckInput(Player& spaceShip, bool& playingGame, PlayerBullet& playerBullet)
 {
 	if (IsKeyPressed(KEY_SPACE) && spaceShip.position.y == spaceShip.startJumpPosition)
 	{
@@ -390,8 +421,7 @@ void CheckInput(Player& spaceShip, bool& playingGame, Vector2 mousePosition)
 
 		maximumPlayerBullets[currentPlayerBullet].isMoving = true;
 
-		maximumPlayerBullets[currentPlayerBullet].direction.x = mousePosition.x - maximumPlayerBullets[currentPlayerBullet].position.x;
-		maximumPlayerBullets[currentPlayerBullet].direction.y = mousePosition.y - maximumPlayerBullets[currentPlayerBullet].position.y;
+		maximumPlayerBullets[currentPlayerBullet].position.y -= maximumPlayerBullets[currentPlayerBullet].speed * GetFrameTime();
 
 		currentPlayerBullet++;
 

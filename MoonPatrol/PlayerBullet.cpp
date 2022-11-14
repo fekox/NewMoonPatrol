@@ -3,21 +3,21 @@
 
 PlayerBullet CreatePlayerBullet(PlayerBullet& playerBullet)
 {
-	playerBullet.position.x = 5000;
-	playerBullet.position.y = 5000;
-	playerBullet.size.x = 10;
-	playerBullet.size.y = 10;
+	playerBullet.position.x = 500;
+	playerBullet.position.y = 500;
+	playerBullet.size.x = 20;
+	playerBullet.size.y = 20;
 	playerBullet.direction.x = 0;
 	playerBullet.direction.y = 0;
 	playerBullet.speed = 200;
-	playerBullet.isActive = false;
+	playerBullet.isActive = true;
 	playerBullet.isMoving = false;
-	playerBullet.bulletColor = WHITE;
+	playerBullet.bulletColor = ORANGE;
 
 	return playerBullet;
 }
 
 void DrawPlayerBullet(PlayerBullet playerBullet)
 {
-	DrawRectangle(playerBullet.position.x, playerBullet.position.y, playerBullet.size.x, playerBullet.size.y, playerBullet.bulletColor);
+	DrawRectangle(static_cast<float>(playerBullet.position.x), static_cast<float>(playerBullet.position.y), static_cast<float>(playerBullet.size.x), static_cast<float>(playerBullet.size.y), playerBullet.bulletColor);
 }
