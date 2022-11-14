@@ -1,6 +1,8 @@
 #pragma once
 #include "raylib.h"
 
+const int maxFlyingEnemy = 5;
+
 struct Enemy
 {
 	Vector2 position{};
@@ -11,5 +13,7 @@ struct Enemy
 };
 
 Enemy CreateEnemy(Enemy& enemy);
+
+Enemy CreateFlyingEnemy(Enemy& enemy, float x);
 
 void DrawEnemy(Enemy enemy);

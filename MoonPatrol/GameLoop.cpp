@@ -13,6 +13,10 @@ PlayerBullet playerBullets;
 PlayerBullet maximumPlayerBullets[maxPlayerBullets];
 int currentPlayerBullet = 0;
 
+Enemy flyingEnemy;
+Enemy maximumFlyingEnemy[maxFlyingEnemy];
+int currentFlyingEnemy = 0;
+
 static void Initialize();
 
 static void Close();
@@ -26,6 +30,8 @@ void EnemyTp(Enemy& enemy);
 void GameCollisions(Player& spaceShip, Enemy enemy);
 
 void CheckInput(Player& spaceShip, bool& playingGame, PlayerBullet& playerBullet);
+
+void EnemyMovement(Enemy& enemy);
 
 void GameDraw(bool exitWindow, Player& spaceShip, const Enemy& enemy, Parallax& parallax, PlayerBullet& playerBullet);
 
@@ -50,9 +56,14 @@ void RunGame()
 
 	Parallax parallax;
 
+	CreateParallax(parallax);
 	CreatePlayerShip(spaceShip);
 	CreateEnemy(enemy);
-	CreateParallax(parallax);
+	
+	for (int i = 0; i < maxFlyingEnemy; i++)
+	{
+		maximumFlyingEnemy[i] = CreateFlyingEnemy(flyingEnemy, i * 100);
+	}
 
 	Vector2 mousePosition = GetMousePosition();
 
@@ -122,11 +133,11 @@ void RunGame()
 
 			if (!isPaused && spaceShip.isAlive)
 			{
-				enemy.position.x += enemy.speed.x * GetFrameTime();
 				CheckInput(spaceShip, playingGame, playerBullet);
 				GameCollisions(spaceShip, enemy);
 				EnemyTp(enemy);
 				ParallaxBG(parallax);
+				EnemyMovement(enemy);
 
 				for (int i = 0; i < maxPlayerBullets; i++)
 				{
@@ -274,6 +285,11 @@ void GameDraw(bool exitWindow, Player& spaceShip, const Enemy& enemy, Parallax& 
 	}
 
 	DrawEnemy(enemy);
+	
+	for (int i = 0; i < maxFlyingEnemy; i++)
+	{
+		DrawEnemy(maximumFlyingEnemy[i]);
+	}
 }
 
 static void Initialize()
@@ -293,6 +309,26 @@ bool CollisionRectangleRectangle(float r1x, float r1y, float r1w, float r1h, flo
 		return true;
 	}
 	return false;
+}
+
+void EnemyMovement(Enemy& enemy)
+{
+	enemy.position.x += enemy.speed.x * GetFrameTime();
+
+	for (int i = 0; i < maxFlyingEnemy; i++)
+	{
+		maximumFlyingEnemy[i].position.x += maximumFlyingEnemy[i].speed.x * GetFrameTime();
+		maximumFlyingEnemy[i].position.y -= maximumFlyingEnemy[i].speed.y * GetFrameTime();
+
+		if (maximumFlyingEnemy[i].position.y <= 200)
+		{
+			maximumFlyingEnemy[i].speed.y *= -1;
+		}
+		else if (maximumFlyingEnemy[i].position.y >= 400)
+		{
+			maximumFlyingEnemy[i].speed.y *= -1;
+		}
+	}
 }
 
 void ParallaxBG(Parallax& parallax)
@@ -337,6 +373,14 @@ void EnemyTp(Enemy& enemy)
 	if (enemy.position.x < -50)
 	{
 		enemy.position.x = static_cast<float>(GetScreenWidth());
+	}
+
+	for (int i = 0; i < maxFlyingEnemy; i++)
+	{
+		if (maximumFlyingEnemy[i].position.x >= GetScreenWidth())
+		{
+			maximumFlyingEnemy[i].position.x = -50;
+		}
 	}
 }
 
