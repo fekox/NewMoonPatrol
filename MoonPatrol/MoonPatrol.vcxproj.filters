@@ -1,54 +1,51 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="Source Files">
-      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
-      <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    <Filter Include="src">
+      <UniqueIdentifier>{b9468509-c40a-4a30-9b6b-07a24099135d}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files">
-      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
-      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
+    <Filter Include="src\Objects">
+      <UniqueIdentifier>{676dcd83-05fe-4965-b76d-d70292874208}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Resource Files">
-      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
-      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    <Filter Include="src\Windows">
+      <UniqueIdentifier>{e63d68d6-369b-4e10-b116-8530f20f3668}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="main.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="src\Window\GameLoop.cpp">
+      <Filter>src\Windows</Filter>
     </ClCompile>
-    <ClCompile Include="Player.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="src\Window\Parallax.cpp">
+      <Filter>src\Windows</Filter>
     </ClCompile>
-    <ClCompile Include="Enemy.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="src\Objects\Enemy.cpp">
+      <Filter>src\Objects</Filter>
     </ClCompile>
-    <ClCompile Include="GameLoop.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="src\Objects\Player.cpp">
+      <Filter>src\Objects</Filter>
     </ClCompile>
-    <ClCompile Include="Parallax.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="src\Objects\PlayerBullet.cpp">
+      <Filter>src\Objects</Filter>
     </ClCompile>
-    <ClCompile Include="PlayerBullet.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="src\main.cpp">
+      <Filter>src</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Player.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="src\Window\GameLoop.h">
+      <Filter>src\Windows</Filter>
     </ClInclude>
-    <ClInclude Include="Enemy.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="src\Window\Parallax.h">
+      <Filter>src\Windows</Filter>
     </ClInclude>
-    <ClInclude Include="GameLoop.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="src\Objects\Enemy.h">
+      <Filter>src\Objects</Filter>
     </ClInclude>
-    <ClInclude Include="Parallax.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="src\Objects\Player.h">
+      <Filter>src\Objects</Filter>
     </ClInclude>
-    <ClInclude Include="PlayerBullet.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="src\Objects\PlayerBullet.h">
+      <Filter>src\Objects</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

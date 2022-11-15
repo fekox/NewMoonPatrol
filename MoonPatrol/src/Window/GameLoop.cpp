@@ -1,11 +1,13 @@
-#include "GameLoop.h"
-#include "Player.h"
-#include "PlayerBullet.h"
-#include "Enemy.h"
-#include "Parallax.h"
+#include <iostream>
+
 #include "raylib.h"
 
-#include <iostream>
+#include "Window/GameLoop.h"
+#include "Window/Parallax.h"
+
+#include "Objects/Player.h"
+#include "Objects/PlayerBullet.h"
+#include "Objects/Enemy.h"
 
 using namespace std;
 

@@ -1,4 +1,4 @@
-#include "Enemy.h"
+#include "Objects/Enemy.h"
 #include "raylib.h"
 
 Enemy CreateEnemy(Enemy& enemy)
@@ -21,6 +21,7 @@ Enemy CreateFlyingEnemy(Enemy& enemy, float x)
 	enemy.size.x = 50.f;
 	enemy.size.y = 50.f;
 	enemy.speed.x = 150;
+
 	enemy.speed.y = 150;
 	enemy.isAlive = true;
 	enemy.enemyColor = MAGENTA;
@@ -30,5 +31,5 @@ Enemy CreateFlyingEnemy(Enemy& enemy, float x)
 
 void DrawEnemy(Enemy enemy)
 {
-	DrawRectangle(static_cast<float>(enemy.position.x), static_cast<float>(enemy.position.y), static_cast<float>(enemy.size.x), static_cast<float>(enemy.size.y), enemy.enemyColor);
+	DrawRectangle(static_cast<int>(enemy.position.x), static_cast<int>(enemy.position.y), static_cast<int>(enemy.size.x), static_cast<int>(enemy.size.y), enemy.enemyColor);
 }

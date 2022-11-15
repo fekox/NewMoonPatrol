@@ -18,6 +18,21 @@
       <Platform>x64</Platform>
     </ProjectConfiguration>
   </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\main.cpp" />
+    <ClCompile Include="src\Objects\Enemy.cpp" />
+    <ClCompile Include="src\Objects\Player.cpp" />
+    <ClCompile Include="src\Objects\PlayerBullet.cpp" />
+    <ClCompile Include="src\Window\GameLoop.cpp" />
+    <ClCompile Include="src\Window\Parallax.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="src\Objects\Enemy.h" />
+    <ClInclude Include="src\Objects\Player.h" />
+    <ClInclude Include="src\Objects\PlayerBullet.h" />
+    <ClInclude Include="src\Window\GameLoop.h" />
+    <ClInclude Include="src\Window\Parallax.h" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
@@ -92,12 +107,12 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)\raylib-4.0.0_win32_msvc16\include;$(SolutionDir)Scr</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)\raylib-4.0.0_win32_msvc16\include;$(SolutionDir)MoonPatrol\src</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>$(SolutionDir)\raylib-4.0.0_win32_msvc16\lib;$(SolutionDir)Scr</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(SolutionDir)\raylib-4.0.0_win32_msvc16\lib;$(SolutionDir)MoonPatrol\src</AdditionalLibraryDirectories>
       <AdditionalDependencies>raylib.lib;winmm.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
@@ -113,14 +128,14 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)\raylib-4.0.0_win32_msvc16\include;$(SolutionDir)Scr</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)\raylib-4.0.0_win32_msvc16\include;$(SolutionDir)MoonPatrol\src</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>$(SolutionDir)\raylib-4.0.0_win32_msvc16\lib;$(SolutionDir)Scr</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(SolutionDir)\raylib-4.0.0_win32_msvc16\lib;$(SolutionDir)MoonPatrol\src</AdditionalLibraryDirectories>
       <AdditionalDependencies>raylib.lib;winmm.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <EntryPointSymbol>mainCRTStartup</EntryPointSymbol>
     </Link>
@@ -157,21 +172,6 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
   </ItemDefinitionGroup>
-  <ItemGroup>
-    <ClCompile Include="Enemy.cpp" />
-    <ClCompile Include="GameLoop.cpp" />
-    <ClCompile Include="main.cpp" />
-    <ClCompile Include="Parallax.cpp" />
-    <ClCompile Include="Player.cpp" />
-    <ClCompile Include="PlayerBullet.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="Enemy.h" />
-    <ClInclude Include="GameLoop.h" />
-    <ClInclude Include="Parallax.h" />
-    <ClInclude Include="Player.h" />
-    <ClInclude Include="PlayerBullet.h" />
-  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

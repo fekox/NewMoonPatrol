@@ -1,6 +1,7 @@
-#include "Player.h"
-#include "PlayerBullet.h"
 #include "raylib.h"
+
+#include "Objects/Player.h"
+#include "Objects/PlayerBullet.h"
 
 PlayerBullet CreatePlayerBullet(PlayerBullet playerBullet, Player spaceShip)
 {

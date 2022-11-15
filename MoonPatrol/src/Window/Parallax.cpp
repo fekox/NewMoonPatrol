@@ -1,4 +1,4 @@
-#include "Parallax.h"
+#include "Window/Parallax.h"
 #include "raylib.h"
 
 Parallax CreateParallax(Parallax& parallax)
