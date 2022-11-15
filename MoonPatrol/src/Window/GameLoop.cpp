@@ -231,11 +231,19 @@ void RunGame()
 
 			mousePosition = GetMousePosition();
 
-			if (CheckCollisionPointRec(mousePosition, { static_cast<float>(GetScreenWidth() / 2) - 87.5f, static_cast<float>(GetScreenHeight() / 2) - 20, 190, 85 }))
+			if (CheckCollisionPointRec(mousePosition, { GetScreenWidth() / 2.5f, GetScreenHeight() / 2.5f, 190, 85 }))
 			{
 				if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON))
 				{
-					OpenURL("https://nicorm.itch.io/"); 
+					OpenURL("https://feco-games.itch.io/"); 
+				}
+			}
+
+			if (CheckCollisionPointRec(mousePosition, {GetScreenWidth() / 2.5f, GetScreenHeight() / 1.4f, 190, 85, }))
+			{
+				if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON))
+				{
+					OpenURL("https://nicorm.itch.io/");
 				}
 			}
 
@@ -252,12 +260,22 @@ void RunGame()
 			DrawRectangle(10, 40, 45, 45, RED);
 			DrawText("x", 20, 35, 50, WHITE);
 
-			DrawRectangle(static_cast<int>(GetScreenWidth() / 2 - 0 - 87.5f), GetScreenHeight() / 2 - 20, 190, 85, BLACK);
-			DrawRectangle(static_cast<int>(GetScreenWidth() / 2 - 0 - 82.5f), GetScreenHeight() / 2 - 15, 180, 75, RED);
-			DrawText("Itch.io", static_cast<int>(GetScreenWidth() / 2) - MeasureText("Itch.io", 25), static_cast<int>(GetScreenHeight() / 2), 50, BLACK);
-			DrawRectangle(250, GetScreenHeight() / 2 - 115, 550, 85, BLACK);
-			DrawRectangle(255, GetScreenHeight() / 2 - 110, 540, 75, WHITE);
-			DrawText("Nicolas Ramos Marin", static_cast<int>(GetScreenWidth() / 2) - MeasureText("Nicolas Ramos Marin", 25), static_cast<int>(GetScreenHeight() / 2) - 100, 50, BLACK);
+			DrawRectangle(static_cast<int>(GetScreenWidth() / 2.5), GetScreenHeight() / 2.5, 190, 85, BLACK);
+			DrawRectangle(static_cast<int>(GetScreenWidth() / 2.5), GetScreenHeight() / 2.5, 180, 75, RED);
+			DrawText("Itch.io", static_cast<int>(GetScreenWidth() / 2.4), static_cast<int>(GetScreenHeight() / 2.4), 50, BLACK);
+			DrawRectangle(250, GetScreenHeight() / 4, 550, 85, BLACK);
+			DrawRectangle(255, GetScreenHeight() / 4, 540, 75, WHITE);
+
+			DrawText("Facundo Santos", static_cast<int>(GetScreenWidth() / 3.2), static_cast<int>(GetScreenHeight() / 3.8), 50, BLACK);
+
+
+			DrawRectangle(static_cast<int>(GetScreenWidth() / 2.5), GetScreenHeight() / 1.4, 190, 85, BLACK);
+			DrawRectangle(static_cast<int>(GetScreenWidth() / 2.5), GetScreenHeight() / 1.4, 180, 75, RED);
+			DrawText("Itch.io", static_cast<int>(GetScreenWidth() / 2.4), static_cast<int>(GetScreenHeight() / 1.35), 50, BLACK);
+			DrawRectangle(GetScreenWidth() / 3.8, GetScreenHeight() / 1.7, 550, 85, BLACK);
+			DrawRectangle(GetScreenWidth() / 3.8, GetScreenHeight() / 1.7, 540, 75, WHITE);
+
+			DrawText("Nicolas Ramos Marin", static_cast<int>(GetScreenWidth() / 3.6), static_cast<int>(GetScreenHeight() / 1.7), 50, BLACK);
 
 			break;
 
