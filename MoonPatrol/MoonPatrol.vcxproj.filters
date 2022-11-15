@@ -10,6 +10,15 @@
     <Filter Include="src\Windows">
       <UniqueIdentifier>{e63d68d6-369b-4e10-b116-8530f20f3668}</UniqueIdentifier>
     </Filter>
+    <Filter Include="resources">
+      <UniqueIdentifier>{573a4fad-6150-40d9-94ab-290832cd7c75}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="resources\Sprites">
+      <UniqueIdentifier>{afe03c73-916a-4006-b552-28f75a64fe75}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="resources\Font">
+      <UniqueIdentifier>{d33ce956-2053-4ae3-b3cc-6e01d262d0b1}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Window\GameLoop.cpp">

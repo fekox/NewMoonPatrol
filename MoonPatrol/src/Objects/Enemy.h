@@ -9,9 +9,7 @@ struct Enemy
 	Vector2 size;
 	Vector2 speed{};
 	bool isAlive;
-	Texture a;
-	Color enemyColor;
-
+	Color color;
 };
 
 Enemy CreateEnemy(Enemy& enemy);

@@ -9,7 +9,7 @@ Enemy CreateEnemy(Enemy& enemy)
 	enemy.size.y = 40.f;
 	enemy.speed.x = -150;
 	enemy.isAlive = true;
-	enemy.enemyColor = PURPLE;
+	enemy.color = PURPLE;
 
 	return enemy;
 }
@@ -24,12 +24,12 @@ Enemy CreateFlyingEnemy(Enemy& enemy, float x)
 
 	enemy.speed.y = 150;
 	enemy.isAlive = true;
-	enemy.enemyColor = MAGENTA;
+	enemy.color = MAGENTA;
 
 	return enemy;
 }
 
 void DrawEnemy(Enemy enemy)
 {
-	DrawRectangle(static_cast<int>(enemy.position.x), static_cast<int>(enemy.position.y), static_cast<int>(enemy.size.x), static_cast<int>(enemy.size.y), enemy.enemyColor);
+	DrawRectangle(static_cast<int>(enemy.position.x), static_cast<int>(enemy.position.y), static_cast<int>(enemy.size.x), static_cast<int>(enemy.size.y), enemy.color);
 }
