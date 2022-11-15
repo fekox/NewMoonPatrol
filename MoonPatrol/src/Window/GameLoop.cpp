@@ -7,23 +7,38 @@
 
 #include "Objects/Player.h"
 #include "Objects/PlayerBullet.h"
+#include "Objects/Background.h"
 #include "Objects/Enemy.h"
 
 using namespace std;
 
+//Window
+int screenWidth = 1024;
+int screenHeight = 768;
+
+//Player
 PlayerBullet playerBullets;
 PlayerBullet maximumPlayerBullets[maxPlayerBullets];
 int currentPlayerBullet = 0;
 
+//Enemy
 Enemy flyingEnemy;
 Enemy maximumFlyingEnemy[maxFlyingEnemy];
 int currentFlyingEnemy = 0;
 
+//Background
+Background sky = CreateBackground(screenWidth, screenHeight);
+Background sky2 = CreateBackground(screenWidth, screenHeight);
+
+Background city = CreateBackground(screenWidth, screenHeight);
+Background city2 = CreateBackground(screenWidth, screenHeight);
+
+Background hill = CreateBackground(screenWidth, screenHeight);
+Background hill2 = CreateBackground(screenWidth, screenHeight);
+
 static void Initialize();
 
 static void Close();
-
-void ParallaxBG(Parallax& parallax);
 
 bool CollisionRectangleRectangle(float r1x, float r1y, float r1w, float r1h, float r2x, float r2y, float r2w, float r2h);
 
@@ -40,7 +55,6 @@ void GameDraw(bool exitWindow, Player& spaceShip, const Enemy& enemy, Parallax& 
 void RunGame()
 {
 	Initialize();
-	//HideCursor();
 	SetExitKey(KEY_NULL);
 	
 	bool playingGame = true;
@@ -56,15 +70,12 @@ void RunGame()
 
 	Enemy enemy;
 
-	Parallax parallax;
-
-	CreateParallax(parallax);
 	CreatePlayerShip(spaceShip);
 	CreateEnemy(enemy);
 	
 	for (int i = 0; i < maxFlyingEnemy; i++)
 	{
-		maximumFlyingEnemy[i] = CreateFlyingEnemy(flyingEnemy, i * 100);
+		maximumFlyingEnemy[i] = CreateFlyingEnemy(flyingEnemy, i * 100.0f);
 	}
 
 	Vector2 mousePosition = GetMousePosition();
@@ -115,16 +126,16 @@ void RunGame()
 
 			DrawRectangle(0, 0, GetScreenWidth(), GetScreenHeight(), WHITE);
 
-			DrawRectangle(GetScreenWidth() / 2 - (150 / 2), 197.5f, 150, 50, BLACK);
+			DrawRectangle(GetScreenWidth() / 2 - (150 / 2), static_cast<int>(197.5f), 150, 50, BLACK);
 			DrawText("PLAY", GetScreenWidth() / 2 - 50 - 15, 200, 50, WHITE);
 
-			DrawRectangle(GetScreenWidth() / 2 - (375 / 2) + 5, 272.5f, 375, 50, BLACK);
+			DrawRectangle(GetScreenWidth() / 2 - (375 / 2) + 5, static_cast<int>(272.5f), 375, 50, BLACK);
 			DrawText("HOW TO PLAY", GetScreenWidth() / 2 - 50 - 125, 275, 50, WHITE);
 
-			DrawRectangle(GetScreenWidth() / 2 - (250 / 2), 347.5f, 250, 50, BLACK);
+			DrawRectangle(GetScreenWidth() / 2 - (250 / 2), static_cast<int>(347.5f), 250, 50, BLACK);
 			DrawText("CREDITS", GetScreenWidth() / 2 - 50 - 65, 350, 50, WHITE);
 
-			DrawRectangle(GetScreenWidth() / 2 - (150 / 2), 422.5f, 150, 50, BLACK);
+			DrawRectangle(GetScreenWidth() / 2 - (150 / 2), static_cast<int>(422.5f), 150, 50, BLACK);
 			DrawText("EXIT", GetScreenWidth() / 2 - 50 - 10, 425, 50, WHITE);
 
 			break;
@@ -138,7 +149,6 @@ void RunGame()
 				CheckInput(spaceShip, playingGame, playerBullet);
 				GameCollisions(spaceShip, enemy, playerBullet);
 				EnemyTp(enemy, spaceShip);
-				ParallaxBG(parallax);
 				EnemyMovement(enemy);
 
 				for (int i = 0; i < maxPlayerBullets; i++)
@@ -198,8 +208,6 @@ void RunGame()
 				}
 			}
 
-			GameDraw(exitWindow, spaceShip, enemy, parallax, playerBullet);
-
 			break;
 
 		case GameState::HOWTOPLAY:
@@ -244,12 +252,12 @@ void RunGame()
 			DrawRectangle(10, 40, 45, 45, RED);
 			DrawText("x", 20, 35, 50, WHITE);
 
-			DrawRectangle(static_cast<float>(GetScreenWidth() / 2) - 0 - 87.5f, static_cast<float>(GetScreenHeight() / 2) - 20, 190, 85, BLACK);
-			DrawRectangle(static_cast<float>(GetScreenWidth() / 2) - 0 - 82.5f, static_cast<float>(GetScreenHeight() / 2) - 15, 180, 75, RED);
-			DrawText("Itch.io", static_cast<float>(GetScreenWidth() / 2) - MeasureText("Itch.io", 25), static_cast<float>(GetScreenHeight() / 2), 50, BLACK);
+			DrawRectangle(static_cast<int>(GetScreenWidth() / 2 - 0 - 87.5f), GetScreenHeight() / 2 - 20, 190, 85, BLACK);
+			DrawRectangle(static_cast<int>(GetScreenWidth() / 2 - 0 - 82.5f), GetScreenHeight() / 2 - 15, 180, 75, RED);
+			DrawText("Itch.io", static_cast<int>(GetScreenWidth() / 2) - MeasureText("Itch.io", 25), static_cast<int>(GetScreenHeight() / 2), 50, BLACK);
 			DrawRectangle(250, GetScreenHeight() / 2 - 115, 550, 85, BLACK);
 			DrawRectangle(255, GetScreenHeight() / 2 - 110, 540, 75, WHITE);
-			DrawText("Nicolas Ramos Marin", static_cast<float>(GetScreenWidth() / 2) - MeasureText("Nicolas Ramos Marin", 25), static_cast<float>(GetScreenHeight() / 2) - 100, 50, BLACK);
+			DrawText("Nicolas Ramos Marin", static_cast<int>(GetScreenWidth() / 2) - MeasureText("Nicolas Ramos Marin", 25), static_cast<int>(GetScreenHeight() / 2) - 100, 50, BLACK);
 
 			break;
 
@@ -270,17 +278,17 @@ void RunGame()
 
 void GameDraw(bool exitWindow, Player& spaceShip, const Enemy& enemy, Parallax& parallax, PlayerBullet& playerBullet)
 {
-	DrawText("Press 'ESC' to pause the game", static_cast<float>(GetScreenWidth() / 2) - 270, 10, 35, WHITE);
+	DrawText("Press 'ESC' to pause the game", static_cast<int>(GetScreenWidth() / 2) - 270, 10, 35, WHITE);
 
 	DrawParallax(parallax);
 
 	if (exitWindow)
 	{
-		DrawRectangleRounded({ static_cast<float>(GetScreenWidth() / 2) - 250, static_cast<float>(GetScreenHeight() / 2) - 200, 500, 400 }, 0.5f, 1, BLACK);
-		DrawRectangleRounded({ static_cast<float>(GetScreenWidth() / 2) - 245, static_cast<float>(GetScreenHeight() / 2) - 195, 490, 390 }, 0.5f, 1, WHITE);
+		DrawRectangleRounded({ static_cast<float>(GetScreenWidth() / 2 - 250), static_cast<float>(GetScreenHeight() / 2 - 200), 500, 400 }, static_cast<int>(0.5f), 1, BLACK);
+		DrawRectangleRounded({ static_cast<float>(GetScreenWidth() / 2 - 245), static_cast<float>(GetScreenHeight() / 2 - 195), 490, 390 }, static_cast<int>(0.5f), 1, WHITE);
 
-		DrawText("Do you want to", static_cast<float>(GetScreenWidth() - 705), static_cast<float>(GetScreenHeight() / 2) - 150, 51.5f, BLACK);
-		DrawText("keep playing?", static_cast<float>(GetScreenWidth() - 685), static_cast<float>(GetScreenHeight() / 2) - 80, 51.5f, BLACK);
+		DrawText("Do you want to", GetScreenWidth() - 705, GetScreenHeight() / 2 - 150, static_cast<int>(51.5f), BLACK);
+		DrawText("keep playing?", GetScreenWidth() - 685, GetScreenHeight() / 2 - 80, static_cast<int>(51.5f), BLACK);
 
 		DrawRectangleRounded({ 350, 425, 150, 100 }, 0.5f, 1, BLACK);
 		DrawRectangleRounded({ 355, 430, 140, 90 }, 0.5f, 1, WHITE);
@@ -323,11 +331,11 @@ void GameDraw(bool exitWindow, Player& spaceShip, const Enemy& enemy, Parallax& 
 		DrawRectangleRounded({ static_cast<float>(GetScreenWidth() / 2) - 250, static_cast<float>(GetScreenHeight() / 2) - 200, 500, 400 }, 0.5f, 1, BLACK);
 		DrawRectangleRounded({ static_cast<float>(GetScreenWidth() / 2) - 245, static_cast<float>(GetScreenHeight() / 2) - 195, 490, 390 }, 0.5f, 1, WHITE);
 
-		DrawText("GAME OVER", static_cast<float>(GetScreenWidth() - 650), static_cast<float>(GetScreenHeight() / 2) - 150, 50, BLACK);
-		DrawText(TextFormat("SCORE: %i", spaceShip.score), static_cast<float>(GetScreenWidth() - 600), static_cast<float>(GetScreenHeight() / 2) - 90, 40, BLACK);
+		DrawText("GAME OVER", GetScreenWidth() - 650, (GetScreenHeight() / 2) - 150, 50, BLACK);
+		DrawText(TextFormat("SCORE: %i", spaceShip.score), GetScreenWidth() - 600, GetScreenHeight() / 2 - 90, 40, BLACK);
 
-		DrawText("Do you want to", static_cast<float>(GetScreenWidth() - 620), static_cast<float>(GetScreenHeight() / 2) - 30, 30, BLACK);
-		DrawText("keep playing?", static_cast<float>(GetScreenWidth() - 610), static_cast<float>(GetScreenHeight() / 2), 30, BLACK);
+		DrawText("Do you want to", GetScreenWidth() - 620, (GetScreenHeight() / 2) - 30, 30, BLACK);
+		DrawText("keep playing?", GetScreenWidth() - 610, GetScreenHeight() / 2, 30, BLACK);
 
 		DrawRectangleRounded({ 350, 425, 150, 100 }, 0.5f, 1, BLACK);
 		DrawRectangleRounded({ 355, 430, 140, 90 }, 0.5f, 1, WHITE);
@@ -344,7 +352,7 @@ void GameDraw(bool exitWindow, Player& spaceShip, const Enemy& enemy, Parallax& 
 
 static void Initialize()
 {
-	InitWindow(1024, 768, "MoonPatrol");
+	InitWindow(1024, 768, "MoonPatrol V0.4");
 }
 
 static void Close()

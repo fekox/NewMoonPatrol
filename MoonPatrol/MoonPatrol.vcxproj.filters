@@ -39,6 +39,9 @@
     <ClCompile Include="src\main.cpp">
       <Filter>src</Filter>
     </ClCompile>
+    <ClCompile Include="src\Objects\Background.cpp">
+      <Filter>src\Objects</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Window\GameLoop.h">
@@ -54,6 +57,9 @@
       <Filter>src\Objects</Filter>
     </ClInclude>
     <ClInclude Include="src\Objects\PlayerBullet.h">
+      <Filter>src\Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Objects\Background.h">
       <Filter>src\Objects</Filter>
     </ClInclude>
   </ItemGroup>

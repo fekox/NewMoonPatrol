@@ -20,6 +20,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\main.cpp" />
+    <ClCompile Include="src\Objects\Background.cpp" />
     <ClCompile Include="src\Objects\Enemy.cpp" />
     <ClCompile Include="src\Objects\Player.cpp" />
     <ClCompile Include="src\Objects\PlayerBullet.cpp" />
@@ -27,6 +28,7 @@
     <ClCompile Include="src\Window\Parallax.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\Objects\Background.h" />
     <ClInclude Include="src\Objects\Enemy.h" />
     <ClInclude Include="src\Objects\Player.h" />
     <ClInclude Include="src\Objects\PlayerBullet.h" />
