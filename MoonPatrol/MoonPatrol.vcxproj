@@ -39,6 +39,18 @@
     <ClInclude Include="src\Window\Menu.h" />
     <ClInclude Include="src\Window\Parallax.h" />
   </ItemGroup>
+  <ItemGroup>
+    <Image Include="resources\Sprites\City.png" />
+    <Image Include="resources\Sprites\Ground.png" />
+    <Image Include="resources\Sprites\Hill.png" />
+    <Image Include="resources\Sprites\PauseButtonOff.png" />
+    <Image Include="resources\Sprites\PauseButtonOn.png" />
+    <Image Include="resources\Sprites\RestartGameMenu.png" />
+    <Image Include="resources\Sprites\Sky.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Font Include="resources\Font\baby blocks.ttf" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>

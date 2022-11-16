@@ -8,6 +8,9 @@ MenuButton credits;
 MenuButton quit;
 MenuButton returnMenu;
 
+MenuButton ichiolinkF;
+MenuButton ichiolinkN;
+
 void InitMenu()
 {
 	//Play Button
@@ -75,6 +78,28 @@ void InitMenu()
 	returnMenu.isActive = false;
 
 	returnMenu.color = ORANGE;
+
+	//itch.io Link Feko_Games
+
+	ichiolinkF.pos.x = static_cast<float>(GetScreenWidth() / 8);
+	ichiolinkF.pos.y = static_cast<float>(GetScreenHeight() / 2.6);
+	ichiolinkF.width = static_cast<float>(GetScreenWidth() / 3.68);
+	ichiolinkF.height = static_cast<float>(GetScreenHeight() / 10);
+	ichiolinkF.size = 40;
+	ichiolinkF.isActive = false;
+
+	ichiolinkF.color = ORANGE;
+
+	//itch.io Link Nicorm
+
+	ichiolinkN.pos.x = static_cast<float>(GetScreenWidth() / 1.6);
+	ichiolinkN.pos.y = static_cast<float>(GetScreenHeight() / 2.6);
+	ichiolinkN.width = static_cast<float>(GetScreenWidth() / 3.68);
+	ichiolinkN.height = static_cast<float>(GetScreenHeight() / 10);
+	ichiolinkN.size = 40;
+	ichiolinkN.isActive = false;
+
+	ichiolinkN.color = ORANGE;
 }
 
 void MenuCollisions(Mouse& mouse, int& optionSelect)
@@ -123,7 +148,27 @@ void MenuCollisions(Mouse& mouse, int& optionSelect)
 		credits.color = ORANGE;
 	}
 
-	//
+	//itch.io Link Feko_Games
+	if (CheckCollisionPointRec(mouse.position, Rectangle{ static_cast<float>(GetScreenWidth() / 8), static_cast<float>(GetScreenHeight() / 2.8), static_cast<float>(ichiolinkF.width), static_cast<float>(ichiolinkF.height) }) && optionSelect == 4)
+	{
+		ichiolinkF.color = BLUE;
+	}
+
+	else
+	{
+		ichiolinkF.color = ORANGE;
+	}
+
+	//itch.io Link Nicorm
+	if (CheckCollisionPointRec(mouse.position, Rectangle{ static_cast<float>(GetScreenWidth() / 1.6), static_cast<float>(GetScreenHeight() / 2.8), static_cast<float>(ichiolinkN.width), static_cast<float>(ichiolinkN.height) }) && optionSelect == 4)
+	{
+		ichiolinkN.color = BLUE;
+	}
+
+	else
+	{
+		ichiolinkN.color = ORANGE;
+	}
 
 	//Quit Button
 	if (CheckCollisionPointRec(mouse.position, Rectangle{ static_cast<float>(GetScreenWidth() / 20), static_cast<float>(GetScreenHeight() / 1.59), static_cast<float>(quit.width), static_cast<float>(quit.height) }) && optionSelect != 1 && optionSelect != 2 && optionSelect != 3 && optionSelect != 4 && optionSelect != 5)
@@ -191,17 +236,19 @@ void MenuInputs(Mouse& mouse, int& optionSelect, bool& playGame)
 			}
 		}
 
-		if (CheckCollisionPointRec(mouse.position, { GetScreenWidth() / 2.5f, GetScreenHeight() / 2.5f, 190, 85 }))
+		//itch.io Link Feko_Games
+		if (CheckCollisionPointRec(mouse.position, Rectangle{ static_cast<float>(GetScreenWidth() / 8), static_cast<float>(GetScreenHeight() / 2.8), static_cast<float>(ichiolinkF.width), static_cast<float>(ichiolinkF.height) }))
 		{
-			if (IsMouseButtonDown(MOUSE_BUTTON_LEFT) && optionSelect != 1 && optionSelect != 2 && optionSelect != 3 && optionSelect != 4 && optionSelect != 5)
+			if (IsMouseButtonDown(MOUSE_BUTTON_LEFT) && optionSelect == 4)
 			{
 				OpenURL("https://feco-games.itch.io/");
 			}
 		}
 
-		if (CheckCollisionPointRec(mouse.position, { GetScreenWidth() / 2.5f, GetScreenHeight() / 1.4f, 190, 85, }))
+		//itch.io Link Nicorm
+		if (CheckCollisionPointRec(mouse.position, Rectangle{ static_cast<float>(GetScreenWidth() / 1.6), static_cast<float>(GetScreenHeight() / 2.8), static_cast<float>(ichiolinkN.width), static_cast<float>(ichiolinkN.height) }))
 		{
-			if (IsMouseButtonDown(MOUSE_BUTTON_LEFT) && optionSelect != 1 && optionSelect != 2 && optionSelect != 3 && optionSelect != 4 && optionSelect != 5)
+			if (IsMouseButtonDown(MOUSE_BUTTON_LEFT) && optionSelect == 4)
 			{
 				OpenURL("https://nicorm.itch.io/");
 			}
@@ -291,22 +338,17 @@ void DrawCredits(Font gameFont)
 
 	DrawTextEx(gameFont, "CREDITS", { static_cast<float>(GetScreenWidth() / 3.8) , static_cast<float>(GetScreenHeight() / 15) }, 60, 0, ORANGE);
 
-	DrawRectangle(static_cast<int>(GetScreenWidth() / 2.5), GetScreenHeight() / 2.5, 190, 85, BLACK);
-	DrawRectangle(static_cast<int>(GetScreenWidth() / 2.5), GetScreenHeight() / 2.5, 180, 75, RED);
-	DrawText("Itch.io", static_cast<int>(GetScreenWidth() / 2.4), static_cast<int>(GetScreenHeight() / 2.4), 50, BLACK);
-	DrawRectangle(250, GetScreenHeight() / 4, 550, 85, BLACK);
-	DrawRectangle(255, GetScreenHeight() / 4, 540, 75, WHITE);
-	DrawText("Facundo Santos", static_cast<int>(GetScreenWidth() / 3.2), static_cast<int>(GetScreenHeight() / 3.8), 50, BLACK);
+	//itch.io Link Feko_Games
+	DrawText("Facundo Santos", static_cast<int>(GetScreenWidth() / 12), static_cast<int>(GetScreenHeight() / 3.8), 50, WHITE);
+	DrawRectangle(static_cast<float>(GetScreenWidth() / 8), static_cast<float>(GetScreenHeight() / 2.8), static_cast<float>(ichiolinkF.width), static_cast<float>(ichiolinkF.height), BLANK);
+	DrawTextEx(gameFont, "ITCH.IO", ichiolinkF.pos, ichiolinkF.size, 0, ichiolinkF.color);
 	
-	DrawRectangle(static_cast<int>(GetScreenWidth() / 2.5), GetScreenHeight() / 1.4, 190, 85, BLACK);
-	DrawRectangle(static_cast<int>(GetScreenWidth() / 2.5), GetScreenHeight() / 1.4, 180, 75, RED);
-	DrawText("Itch.io", static_cast<int>(GetScreenWidth() / 2.4), static_cast<int>(GetScreenHeight() / 1.35), 50, BLACK);
-	DrawRectangle(GetScreenWidth() / 3.8, GetScreenHeight() / 1.7, 550, 85, BLACK);
-	DrawRectangle(GetScreenWidth() / 3.8, GetScreenHeight() / 1.7, 540, 75, WHITE);
-	DrawText("Nicolas Ramos Marin", static_cast<int>(GetScreenWidth() / 3.6), static_cast<int>(GetScreenHeight() / 1.7), 50, BLACK);
-
+	//itch.io Link Nicorm
+	DrawText("Nicolas Ramos Marin", static_cast<int>(GetScreenWidth() / 1.8), static_cast<int>(GetScreenHeight() / 3.8), 40, WHITE);
+	DrawRectangle(static_cast<float>(GetScreenWidth() / 1.6), static_cast<float>(GetScreenHeight() / 2.8), static_cast<float>(ichiolinkN.width), static_cast<float>(ichiolinkN.height), BLANK);
+	DrawTextEx(gameFont, "ITCH.IO", ichiolinkN.pos, ichiolinkN.size, 0, ichiolinkN.color);
+	
 	DrawTextEx(gameFont, "FONT", { static_cast<float>(GetScreenWidth() / 2.3) , static_cast<float>(GetScreenHeight() / 2) }, 30, 0, GOLD);
-	DrawRectangle(static_cast<int>(GetScreenWidth() / 2.5), GetScreenHeight() / 2.5, 190, 85, BLACK);
 
 	//ReturnMenu Button
 	DrawRectangle(static_cast<int>(GetScreenWidth() / 2.5), static_cast<int>(GetScreenHeight() / 1.1), static_cast<int>(returnMenu.width), static_cast<int>(returnMenu.height), BLANK);

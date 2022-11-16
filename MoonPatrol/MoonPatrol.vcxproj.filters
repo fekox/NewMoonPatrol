@@ -75,4 +75,32 @@
       <Filter>src\Objects</Filter>
     </ClInclude>
   </ItemGroup>
+  <ItemGroup>
+    <Image Include="resources\Sprites\City.png">
+      <Filter>resources\Sprites</Filter>
+    </Image>
+    <Image Include="resources\Sprites\Ground.png">
+      <Filter>resources\Sprites</Filter>
+    </Image>
+    <Image Include="resources\Sprites\Hill.png">
+      <Filter>resources\Sprites</Filter>
+    </Image>
+    <Image Include="resources\Sprites\PauseButtonOff.png">
+      <Filter>resources\Sprites</Filter>
+    </Image>
+    <Image Include="resources\Sprites\PauseButtonOn.png">
+      <Filter>resources\Sprites</Filter>
+    </Image>
+    <Image Include="resources\Sprites\RestartGameMenu.png">
+      <Filter>resources\Sprites</Filter>
+    </Image>
+    <Image Include="resources\Sprites\Sky.png">
+      <Filter>resources\Sprites</Filter>
+    </Image>
+  </ItemGroup>
+  <ItemGroup>
+    <Font Include="resources\Font\baby blocks.ttf">
+      <Filter>resources\Font</Filter>
+    </Font>
+  </ItemGroup>
 </Project>
