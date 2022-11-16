@@ -42,6 +42,12 @@
     <ClCompile Include="src\Objects\Background.cpp">
       <Filter>src\Objects</Filter>
     </ClCompile>
+    <ClCompile Include="src\Window\Menu.cpp">
+      <Filter>src\Windows</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Objects\Mouse.cpp">
+      <Filter>src\Objects</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Window\GameLoop.h">
@@ -60,6 +66,12 @@
       <Filter>src\Objects</Filter>
     </ClInclude>
     <ClInclude Include="src\Objects\Background.h">
+      <Filter>src\Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Window\Menu.h">
+      <Filter>src\Windows</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Objects\Mouse.h">
       <Filter>src\Objects</Filter>
     </ClInclude>
   </ItemGroup>

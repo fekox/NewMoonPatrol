@@ -3,6 +3,7 @@
 #include "raylib.h"
 
 #include "Window/GameLoop.h"
+#include "Window/Menu.h"
 #include "Window/Parallax.h"
 
 #include "Objects/Player.h"
@@ -17,11 +18,13 @@ int screenWidth = 1024;
 int screenHeight = 768;
 
 //Player
+Player spaceShip;
 PlayerBullet playerBullets;
 PlayerBullet maximumPlayerBullets[maxPlayerBullets];
 int currentPlayerBullet = 0;
 
 //Enemy
+Enemy enemy;
 Enemy flyingEnemy;
 Enemy maximumFlyingEnemy[maxFlyingEnemy];
 int currentFlyingEnemy = 0;
@@ -36,9 +39,9 @@ Background city2 = CreateBackground(screenWidth, screenHeight);
 Background hill = CreateBackground(screenWidth, screenHeight);
 Background hill2 = CreateBackground(screenWidth, screenHeight);
 
-static void Initialize();
+//Mouse
 
-static void Close();
+Vector2 mousePosition;
 
 bool CollisionRectangleRectangle(float r1x, float r1y, float r1w, float r1h, float r2x, float r2y, float r2w, float r2h);
 
@@ -50,245 +53,16 @@ void CheckInput(Player& spaceShip, bool& playingGame, PlayerBullet& playerBullet
 
 void EnemyMovement(Enemy& enemy);
 
-void GameDraw(bool exitWindow, Player& spaceShip, const Enemy& enemy, Parallax& parallax, PlayerBullet& playerBullet);
-
 void RunGame()
 {
 	Initialize();
-	SetExitKey(KEY_NULL);
-	
 	bool playingGame = true;
-	bool isPaused = false;
-	bool exitWindow = false;
-	bool gameFinished = false;
-
-	GameState gameState = GameState::GAMETITLE;
-	
-	Player spaceShip;
-
-	PlayerBullet playerBullet;
-
-	Enemy enemy;
-
-	CreatePlayerShip(spaceShip);
-	CreateEnemy(enemy);
-	
-	for (int i = 0; i < maxFlyingEnemy; i++)
-	{
-		maximumFlyingEnemy[i] = CreateFlyingEnemy(flyingEnemy, i * 100.0f);
-	}
-
-	Vector2 mousePosition = GetMousePosition();
 
 	while (playingGame && !WindowShouldClose())
 	{
-		BeginDrawing();
-
-		ClearBackground(BLACK);
-
-		switch (gameState)
-		{
-		case GameState::GAMETITLE:
-
-			mousePosition = GetMousePosition();
-
-			if (CheckCollisionPointRec(mousePosition, { static_cast<float>(GetScreenWidth() / 2) - 150 / 2, 200, 150, 50 }))
-			{
-				if (IsMouseButtonDown(MOUSE_LEFT_BUTTON))
-				{
-					gameState = GameState::GAME;
-				}
-			}
-
-			if (CheckCollisionPointRec(mousePosition, { static_cast<float>(GetScreenWidth() / 2) - (375 / 2) + 5, 275, 375, 50 }))
-			{
-				if (IsMouseButtonDown(MOUSE_LEFT_BUTTON))
-				{
-					gameState = GameState::HOWTOPLAY;
-				}
-			}
-
-			if (CheckCollisionPointRec(mousePosition, { static_cast<float>(GetScreenWidth() / 2) - (250 / 2), 350, 250, 50 }))
-			{
-				if (IsMouseButtonDown(MOUSE_LEFT_BUTTON))
-				{
-					gameState = GameState::CREDITS;
-				}
-			}
-
-			if (CheckCollisionPointRec(mousePosition, { static_cast<float>(GetScreenWidth() / 2) - (150 / 2), 425, 150, 150 }))
-			{
-				if (IsMouseButtonDown(MOUSE_LEFT_BUTTON))
-				{
-					gameState = GameState::EXIT;
-				}
-			}
-
-			DrawRectangle(0, 0, GetScreenWidth(), GetScreenHeight(), WHITE);
-
-			DrawRectangle(GetScreenWidth() / 2 - (150 / 2), static_cast<int>(197.5f), 150, 50, BLACK);
-			DrawText("PLAY", GetScreenWidth() / 2 - 50 - 15, 200, 50, WHITE);
-
-			DrawRectangle(GetScreenWidth() / 2 - (375 / 2) + 5, static_cast<int>(272.5f), 375, 50, BLACK);
-			DrawText("HOW TO PLAY", GetScreenWidth() / 2 - 50 - 125, 275, 50, WHITE);
-
-			DrawRectangle(GetScreenWidth() / 2 - (250 / 2), static_cast<int>(347.5f), 250, 50, BLACK);
-			DrawText("CREDITS", GetScreenWidth() / 2 - 50 - 65, 350, 50, WHITE);
-
-			DrawRectangle(GetScreenWidth() / 2 - (150 / 2), static_cast<int>(422.5f), 150, 50, BLACK);
-			DrawText("EXIT", GetScreenWidth() / 2 - 50 - 10, 425, 50, WHITE);
-
-			break;
-
-		case GameState::GAME:
-
-			mousePosition = GetMousePosition();
-
-			if (!isPaused && spaceShip.isAlive)
-			{
-				CheckInput(spaceShip, playingGame, playerBullet);
-				GameCollisions(spaceShip, enemy, playerBullet);
-				EnemyTp(enemy, spaceShip);
-				EnemyMovement(enemy);
-
-				for (int i = 0; i < maxPlayerBullets; i++)
-				{
-					if (maximumPlayerBullets[i].isActive)
-					{
-						maximumPlayerBullets[i].position.y -= maximumPlayerBullets[i].speed * GetFrameTime();
-					}
-				}
-			}
-			
-			if (IsKeyPressed(KEY_ESCAPE) && !gameFinished)
-			{
-				isPaused = true;
-				exitWindow = true;
-			}
-
-			if (exitWindow)
-			{
-				if (CheckCollisionPointRec(mousePosition, { 350, 425, 150, 100 }))
-				{
-					if (IsMouseButtonReleased(MOUSE_LEFT_BUTTON))
-					{
-						exitWindow = false;
-						isPaused = !isPaused;
-					}
-				}
-				if (CheckCollisionPointRec(mousePosition, { 530, 425, 150, 100 }))
-				{
-					if (IsMouseButtonReleased(MOUSE_LEFT_BUTTON))
-					{
-						gameState = GameState::GAMETITLE;
-
-						exitWindow = false;
-						isPaused = !isPaused;
-					}
-				}
-			}
-
-			if (!spaceShip.isAlive)
-			{
-				if (CheckCollisionPointRec(mousePosition, { 350, 425, 150, 100 }))
-				{
-					if (IsMouseButtonReleased(MOUSE_LEFT_BUTTON))
-					{
-						gameState = GameState::GAMETITLE;
-
-						spaceShip.isAlive;
-					}
-				}
-				if (CheckCollisionPointRec(mousePosition, { 530, 425, 150, 100 }))
-				{
-					if (IsMouseButtonReleased(MOUSE_LEFT_BUTTON))
-					{
-						gameState = GameState::EXIT;
-					}
-				}
-			}
-
-			break;
-
-		case GameState::HOWTOPLAY:
-
-			mousePosition = GetMousePosition();
-
-			if (CheckCollisionPointRec(mousePosition, { 10, 40, 45, 45 }))
-			{
-				if (IsMouseButtonReleased(MOUSE_LEFT_BUTTON))
-				{
-					gameState = GameState::GAMETITLE;
-				}
-			}
-
-			DrawRectangle(10, 40, 45, 45, RED);
-			DrawText("x", 20, 35, 50, WHITE);
-
-			break;
-
-		case GameState::CREDITS:
-
-			mousePosition = GetMousePosition();
-
-			if (CheckCollisionPointRec(mousePosition, { GetScreenWidth() / 2.5f, GetScreenHeight() / 2.5f, 190, 85 }))
-			{
-				if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON))
-				{
-					OpenURL("https://feco-games.itch.io/"); 
-				}
-			}
-
-			if (CheckCollisionPointRec(mousePosition, {GetScreenWidth() / 2.5f, GetScreenHeight() / 1.4f, 190, 85, }))
-			{
-				if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON))
-				{
-					OpenURL("https://nicorm.itch.io/");
-				}
-			}
-
-			if (CheckCollisionPointRec(mousePosition, { 10, 40, 45, 45 }))
-			{
-				if (IsMouseButtonReleased(MOUSE_LEFT_BUTTON))
-				{
-					gameState = GameState::GAMETITLE;
-				}
-			}
-
-			DrawRectangle(0, 0, GetScreenWidth(), GetScreenHeight(), PINK);
-
-			DrawRectangle(10, 40, 45, 45, RED);
-			DrawText("x", 20, 35, 50, WHITE);
-
-			DrawRectangle(static_cast<int>(GetScreenWidth() / 2.5), GetScreenHeight() / 2.5, 190, 85, BLACK);
-			DrawRectangle(static_cast<int>(GetScreenWidth() / 2.5), GetScreenHeight() / 2.5, 180, 75, RED);
-			DrawText("Itch.io", static_cast<int>(GetScreenWidth() / 2.4), static_cast<int>(GetScreenHeight() / 2.4), 50, BLACK);
-			DrawRectangle(250, GetScreenHeight() / 4, 550, 85, BLACK);
-			DrawRectangle(255, GetScreenHeight() / 4, 540, 75, WHITE);
-
-			DrawText("Facundo Santos", static_cast<int>(GetScreenWidth() / 3.2), static_cast<int>(GetScreenHeight() / 3.8), 50, BLACK);
+		MenuCollisions(mousePosition);
 
 
-			DrawRectangle(static_cast<int>(GetScreenWidth() / 2.5), GetScreenHeight() / 1.4, 190, 85, BLACK);
-			DrawRectangle(static_cast<int>(GetScreenWidth() / 2.5), GetScreenHeight() / 1.4, 180, 75, RED);
-			DrawText("Itch.io", static_cast<int>(GetScreenWidth() / 2.4), static_cast<int>(GetScreenHeight() / 1.35), 50, BLACK);
-			DrawRectangle(GetScreenWidth() / 3.8, GetScreenHeight() / 1.7, 550, 85, BLACK);
-			DrawRectangle(GetScreenWidth() / 3.8, GetScreenHeight() / 1.7, 540, 75, WHITE);
-
-			DrawText("Nicolas Ramos Marin", static_cast<int>(GetScreenWidth() / 3.6), static_cast<int>(GetScreenHeight() / 1.7), 50, BLACK);
-
-			break;
-
-		case GameState::EXIT:
-
-			playingGame = false;
-
-			break;
-		}
-
-		DrawText("GAME VERSION 0.3", 10, 10, 20, GREEN);
-
-		EndDrawing();
 	}
 
 	Close();
@@ -296,6 +70,9 @@ void RunGame()
 
 void GameDraw(bool exitWindow, Player& spaceShip, const Enemy& enemy, Parallax& parallax, PlayerBullet& playerBullet)
 {
+	BeginDrawing();
+	ClearBackground(BLACK);
+
 	DrawText("Press 'ESC' to pause the game", static_cast<int>(GetScreenWidth() / 2) - 270, 10, 35, WHITE);
 
 	DrawParallax(parallax);
@@ -366,14 +143,32 @@ void GameDraw(bool exitWindow, Player& spaceShip, const Enemy& enemy, Parallax& 
 
 		DrawText("EXIT", 565, 460, 35, BLACK);
 	}
+
+	EndDrawing();
 }
 
-static void Initialize()
+void Initialize()
 {
 	InitWindow(1024, 768, "MoonPatrol V0.4");
+
+	SetExitKey(KEY_NULL);
+
+	bool isPaused = false;
+	bool exitWindow = false;
+	bool gameFinished = false;
+
+	CreatePlayerShip(spaceShip);
+	CreateEnemy(enemy);
+
+	for (int i = 0; i < maxFlyingEnemy; i++)
+	{
+		maximumFlyingEnemy[i] = CreateFlyingEnemy(flyingEnemy, i * 100.0f);
+	}
+
+	mousePosition = GetMousePosition();
 }
 
-static void Close()
+void Close()
 {
 	CloseWindow();
 }

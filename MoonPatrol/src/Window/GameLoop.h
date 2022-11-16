@@ -1,12 +1,6 @@
 #pragma once
 
-enum class GameState
-{
-	GAMETITLE = 0,
-	GAME,
-	HOWTOPLAY,
-	CREDITS,
-	EXIT
-};
-
+void Initialize();
 void RunGame();
+void GameDraw(bool exitWindow, Player& spaceShip, const Enemy& enemy, Parallax& parallax, PlayerBullet& playerBullet);
+void Close();
