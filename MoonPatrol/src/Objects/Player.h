@@ -3,19 +3,36 @@
 
 struct Player
 {
-	Vector2 position{};
-	Vector2 size;
-	Vector2 speed{};
-	float startJumpPosition;
-	float maxHeightJump;
+	Vector2 pos;
+
+	float width;
+	float height;
+
+	float speed;
+
 	float gravity;
-	float jumpTimer;
+	float jumpForce;
+
+	int lifes;
+
+	int points;
+
 	bool isJumping;
+	bool isCollision;
 	bool isAlive;
-	int score;
-	Color playerColor;
+	bool win;
+
+	Color color;
 };
 
-Player CreatePlayerShip(Player& spaceShip);
+Player CreatePlayer(int screenWidth, int screenHeight);
 
-void DrawPlayerShip(Player spaceShip);
+void DrawPlayer(Player& player);
+
+void PlayerLimit(Player& player, int screenWidth);
+
+void LoseLife(Player& player);
+
+bool IsAlive(Player& player);
+
+bool PlayerWin(Player& player);
