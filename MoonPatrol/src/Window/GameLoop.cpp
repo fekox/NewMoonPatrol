@@ -55,7 +55,8 @@ bool CheckCollisionRecRec(Vector2 r1, float r1w, float r1h, Vector2 r2, float r2
 
 void PlayerCollision();
 void PlayerMovement();
-void PlayerJump();
+void Player2Movement();
+void PlayerJump(Player& player);
 void PlayerBulletMovement();
 
 void BulletCollision();
@@ -85,13 +86,16 @@ int screenHeight = 768;
 //Menu
 int optionSelect = 0;
 bool playGame = false;
+bool multiplayer = true;
 
 //Player
 Player player = CreatePlayer(screenWidth, screenHeight);
+Player player2 = CreatePlayer(screenWidth, screenHeight);
 
 //Bullet
 int const maxBullets = 30;
 Bullet playerBullet[maxBullets];
+Bullet player2Bullet[maxBullets];
 
 //Floor
 Ground ground = CreateGround(screenWidth, screenHeight);
@@ -156,11 +160,26 @@ void InitGame()
     //Font
     gameFont = LoadFont("resources/Font/baby blocks.ttf");
 
-    //Bullet
+    //Player2
+    player2.pos.x = static_cast<float>(screenWidth / 4);
+    player2.pos.y = static_cast<float>(screenHeight / 1.165);
+    player2.width = 80;
+    player2.height = 40;
+    player2.speed = 420;
+    player2.lifes = 3;
+    player2.points = 0;
+    player2.isCollision = false;
+    player2.isAlive = true;
+    player2.win = false;
+    player2.color = PURPLE;
 
+    //Bullets
     for (int i = 0; i < maxBullets; i++)
     {
         playerBullet[i] = CreateBullet();
+        player2Bullet[i] = CreateBullet();
+        player2Bullet[i].color = SKYBLUE;
+
     }
 
     //Background
@@ -351,6 +370,7 @@ void SubMenusInputs(bool& gameOn)
         }
     }
 
+    //Pause menu
     if (!restartMenu.isActive && !pauseMenu.isActive)
     {
         if (IsKeyPressed(KEY_ESCAPE) || IsKeyPressed(KEY_P))
@@ -399,7 +419,6 @@ void GameLoop()
     {
         while (!WindowShouldClose() && gameOn)
         {
-            //PauseIntputs();
             MouseMovement();
             MenuCollisions(mouse, optionSelect);
             MenuInputs(mouse, optionSelect, playGame);
@@ -474,6 +493,12 @@ void Update()
 {
     ObstacleMovement();
     PlayerMovement();
+    
+    if (!multiplayer)
+    {
+        Player2Movement();
+    }
+
     PlayerBulletMovement();
     BackgroundMovement();
     FlyEnemyMovement();
@@ -501,6 +526,11 @@ void Draw()
     for (int i = 0; i < maxBullets; i++)
     {
         DrawBullet(playerBullet[i]);
+
+        if (!multiplayer)
+        {
+            DrawBullet(player2Bullet[i]);
+        }
     }
 
     for (int i = 0; i < maxflyEnemy; i++)
@@ -512,6 +542,12 @@ void Draw()
     }
 
     DrawPlayer(player);
+
+    if (!multiplayer)
+    {
+        DrawPlayer(player2);
+    }
+
     DrawTextEx(gameFont, TextFormat("score %0i", player.points), { static_cast<float>(GetScreenWidth() / 2.5) , static_cast<float>(GetScreenHeight() / 1.1) }, 50, 0, WHITE);
 
     DrawMouse(mouse, mouse.mouseRec);
@@ -533,6 +569,14 @@ void Draw()
     if (!IsAlive(player) || PlayerWin(player))
     {
         DrawRestarGameMenu();
+    }
+
+    if (!multiplayer)
+    {
+        if (!IsAlive(player2) || PlayerWin(player2))
+        {
+            DrawRestarGameMenu();
+        }
     }
 
     DrawMouse(mouse, mouse.mouseRec);
@@ -562,23 +606,22 @@ bool CheckCollisionRecRec(Vector2 r1, float r1w, float r1h, Vector2 r2, float r2
 
 void PlayerMovement()
 {
-    if (IsKeyDown(KEY_A) || IsKeyDown(KEY_LEFT))
+    if (IsKeyDown(KEY_A))
     {
         player.pos.x -= player.speed * GetFrameTime();
     }
 
-    if (IsKeyDown(KEY_D) || IsKeyDown(KEY_RIGHT))
+    if (IsKeyDown(KEY_D))
     {
         player.pos.x += player.speed * GetFrameTime();
     }
 
-    if (IsKeyDown(KEY_W) && player.isJumping == false ||
-        IsKeyDown(KEY_SPACE) && player.isJumping == false)
+    if (IsKeyDown(KEY_W) && player.isJumping == false)
     {
-        PlayerJump();
+        PlayerJump(player);
     }
 
-    if (IsKeyPressed(KEY_ENTER))
+    if (IsKeyPressed(KEY_SPACE))
     {
         for (int i = 0; i < maxBullets; i++)
         {
@@ -603,7 +646,49 @@ void PlayerMovement()
     PlayerLimit(player, screenWidth);
 }
 
-void PlayerJump()
+void Player2Movement()
+{
+    if (IsKeyDown(KEY_LEFT))
+    {
+        player2.pos.x -= player2.speed * GetFrameTime();
+    }
+
+    if (IsKeyDown(KEY_RIGHT))
+    {
+        player2.pos.x += player2.speed * GetFrameTime();
+    }
+
+    if (IsKeyDown(KEY_UP) && player2.isJumping == false)
+    {
+        PlayerJump(player2);
+    }
+
+    if (IsKeyPressed(KEY_ENTER))
+    {
+        for (int i = 0; i < maxBullets; i++)
+        {
+            if (player2Bullet[i].isActive == false)
+            {
+                if (!player2Bullet[i].isMoving)
+                {
+                    player2Bullet[i].isActive = true;
+                    player2Bullet[i].isMoving = true;
+
+                    break;
+                }
+            }
+        }
+    }
+    if (player2.isJumping == true && player2.pos.y < ground.pos.y)
+    {
+        player2.gravity = player2.gravity + player2.jumpForce * GetFrameTime();
+        player2.pos.y = player2.pos.y + player2.gravity * GetFrameTime();
+    }
+
+    PlayerLimit(player2, screenWidth);
+}
+
+void PlayerJump(Player& player)
 {
     player.gravity = -250;
     player.pos.y = player.pos.y + player.gravity * GetFrameTime();
@@ -618,6 +703,7 @@ void PlayerBulletMovement()
 {
     for (int i = 0; i < maxBullets; i++)
     {
+        //Player
         if (playerBullet[i].isMoving == false)
         {
             playerBullet[i].pos.y = player.pos.y;
@@ -626,6 +712,20 @@ void PlayerBulletMovement()
         if (playerBullet[i].isMoving)
         {
             playerBullet[i].pos.y -= playerBullet[i].speed * GetFrameTime();
+        }
+
+        if (!multiplayer)
+        {
+            //Player2
+            if (player2Bullet[i].isMoving == false)
+            {
+                player2Bullet[i].pos.y = player2.pos.y;
+                player2Bullet[i].pos.x = player2.pos.x;
+            }
+            if (player2Bullet[i].isMoving)
+            {
+                player2Bullet[i].pos.y -= player2Bullet[i].speed * GetFrameTime();
+            }
         }
     }
 }
@@ -636,6 +736,7 @@ void BulletCollision()
     {
         for (int j = 0; j < maxflyEnemy; j++)
         {
+            //Player
             if (CheckCollisionRecRec(playerBullet[i].pos, playerBullet[i].width, playerBullet[i].height, flyEnemy[j].pos, flyEnemy[j].width, flyEnemy[j].height))
             {
                 playerBullet[i].isMoving = false;
@@ -649,6 +750,24 @@ void BulletCollision()
                 player.points = player.points + 50;
                 FlyEnemyRespawn();
             }
+
+            if (!multiplayer)
+            {
+                //Player2
+                if (CheckCollisionRecRec(player2Bullet[i].pos, player2Bullet[i].width, player2Bullet[i].height, flyEnemy[j].pos, flyEnemy[j].width, flyEnemy[j].height))
+                {
+                    player2Bullet[i].isMoving = false;
+                    player2Bullet[i].isActive = false;
+
+                    flyEnemy[j].life--;
+                }
+                if (flyEnemy[j].life <= 0)
+                {
+                    flyEnemy[j].isActive = false;
+                    player.points = player.points + 50;
+                    FlyEnemyRespawn();
+                }
+            }
         }
     }
 }
@@ -657,6 +776,7 @@ void BulletCollisonLimit()
 {
     for (int i = 0; i < maxBullets; i++)
     {
+        //Player
         if (playerBullet[i].isMoving)
         {
             if (playerBullet[i].pos.y < 0)
@@ -668,6 +788,24 @@ void BulletCollisonLimit()
             {
                 playerBullet[i].isMoving = false;
                 playerBullet[i].isActive = false;
+            }
+        }
+
+        if (!multiplayer)
+        {
+            //Player2
+            if (player2Bullet[i].isMoving)
+            {
+                if (player2Bullet[i].pos.y < 0)
+                {
+                    player2Bullet[i].isMoving = false;
+                    player2Bullet[i].isActive = false;
+                }
+                if (player2Bullet[i].pos.y >= screenHeight)
+                {
+                    player2Bullet[i].isMoving = false;
+                    player2Bullet[i].isActive = false;
+                }
             }
         }
     }
@@ -740,6 +878,7 @@ void FlyEnemyRespawn()
 
 void PlayerCollision()
 {
+    //Player
     if (CheckCollisionRecRec(player.pos, player.width - 20, player.height - 5, obstacle.pos, obstacle.width, obstacle.height))
     {
         player.isCollision = true;
@@ -755,6 +894,27 @@ void PlayerCollision()
     {
         player.isJumping = false;
         player.gravity = 0;
+    }
+
+    if (!multiplayer)
+    {
+        //Player2
+        if (CheckCollisionRecRec(player2.pos, player2.width - 20, player2.height - 5, obstacle.pos, obstacle.width, obstacle.height))
+        {
+            player2.isCollision = true;
+            LoseLife(player2);
+        }
+
+        if (!CheckCollisionRecRec(player2.pos, player2.width - 20, player2.height - 5, obstacle.pos, obstacle.width, obstacle.height))
+        {
+            player2.isCollision = false;
+        }
+
+        if (CheckCollisionRecRec(player2.pos, player2.width, player2.height, ground.pos, ground.width, ground.height))
+        {
+            player2.isJumping = false;
+            player2.gravity = 0;
+        }
     }
 }
 
@@ -871,6 +1031,7 @@ void DrawRestarGameMenu()
 
     DrawTexture(restartMenu.texture, static_cast<int>(restartMenu.pos.x), static_cast<int>(restartMenu.pos.y), WHITE);
 
+    //Player
     if (!IsAlive(player))
     {
         DrawTextEx(gameFont, "YOU LOSE", { static_cast<float>(screenWidth / 4.2), static_cast<float>(screenHeight / 3.1) }, 70, 0, WHITE);
@@ -879,6 +1040,20 @@ void DrawRestarGameMenu()
     if (PlayerWin(player))
     {
         DrawTextEx(gameFont, "YOU WIN", { static_cast<float>(screenWidth / 3.5), static_cast<float>(screenHeight / 3.1) }, 70, 0, WHITE);
+    }
+
+    if (!multiplayer)
+    {
+        //Player2
+        if (!IsAlive(player2))
+        {
+            DrawTextEx(gameFont, "YOU LOSE", { static_cast<float>(screenWidth / 4.2), static_cast<float>(screenHeight / 3.1) }, 70, 0, WHITE);
+        }
+
+        if (PlayerWin(player2))
+        {
+            DrawTextEx(gameFont, "YOU WIN", { static_cast<float>(screenWidth / 3.5), static_cast<float>(screenHeight / 3.1) }, 70, 0, WHITE);
+        }
     }
 
     //Restart Button
@@ -949,6 +1124,22 @@ void RestartGame()
     player.win = false;
     player.color = GREEN;
 
+    if (!multiplayer)
+    {
+        //Player2
+        player2.pos.x = static_cast<float>(screenWidth / 4);
+        player2.pos.y = static_cast<float>(screenHeight / 1.165);
+        player2.width = 80;
+        player2.height = 40;
+        player2.speed = 420;
+        player2.lifes = 3;
+        player2.points = 0;
+        player2.isCollision = false;
+        player2.isAlive = true;
+        player2.win = false;
+        player2.color = PURPLE;
+    }
+
     //Bullet
         //PlayerBullets
 
@@ -958,6 +1149,11 @@ void RestartGame()
         playerBullet[i].isMoving = false;
         playerBullet[i].pos.y = player.pos.y;
         playerBullet[i].pos.x = player.pos.x;
+
+        player2Bullet[i].isActive = false;
+        player2Bullet[i].isMoving = false;
+        player2Bullet[i].pos.y = player.pos.y;
+        player2Bullet[i].pos.x = player.pos.x;
     }
 
     //Obstacle
