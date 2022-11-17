@@ -24,22 +24,22 @@
     <ClCompile Include="src\Objects\Floor.cpp" />
     <ClCompile Include="src\Objects\FlyEnemy.cpp" />
     <ClCompile Include="src\Objects\Mouse.cpp" />
+    <ClCompile Include="src\Objects\Obstacle.cpp" />
     <ClCompile Include="src\Objects\Player.cpp" />
     <ClCompile Include="src\Objects\PlayerBullet.cpp" />
     <ClCompile Include="src\Window\GameLoop.cpp" />
     <ClCompile Include="src\Window\Menu.cpp" />
-    <ClCompile Include="src\Window\Parallax.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Objects\Background.h" />
     <ClInclude Include="src\Objects\Floor.h" />
     <ClInclude Include="src\Objects\FlyEnemy.h" />
     <ClInclude Include="src\Objects\Mouse.h" />
+    <ClInclude Include="src\Objects\Obstacle.h" />
     <ClInclude Include="src\Objects\Player.h" />
     <ClInclude Include="src\Objects\PlayerBullet.h" />
     <ClInclude Include="src\Window\GameLoop.h" />
     <ClInclude Include="src\Window\Menu.h" />
-    <ClInclude Include="src\Window\Parallax.h" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="resources\Sprites\City.png" />

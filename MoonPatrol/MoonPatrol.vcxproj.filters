@@ -24,9 +24,6 @@
     <ClCompile Include="src\Window\GameLoop.cpp">
       <Filter>src\Windows</Filter>
     </ClCompile>
-    <ClCompile Include="src\Window\Parallax.cpp">
-      <Filter>src\Windows</Filter>
-    </ClCompile>
     <ClCompile Include="src\Objects\Player.cpp">
       <Filter>src\Objects</Filter>
     </ClCompile>
@@ -51,12 +48,12 @@
     <ClCompile Include="src\Objects\Floor.cpp">
       <Filter>src\Objects</Filter>
     </ClCompile>
+    <ClCompile Include="src\Objects\Obstacle.cpp">
+      <Filter>src\Objects</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Window\GameLoop.h">
-      <Filter>src\Windows</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Window\Parallax.h">
       <Filter>src\Windows</Filter>
     </ClInclude>
     <ClInclude Include="src\Objects\Player.h">
@@ -78,6 +75,9 @@
       <Filter>src\Objects</Filter>
     </ClInclude>
     <ClInclude Include="src\Objects\Floor.h">
+      <Filter>src\Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Objects\Obstacle.h">
       <Filter>src\Objects</Filter>
     </ClInclude>
   </ItemGroup>
