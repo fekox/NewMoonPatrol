@@ -27,9 +27,6 @@
     <ClCompile Include="src\Window\Parallax.cpp">
       <Filter>src\Windows</Filter>
     </ClCompile>
-    <ClCompile Include="src\Objects\Enemy.cpp">
-      <Filter>src\Objects</Filter>
-    </ClCompile>
     <ClCompile Include="src\Objects\Player.cpp">
       <Filter>src\Objects</Filter>
     </ClCompile>
@@ -48,6 +45,12 @@
     <ClCompile Include="src\Objects\Mouse.cpp">
       <Filter>src\Objects</Filter>
     </ClCompile>
+    <ClCompile Include="src\Objects\FlyEnemy.cpp">
+      <Filter>src\Objects</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Objects\Floor.cpp">
+      <Filter>src\Objects</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Window\GameLoop.h">
@@ -55,9 +58,6 @@
     </ClInclude>
     <ClInclude Include="src\Window\Parallax.h">
       <Filter>src\Windows</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Objects\Enemy.h">
-      <Filter>src\Objects</Filter>
     </ClInclude>
     <ClInclude Include="src\Objects\Player.h">
       <Filter>src\Objects</Filter>
@@ -72,6 +72,12 @@
       <Filter>src\Windows</Filter>
     </ClInclude>
     <ClInclude Include="src\Objects\Mouse.h">
+      <Filter>src\Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Objects\FlyEnemy.h">
+      <Filter>src\Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Objects\Floor.h">
       <Filter>src\Objects</Filter>
     </ClInclude>
   </ItemGroup>

@@ -21,7 +21,8 @@
   <ItemGroup>
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\Objects\Background.cpp" />
-    <ClCompile Include="src\Objects\Enemy.cpp" />
+    <ClCompile Include="src\Objects\Floor.cpp" />
+    <ClCompile Include="src\Objects\FlyEnemy.cpp" />
     <ClCompile Include="src\Objects\Mouse.cpp" />
     <ClCompile Include="src\Objects\Player.cpp" />
     <ClCompile Include="src\Objects\PlayerBullet.cpp" />
@@ -31,7 +32,8 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Objects\Background.h" />
-    <ClInclude Include="src\Objects\Enemy.h" />
+    <ClInclude Include="src\Objects\Floor.h" />
+    <ClInclude Include="src\Objects\FlyEnemy.h" />
     <ClInclude Include="src\Objects\Mouse.h" />
     <ClInclude Include="src\Objects\Player.h" />
     <ClInclude Include="src\Objects\PlayerBullet.h" />

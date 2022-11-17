@@ -1,18 +1,21 @@
 #pragma once
-#include "Player.h"
 #include "raylib.h"
 
-const int maxPlayerBullets = 20;
-
-struct PlayerBullet
+struct Bullet
 {
-	Vector2 position{};
-	Vector2 size{};
+	Vector2 pos;
+
+	float height;
+	float width;
+
 	float speed;
+
+	bool isMoving;
 	bool isActive;
-	Color bulletColor;
+
+	Color color;
 };
 
-PlayerBullet CreatePlayerBullet(PlayerBullet playerBullet, Player spaceShip);
+Bullet CreateBullet();
 
-void DrawPlayerBullet(PlayerBullet playerBullet);
+void DrawBullet(Bullet& bullet);

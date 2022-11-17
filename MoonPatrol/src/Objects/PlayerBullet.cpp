@@ -1,22 +1,26 @@
-#include "raylib.h"
-
-#include "Objects/Player.h"
 #include "Objects/PlayerBullet.h"
 
-PlayerBullet CreatePlayerBullet(PlayerBullet playerBullet, Player spaceShip)
+Bullet CreateBullet()
 {
-	playerBullet.position.x = spaceShip.position.x + 10;
-	playerBullet.position.y = spaceShip.position.y;
-	playerBullet.size.x = 20;
-	playerBullet.size.y = 20;
-	playerBullet.speed = 500;
-	playerBullet.isActive = true;
-	playerBullet.bulletColor = ORANGE;
+	Bullet bullet;
 
-	return playerBullet;
+	bullet.pos.x = 0;
+	bullet.pos.y = 0;
+
+	bullet.width = 10;
+	bullet.height = 10;
+
+	bullet.speed = 200;
+
+	bullet.isActive = false;
+	bullet.isMoving = false;
+
+	bullet.color = YELLOW;
+
+	return bullet;
 }
 
-void DrawPlayerBullet(PlayerBullet playerBullet)
+void DrawBullet(Bullet& bullet)
 {
-	DrawRectangle(static_cast<float>(playerBullet.position.x), static_cast<float>(playerBullet.position.y), static_cast<float>(playerBullet.size.x), static_cast<float>(playerBullet.size.y), playerBullet.bulletColor);
+	DrawRectangle(static_cast<int>(bullet.pos.x), static_cast<int>(bullet.pos.y), static_cast<int>(bullet.width), static_cast<int>(bullet.height), bullet.color);
 }
