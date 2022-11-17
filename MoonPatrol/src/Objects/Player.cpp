@@ -41,7 +41,6 @@ void PlayerLimit(Player& player, int screenWidth)
 	{
 		player.pos.x = screenWidth - player.width;
 	}
-
 	if (player.pos.x < screenWidth / screenWidth)
 	{
 		player.pos.x = static_cast<float>(screenWidth / screenWidth);
