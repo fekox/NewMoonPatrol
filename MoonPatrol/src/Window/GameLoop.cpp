@@ -13,35 +13,12 @@
 
 using namespace std;
 
-struct SubMenu
-{
-    Vector2 pos;
-
-    float width;
-    float height;
-
-    Texture texture;
-
-    bool isActive;
-};
-
-struct Button
-{
-    Vector2 pos;
-
-    float width;
-    float height;
-
-    int size;
-
-    Texture texture;
-
-    Color color;
-};
-
 void InitRestartMenu();
 void InitPauseMenu();
+void InitGameModeMenu();
+
 void SubMenusInputs(bool& gameOn);
+void GameModeMenuInputs();
 
 void MouseMovement();
 
@@ -72,8 +49,10 @@ void DrawPauseMenu();
 void PauseMenuCollisions();
 
 void DrawRestarGameMenu();
-void RestartGame();
 void RestarGameMenuCollisions();
+
+void DrawGameModeMenu();
+void GameModeMenuCollsions();
 
 void RestartGame();
 
@@ -86,7 +65,6 @@ int screenHeight = 768;
 //Menu
 int optionSelect = 0;
 bool playGame = false;
-bool multiplayer = true;
 
 //Player
 Player player = CreatePlayer(screenWidth, screenHeight);
@@ -133,6 +111,13 @@ Button pauseButtonOff;
 Button pauseButtonOn;
 Button resumeButton;
 
+//GameMode Menu
+bool multiplayer = false;
+bool runGame = false;
+SubMenu gameModeMenu;
+Button singlePlayerButton;
+Button multiPlayerButton;
+
 //Font
 Font gameFont;
 
@@ -151,11 +136,14 @@ void InitGame()
     //Menu
     InitMenu();
 
-    //RestartMenu
+    //Restart Menu
     InitRestartMenu();
 
-    //PauseMenu
+    //Pause Menu
     InitPauseMenu();
+
+    //GameMode Menu
+    InitGameModeMenu();
 
     //Font
     gameFont = LoadFont("resources/Font/baby blocks.ttf");
@@ -298,6 +286,26 @@ void InitPauseMenu()
     resumeButton.color = BLACK;
 }
 
+void InitGameModeMenu()
+{
+    //GameMode Menu
+    gameModeMenu.width = static_cast<float>(screenWidth);
+    gameModeMenu.height = static_cast<float>(screenHeight);
+    gameModeMenu.isActive = false;
+
+    //Single Button
+    singlePlayerButton.width = static_cast<float>(screenWidth / 4.5);
+    singlePlayerButton.height = static_cast<float>(screenHeight / 2.5);
+    singlePlayerButton.size = 45;
+    singlePlayerButton.color = GOLD;
+
+    //MultiPlayer Button
+    multiPlayerButton.width = static_cast<float>(screenWidth / 4.5);
+    multiPlayerButton.height = static_cast<float>(screenHeight / 1.5);
+    multiPlayerButton.size = 45;
+    multiPlayerButton.color = GOLD;
+}
+
 void SubMenusInputs(bool& gameOn)
 {
     if (restartMenu.isActive)
@@ -319,6 +327,8 @@ void SubMenusInputs(bool& gameOn)
             if (IsMouseButtonDown(MOUSE_BUTTON_LEFT))
             {
                 RestartGame();
+                runGame = false;
+
                 restartMenu.isActive = false;
                 playGame = false;
                 optionSelect = 0;
@@ -353,6 +363,8 @@ void SubMenusInputs(bool& gameOn)
             if (IsMouseButtonDown(MOUSE_BUTTON_LEFT))
             {
                 RestartGame();
+                runGame = false;
+
                 pause = false;
                 playGame = false;
                 pauseMenu.isActive = false;
@@ -410,9 +422,36 @@ void SubMenusInputs(bool& gameOn)
     }
 }
 
+void GameModeMenuInputs()
+{
+    if (gameModeMenu.isActive)
+    {
+        //Single Player Button
+        if (CheckCollisionPointRec(mouse.position, Rectangle{ static_cast<float>(screenWidth / 4.5), static_cast<float>(screenHeight / 1.55), static_cast<float>(screenWidth / 1.8), static_cast<float>(screenHeight / 10) }))
+        {
+            if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT))
+            {
+                multiplayer = false;
+                runGame = true;
+                gameModeMenu.isActive = false;
+            }
+        }
+
+        //Multi Player Button
+        if (CheckCollisionPointRec(mouse.position, Rectangle{ static_cast<float>(screenWidth / 4.5), static_cast<float>(screenHeight / 2.6), static_cast<float>(screenWidth / 1.8), static_cast<float>(screenHeight / 10) }))
+        {
+            if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT))
+            {
+                multiplayer = true;
+                runGame = true;
+                gameModeMenu.isActive = false;
+            }
+        }
+    }
+}
+
 void GameLoop()
 {
-    HideCursor();
     bool gameOn = true;
 
     if (gameOn == true)
@@ -421,9 +460,12 @@ void GameLoop()
         {
             MouseMovement();
             MenuCollisions(mouse, optionSelect);
-            MenuInputs(mouse, optionSelect, playGame);
+            MenuInputs(mouse, optionSelect, playGame, gameModeMenu);
 
-            if (playGame == true)
+            GameModeMenuCollsions();
+            GameModeMenuInputs();
+
+            if (playGame == true && runGame == true)
             {
                 SubMenusInputs(gameOn);
 
@@ -437,48 +479,60 @@ void GameLoop()
                 RestarGameMenuCollisions();
             }
 
-            if (screenWidth == 1024 && screenHeight == 768)
+            switch (optionSelect)
             {
-                switch (optionSelect)
+            case static_cast<int>(Menu::MainMenu):
+                BeginDrawing();
+                ClearBackground(BLACK);
+                ShowCursor();
+                DrawMenu(gameFont);
+                EndDrawing();
+                break;
+
+            case static_cast<int>(Menu::Play):
+
+                if (!runGame)
                 {
-                case static_cast<int>(Menu::MainMenu):
                     BeginDrawing();
                     ClearBackground(BLACK);
-                    ShowCursor();
-                    DrawMenu(gameFont);
+                    DrawGameModeMenu();
+                    DrawMouse(mouse, mouse.mouseRec);
                     EndDrawing();
-                    break;
-
-                case static_cast<int>(Menu::Play):
-                    Draw();
-                    break;
-
-                case static_cast<int>(Menu::Controlls):
-                    BeginDrawing();
-                    ClearBackground(BLACK);
-                    DrawControlls(gameFont);
-                    EndDrawing();
-                    break;
-
-                case static_cast<int>(Menu::Rules):
-                    BeginDrawing();
-                    ClearBackground(BLACK);
-                    DrawRules(gameFont);
-                    EndDrawing();
-                    break;
-
-                case static_cast<int>(Menu::Credits):
-                    BeginDrawing();
-                    ClearBackground(BLACK);
-                    DrawCredits(gameFont);
-                    EndDrawing();
-                    break;
-
-                case static_cast<int>(Menu::Quit):
-                    gameOn = false;
-                    break;
                 }
+
+                if (runGame)
+                {
+                    Draw();
+                }
+
+                break;
+
+            case static_cast<int>(Menu::Controlls):
+                BeginDrawing();
+                ClearBackground(BLACK);
+                DrawControlls(gameFont);
+                EndDrawing();
+                break;
+
+            case static_cast<int>(Menu::Rules):
+                BeginDrawing();
+                ClearBackground(BLACK);
+                DrawRules(gameFont);
+                EndDrawing();
+                break;
+
+            case static_cast<int>(Menu::Credits):
+                BeginDrawing();
+                ClearBackground(BLACK);
+                DrawCredits(gameFont);
+                EndDrawing();
+                break;
+
+            case static_cast<int>(Menu::Quit):
+                gameOn = false;
+                break;
             }
+            
         }
     }
 
@@ -1105,6 +1159,48 @@ void RestarGameMenuCollisions()
         else
         {
             quitGameButton.color = WHITE;
+        }
+    }
+}
+
+void DrawGameModeMenu()
+{
+    DrawTextEx(gameFont, "GAME MODE", { static_cast<float>(screenWidth / 5.5), static_cast<float>(screenHeight / 8) }, 70, 0, ORANGE);
+
+    //Single Player Button
+    DrawRectangle(static_cast<int>(screenWidth / 4.5), static_cast<int>(screenHeight / 2.6), static_cast<int>(screenWidth / 1.8), static_cast<int>(screenHeight / 10), BLANK);
+    DrawTextEx(gameFont, "SIGLE PLAYER", { static_cast<float>(singlePlayerButton.width), static_cast<float>(singlePlayerButton.height) }, static_cast<float>(singlePlayerButton.size), 0, singlePlayerButton.color);
+
+    //Multi Player Button
+    DrawRectangle(static_cast<int>(screenWidth / 4.5), static_cast<int>(screenHeight / 1.55), static_cast<int>(screenWidth / 1.8), static_cast<int>(screenHeight / 10), BLANK);
+    DrawTextEx(gameFont, "MULTI PLAYER", { static_cast<float>(multiPlayerButton.width), static_cast<float>(multiPlayerButton.height) }, static_cast<float>(multiPlayerButton.size), 0, multiPlayerButton.color);
+
+}
+
+void GameModeMenuCollsions()
+{
+    if (gameModeMenu.isActive)
+    {
+        //Return Menu Button
+        if (CheckCollisionPointRec(mouse.position, Rectangle{ static_cast<float>(screenWidth / 4.5), static_cast<float>(screenHeight / 2.6), static_cast<float>(screenWidth / 1.8), static_cast<float>(screenHeight / 10) }))
+        {
+            singlePlayerButton.color = BLUE;
+        }
+
+        else
+        {
+            singlePlayerButton.color = GOLD;
+        }
+
+        //Quit Game Button
+        if (CheckCollisionPointRec(mouse.position, Rectangle{ static_cast<float>(screenWidth / 4.5), static_cast<float>(screenHeight / 1.55), static_cast<float>(screenWidth / 1.8), static_cast<float>(screenHeight / 10) }))
+        {
+            multiPlayerButton.color = BLUE;
+        }
+
+        else
+        {
+            multiPlayerButton.color = GOLD;
         }
     }
 }

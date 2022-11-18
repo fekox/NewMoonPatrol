@@ -1,6 +1,7 @@
 #pragma once
 #include "raylib.h"
 #include "Objects/Mouse.h"
+#include "Window/GameLoop.h"
 
 struct MenuButton
 {
@@ -30,7 +31,7 @@ enum class Menu
 
 void InitMenu();
 void MenuCollisions(Mouse& mouse, int& optionSelect);
-void MenuInputs(Mouse& mouse, int& optionSelect, bool& playGame);
+void MenuInputs(Mouse& mouse, int& optionSelect, bool& playGame, SubMenu& gameModeMenu);
 void DrawMenu(Font gameFont);
 void DrawControlls(Font gameFont);
 void DrawRules(Font gameFont);

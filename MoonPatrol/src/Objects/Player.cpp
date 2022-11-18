@@ -70,7 +70,7 @@ bool IsAlive(Player& player)
 
 bool PlayerWin(Player& player)
 {
-	if (player.points < 1500000)
+	if (player.points < 150000)
 	{
 		return player.win == true;
 	}

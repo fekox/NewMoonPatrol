@@ -1,5 +1,7 @@
 #include "Window/Menu.h"
 
+#include "Window/GameLoop.h"
+
 
 MenuButton play;
 MenuButton controlls;
@@ -193,7 +195,7 @@ void MenuCollisions(Mouse& mouse, int& optionSelect)
 	}
 }
 
-void MenuInputs(Mouse& mouse, int& optionSelect, bool& playGame)
+void MenuInputs(Mouse& mouse, int& optionSelect, bool& playGame, SubMenu& gameModeMenu)
 {
 	if (!playGame)
 	{
@@ -204,6 +206,7 @@ void MenuInputs(Mouse& mouse, int& optionSelect, bool& playGame)
 			{
 				optionSelect = 1;
 				play.isActive = true;
+				gameModeMenu.isActive = true;
 				playGame = true;
 				HideCursor();
 			}
@@ -341,12 +344,12 @@ void DrawCredits(Font gameFont)
 	//itch.io Link Feko_Games
 	DrawText("Facundo Santos", static_cast<int>(GetScreenWidth() / 12), static_cast<int>(GetScreenHeight() / 3.8), 50, WHITE);
 	DrawRectangle(static_cast<float>(GetScreenWidth() / 8), static_cast<float>(GetScreenHeight() / 2.8), static_cast<float>(ichiolinkF.width), static_cast<float>(ichiolinkF.height), BLANK);
-	DrawTextEx(gameFont, "ITCH.IO", ichiolinkF.pos, ichiolinkF.size, 0, ichiolinkF.color);
+	DrawTextEx(gameFont, "ITCH.IO", ichiolinkF.pos, static_cast<float>(ichiolinkF.size), 0, ichiolinkF.color);
 	
 	//itch.io Link Nicorm
 	DrawText("Nicolas Ramos Marin", static_cast<int>(GetScreenWidth() / 1.8), static_cast<int>(GetScreenHeight() / 3.8), 40, WHITE);
 	DrawRectangle(static_cast<float>(GetScreenWidth() / 1.6), static_cast<float>(GetScreenHeight() / 2.8), static_cast<float>(ichiolinkN.width), static_cast<float>(ichiolinkN.height), BLANK);
-	DrawTextEx(gameFont, "ITCH.IO", ichiolinkN.pos, ichiolinkN.size, 0, ichiolinkN.color);
+	DrawTextEx(gameFont, "ITCH.IO", ichiolinkN.pos, static_cast<float>(ichiolinkN.size), 0, ichiolinkN.color);
 	
 	DrawTextEx(gameFont, "FONT", { static_cast<float>(GetScreenWidth() / 2.3) , static_cast<float>(GetScreenHeight() / 2) }, 30, 0, GOLD);
 
