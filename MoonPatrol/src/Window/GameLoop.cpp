@@ -13,46 +13,45 @@
 
 using namespace std;
 
+//Init
 void InitRestartMenu();
 void InitPauseMenu();
 void InitGameModeMenu();
 
+//Sub Menu Inputs
 void SubMenusInputs(bool& gameOn);
 void GameModeMenuInputs();
 
+//Movement
 void MouseMovement();
-
-void Update();
-
 void ObstacleMovement();
 void ObstacleTeleport();
-
-void Collisions();
-bool CheckCollisionRecRec(Vector2 r1, float r1w, float r1h, Vector2 r2, float r2w, float r2h);
-
-void PlayerCollision();
 void PlayerMovement();
 void Player2Movement();
 void PlayerJump(Player& player);
 void PlayerBulletMovement();
-
-void BulletCollision();
-void BulletCollisonLimit();
-
 void FlyEnemyMovement();
-void FlyEnemyCollisionLimit();
-void FlyEnemyRespawn();
-
 void BackgroundMovement();
 
-void DrawPauseMenu();
+void Update();
+
+//Collisions
+void Collisions();
+bool CheckCollisionRecRec(Vector2 r1, float r1w, float r1h, Vector2 r2, float r2w, float r2h);
+void PlayerCollision();
+void BulletCollision();
+void BulletCollisonLimit();
+void FlyEnemyCollisionLimit();
 void PauseMenuCollisions();
-
-void DrawRestarGameMenu();
 void RestarGameMenuCollisions();
-
-void DrawGameModeMenu();
 void GameModeMenuCollsions();
+
+void FlyEnemyRespawn();
+
+//Draw
+void DrawPauseMenu();
+void DrawRestarGameMenu();
+void DrawGameModeMenu();
 
 void RestartGame();
 
