@@ -129,7 +129,7 @@ void PlayGame()
 
 void InitGame()
 {
-    InitWindow(screenWidth, screenHeight, "Moon Patrol v0.3");
+    InitWindow(screenWidth, screenHeight, "Moon Patrol v0.4");
     SetExitKey(NULL);
 
     //Menu
