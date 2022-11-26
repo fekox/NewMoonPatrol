@@ -136,8 +136,9 @@
       <AdditionalDependencies>raylib.lib;winmm.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
-      <Command>
-      </Command>
+      <Command>IF exist "$(SolutionDir)bin\$(Platform)\$(Configuration)\resources" rd "$(SolutionDir)bin\$(Platform)\$(Configuration)\resources"
+MKDIR  "$(SolutionDir)bin\$(Platform)\$(Configuration)\resources"
+XCOPY "$(SolutionDir)MoonPatrol\resources" "$(SolutionDir)bin\$(Platform)\$(Configuration)\resources"/e /h /y</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -160,8 +161,9 @@
       <EntryPointSymbol>mainCRTStartup</EntryPointSymbol>
     </Link>
     <PostBuildEvent>
-      <Command>
-      </Command>
+      <Command>IF exist "$(SolutionDir)bin\$(Platform)\$(Configuration)\resources" rd "$(SolutionDir)bin\$(Platform)\$(Configuration)\resources"
+MKDIR  "$(SolutionDir)bin\$(Platform)\$(Configuration)\resources"
+XCOPY "$(SolutionDir)MoonPatrol\resources" "$(SolutionDir)bin\$(Platform)\$(Configuration)\resources"/e /h /y</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
