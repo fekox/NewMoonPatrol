@@ -21,6 +21,7 @@ struct Player
 	bool isCollision;
 	bool isAlive;
 	bool win;
+	bool isActive;
 
 	Color color;
 };

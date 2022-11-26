@@ -24,6 +24,7 @@ Player CreatePlayer(int screenWidth, int screenHeight)
 	player.isCollision = false;
 	player.isAlive = true;
 	player.win = false;
+	player.isActive = true;
 
 	player.color = GREEN;
 
