@@ -27,6 +27,7 @@ Player CreatePlayer(int screenWidth, int screenHeight)
 	player.isActive = true;
 
 	player.color = WHITE;
+	player.tex = LoadTexture("resources/Sprites/Player1.png");
 
 	return player;
 }

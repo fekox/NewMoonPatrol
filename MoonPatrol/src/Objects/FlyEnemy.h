@@ -16,6 +16,7 @@ struct FlyEnemy
 	bool isMoving;
 	bool isActive;
 
+	Texture tex;
 	Color color;
 };
 

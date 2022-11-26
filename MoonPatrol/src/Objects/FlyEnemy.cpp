@@ -18,12 +18,14 @@ FlyEnemy CreateFlyEnemy()
 	flyEnemy.isActive = true;
 	flyEnemy.isMoving = true;
 
-	flyEnemy.color = ORANGE;
+	flyEnemy.tex = LoadTexture("resources/Sprites/FlyEnemy.png");
+	flyEnemy.color = WHITE;
 
 	return flyEnemy;
 }
 
 void DrawFlyEnemy(FlyEnemy& flyEnemy)
 {
-	DrawRectangle(static_cast<int>(flyEnemy.pos.x), static_cast<int>(flyEnemy.pos.y), static_cast<int>(flyEnemy.width), static_cast<int>(flyEnemy.height), flyEnemy.color);
+	DrawRectangle(static_cast<int>(flyEnemy.pos.x), static_cast<int>(flyEnemy.pos.y), static_cast<int>(flyEnemy.width), static_cast<int>(flyEnemy.height), BLANK);
+	DrawTexture(flyEnemy.tex, static_cast<int>(flyEnemy.pos.x), static_cast<int>(flyEnemy.pos.y), flyEnemy.color);
 }

@@ -66,8 +66,8 @@ int optionSelect = 0;
 bool playGame = false;
 
 //Player
-Player player = CreatePlayer(screenWidth, screenHeight);
-Player player2 = CreatePlayer(screenWidth, screenHeight);
+Player player;
+Player player2;
 
 //Bullet
 int const maxBullets = 30;
@@ -75,27 +75,27 @@ Bullet playerBullet[maxBullets];
 Bullet player2Bullet[maxBullets];
 
 //Floor
-Ground ground = CreateGround(screenWidth, screenHeight);
+Ground ground;
 
 //Obstacle
-Obstacle obstacle = CreateObstacle(screenWidth, screenHeight);
+Obstacle obstacle;
 
 //FlyEnemy
 int const maxflyEnemy = 5;
 FlyEnemy flyEnemy[maxflyEnemy];
 
 //Background
-Background sky = CreateBackground(screenWidth, screenHeight);
-Background sky2 = CreateBackground(screenWidth, screenHeight);
+Background sky;
+Background sky2;
 
-Background city = CreateBackground(screenWidth, screenHeight);
-Background city2 = CreateBackground(screenWidth, screenHeight);
+Background city;
+Background city2;
 
-Background hill = CreateBackground(screenWidth, screenHeight);
-Background hill2 = CreateBackground(screenWidth, screenHeight);
+Background hill;
+Background hill2;
 
 //Mouse
-Mouse mouse = CreateMouse();
+Mouse mouse;
 
 //Restart Menu
 SubMenu restartMenu;
@@ -144,13 +144,17 @@ void InitGame()
     //GameMode Menu
     InitGameModeMenu();
 
+    //Mouse
+    mouse = CreateMouse();
+
     //Font
     gameFont = LoadFont("resources/Font/baby blocks.ttf");
 
     //Player1
-    player.tex = LoadTexture("resources/Sprites/Player1.png");
+    player = CreatePlayer(screenWidth, screenHeight);
 
     //Player2
+    player2 = CreatePlayer(screenWidth, screenHeight);
     player2.pos.x = static_cast<float>(screenWidth / 4);
     player2.pos.y = static_cast<float>(screenHeight / 1.165);
     player2.width = 80;
@@ -163,7 +167,6 @@ void InitGame()
     player2.win = false;
     player2.isActive = false;
     player2.tex = LoadTexture("resources/Sprites/Player2.png");
-    player2.color = PURPLE;
 
     //Bullets
     for (int i = 0; i < maxBullets; i++)
@@ -171,34 +174,39 @@ void InitGame()
         playerBullet[i] = CreateBullet();
         player2Bullet[i] = CreateBullet();
         player2Bullet[i].color = SKYBLUE;
-
     }
 
     //Background
         //Sky
+    sky = CreateBackground(screenWidth, screenHeight);
     sky.pos.x = static_cast<float>(screenWidth / screenWidth);
     sky.tex = LoadTexture("resources/Sprites/Sky.png");
 
+    sky2 = CreateBackground(screenWidth, screenHeight);
     sky2.pos.x = static_cast<float>(screenWidth / screenWidth + sky.width);
     sky2.tex = LoadTexture("resources/Sprites/Sky.png");
 
     //City
+    city = CreateBackground(screenWidth, screenHeight);
     city.pos.x = static_cast<float>(screenWidth / screenWidth);
     city.pos.y = static_cast<float>((screenHeight / screenHeight) - 60);
     city.tex = LoadTexture("resources/Sprites/City.png");
     city.speed = 200;
 
+    city2 = CreateBackground(screenWidth, screenHeight);
     city2.pos.x = static_cast<float>(screenWidth / screenWidth + city.width);
     city2.pos.y = static_cast<float>((screenHeight / screenHeight) - 60);
     city2.tex = LoadTexture("resources/Sprites/City.png");
     city2.speed = 200;
 
     //Hill
+    hill = CreateBackground(screenWidth, screenHeight);
     hill.pos.x = static_cast<float>(screenWidth / screenWidth);
     hill.pos.y = static_cast<float>((screenHeight / 1.28));
     hill.tex = LoadTexture("resources/Sprites/Hill.png");
     hill.speed = 400;
 
+    hill2 = CreateBackground(screenWidth, screenHeight);
     hill2.pos.x = static_cast<float>(screenWidth / screenWidth + hill.width);
     hill2.pos.y = static_cast<float>((screenHeight / 1.28));
     hill2.tex = LoadTexture("resources/Sprites/Hill.png");
@@ -225,7 +233,11 @@ void InitGame()
     }
 
     //Ground 
+    ground = CreateGround(screenWidth, screenHeight);
     ground.tex = LoadTexture("resources/Sprites/Ground.png");
+
+    //Obstacle
+    obstacle = CreateObstacle(screenWidth, screenHeight);
 }
 
 void InitRestartMenu()
