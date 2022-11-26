@@ -147,6 +147,9 @@ void InitGame()
     //Font
     gameFont = LoadFont("resources/Font/baby blocks.ttf");
 
+    //Player1
+    player.tex = LoadTexture("resources/Sprites/Player1.png");
+
     //Player2
     player2.pos.x = static_cast<float>(screenWidth / 4);
     player2.pos.y = static_cast<float>(screenHeight / 1.165);
@@ -159,6 +162,7 @@ void InitGame()
     player2.isAlive = true;
     player2.win = false;
     player2.isActive = false;
+    player2.tex = LoadTexture("resources/Sprites/Player2.png");
     player2.color = PURPLE;
 
     //Bullets
@@ -1240,7 +1244,6 @@ void RestartGame()
         player.isAlive = true;
         player.win = false;
         player.isActive = true;
-        player.color = GREEN;
     }
 
     if (multiplayer == true)
@@ -1259,7 +1262,6 @@ void RestartGame()
         player.isAlive = true;
         player.win = false;
         player.isActive = true;
-        player.color = GREEN;
 
         //Player2
         player2.pos.x = static_cast<float>(screenWidth / 4);
@@ -1273,7 +1275,6 @@ void RestartGame()
         player2.isAlive = true;
         player2.win = false;
         player2.isActive = true;
-        player2.color = PURPLE;
     }
 
     //Bullet
@@ -1366,6 +1367,9 @@ void RestartGame()
 void UnloadData()
 {
     UnloadFont(gameFont);
+
+    UnloadTexture(player.tex);
+    UnloadTexture(player2.tex);
 
     UnloadTexture(sky.tex);
     UnloadTexture(sky2.tex);

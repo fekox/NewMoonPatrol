@@ -7,8 +7,8 @@ FlyEnemy CreateFlyEnemy()
 	flyEnemy.pos.x = 0;
 	flyEnemy.pos.y = 0;
 
-	flyEnemy.width = 60;
-	flyEnemy.height = 60;
+	flyEnemy.width = 90;
+	flyEnemy.height = 40;
 
 	flyEnemy.speed = 40;
 

@@ -23,6 +23,7 @@ struct Player
 	bool win;
 	bool isActive;
 
+	Texture tex;
 	Color color;
 };
 

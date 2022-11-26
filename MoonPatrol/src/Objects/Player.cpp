@@ -26,14 +26,15 @@ Player CreatePlayer(int screenWidth, int screenHeight)
 	player.win = false;
 	player.isActive = true;
 
-	player.color = GREEN;
+	player.color = WHITE;
 
 	return player;
 }
 
 void DrawPlayer(Player& player)
 {
-	DrawRectangle(static_cast<int>(player.pos.x), static_cast<int>(player.pos.y), static_cast<int>(player.width), static_cast<int>(player.height), player.color);
+	DrawRectangle(static_cast<int>(player.pos.x), static_cast<int>(player.pos.y), static_cast<int>(player.width), static_cast<int>(player.height), BLANK);
+	DrawTexture(player.tex, static_cast<int>(player.pos.x), static_cast<int>(player.pos.y), player.color);
 }
 
 void PlayerLimit(Player& player, int screenWidth)
