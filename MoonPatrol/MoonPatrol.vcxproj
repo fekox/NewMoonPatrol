@@ -136,9 +136,7 @@
       <AdditionalDependencies>raylib.lib;winmm.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
-      <Command>IF exist "$(SolutionDir)bin\$(Platform)\$(Configuration)\resources" rd "$(SolutionDir)bin\$(Platform)\$(Configuration)\resources"
-MKDIR  "$(SolutionDir)bin\$(Platform)\$(Configuration)\resources"
-XCOPY "$(SolutionDir)MoonPatrol\resources" "$(SolutionDir)bin\$(Platform)\$(Configuration)\resources"/e /h /y</Command>
+      <Command>call "$(SolutionDir)MoonPatrol\bat\batch.bat" "$(SolutionDir)MoonPatrol\resources" "$(TargetDir)resources"</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -161,9 +159,7 @@ XCOPY "$(SolutionDir)MoonPatrol\resources" "$(SolutionDir)bin\$(Platform)\$(Conf
       <EntryPointSymbol>mainCRTStartup</EntryPointSymbol>
     </Link>
     <PostBuildEvent>
-      <Command>IF exist "$(SolutionDir)bin\$(Platform)\$(Configuration)\resources" rd "$(SolutionDir)bin\$(Platform)\$(Configuration)\resources"
-MKDIR  "$(SolutionDir)bin\$(Platform)\$(Configuration)\resources"
-XCOPY "$(SolutionDir)MoonPatrol\resources" "$(SolutionDir)bin\$(Platform)\$(Configuration)\resources"/e /h /y</Command>
+      <Command>call "$(SolutionDir)MoonPatrol\bat\batch.bat" "$(SolutionDir)MoonPatrol\resources" "$(TargetDir)resources"</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
