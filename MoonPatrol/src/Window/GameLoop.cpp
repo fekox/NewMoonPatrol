@@ -1073,7 +1073,7 @@ void DrawPauseMenu()
     DrawRectangle(static_cast<int>(restartMenu.pos.x), static_cast<int>(restartMenu.pos.y), static_cast<int>(restartMenu.width), static_cast<int>(restartMenu.height), BLANK);
     DrawTexture(restartMenu.texture, static_cast<int>(restartMenu.pos.x), static_cast<int>(restartMenu.pos.y), WHITE);
 
-    DrawTextEx(gameFont, "PAUSE", { static_cast<float>(screenWidth / 3), static_cast<float>(screenHeight / 3.1) }, 70, 0, WHITE);
+    DrawTextEx(gameFont, "PAUSE", { static_cast<float>(screenWidth / 3), static_cast<float>(screenHeight / 3.1) }, 70, 0, PURPLE);
 
     //Restart Button
     DrawRectangle(static_cast<int>(screenWidth / 2.5), static_cast<int>(screenHeight / 2.2), static_cast<int>(screenWidth / 3.8), static_cast<int>(screenHeight / 10), BLANK);
@@ -1095,7 +1095,7 @@ void PauseMenuCollisions()
         //Restart Button
         if (CheckCollisionPointRec(mouse.position, Rectangle{ static_cast<float>(screenWidth / 2.5), static_cast<float>(screenHeight / 2.2), static_cast<float>(screenWidth / 3.8), static_cast<float>(screenHeight / 10) }))
         {
-            resumeButton.color = BLUE;
+            resumeButton.color = GOLD;
         }
 
         else
@@ -1106,7 +1106,7 @@ void PauseMenuCollisions()
         //Return Menu Button
         if (CheckCollisionPointRec(mouse.position, Rectangle{ static_cast<float>(screenWidth / 2.5), static_cast<float>(screenHeight / 1.7), static_cast<float>(screenWidth / 4), static_cast<float>(screenHeight / 12) }))
         {
-            returnMenuButton.color = BLUE;
+            returnMenuButton.color = GOLD;
         }
 
         else
@@ -1117,7 +1117,7 @@ void PauseMenuCollisions()
         //Quit Game Button
         if (CheckCollisionPointRec(mouse.position, Rectangle{ static_cast<float>(screenWidth / 2.5), static_cast<float>(screenHeight / 1.4), static_cast<float>(screenWidth / 4), static_cast<float>(screenHeight / 12) }))
         {
-            quitGameButton.color = BLUE;
+            quitGameButton.color = GOLD;
         }
 
         else
@@ -1136,12 +1136,12 @@ void DrawRestarGameMenu()
     
     if (!IsAlive(player) || !IsAlive(player2))
     {
-        DrawTextEx(gameFont, "YOU LOSE", { static_cast<float>(screenWidth / 4.2), static_cast<float>(screenHeight / 3.1) }, 70, 0, WHITE);
+        DrawTextEx(gameFont, "YOU LOSE", { static_cast<float>(screenWidth / 4.2), static_cast<float>(screenHeight / 3.1) }, 70, 0, PURPLE);
     }
 
     if (PlayerWin(player) || PlayerWin(player2))
     {
-        DrawTextEx(gameFont, "YOU WIN", { static_cast<float>(screenWidth / 3.5), static_cast<float>(screenHeight / 3.1) }, 70, 0, WHITE);
+        DrawTextEx(gameFont, "YOU WIN", { static_cast<float>(screenWidth / 3.5), static_cast<float>(screenHeight / 3.1) }, 70, 0, PURPLE);
     }
     
 
@@ -1166,7 +1166,7 @@ void RestarGameMenuCollisions()
         //Restart Button
         if (CheckCollisionPointRec(mouse.position, Rectangle{ static_cast<float>(screenWidth / 2.7), static_cast<float>(screenHeight / 2.2), static_cast<float>(screenWidth / 3.2), static_cast<float>(screenHeight / 10) }))
         {
-            restartButton.color = BLUE;
+            restartButton.color = GOLD;
         }
 
         else
@@ -1177,7 +1177,7 @@ void RestarGameMenuCollisions()
         //Return Menu Button
         if (CheckCollisionPointRec(mouse.position, Rectangle{ static_cast<float>(screenWidth / 2.5), static_cast<float>(screenHeight / 1.7), static_cast<float>(screenWidth / 4), static_cast<float>(screenHeight / 12) }))
         {
-            returnMenuButton.color = BLUE;
+            returnMenuButton.color = GOLD;
         }
 
         else
@@ -1188,7 +1188,7 @@ void RestarGameMenuCollisions()
         //Quit Game Button
         if (CheckCollisionPointRec(mouse.position, Rectangle{ static_cast<float>(screenWidth / 2.5), static_cast<float>(screenHeight / 1.4), static_cast<float>(screenWidth / 4), static_cast<float>(screenHeight / 12) }))
         {
-            quitGameButton.color = BLUE;
+            quitGameButton.color = GOLD;
         }
 
         else
@@ -1200,7 +1200,7 @@ void RestarGameMenuCollisions()
 
 void DrawGameModeMenu()
 {
-    DrawTextEx(gameFont, "GAME MODE", { static_cast<float>(screenWidth / 5.5), static_cast<float>(screenHeight / 8) }, 70, 0, ORANGE);
+    DrawTextEx(gameFont, "GAME MODE", { static_cast<float>(screenWidth / 5.5), static_cast<float>(screenHeight / 8) }, 70, 0, PURPLE);
 
     //Single Player Button
     DrawRectangle(static_cast<int>(screenWidth / 4.5), static_cast<int>(screenHeight / 2.6), static_cast<int>(screenWidth / 1.8), static_cast<int>(screenHeight / 10), BLANK);
@@ -1218,23 +1218,23 @@ void GameModeMenuCollsions()
         //Return Menu Button
         if (CheckCollisionPointRec(mouse.position, Rectangle{ static_cast<float>(screenWidth / 4.5), static_cast<float>(screenHeight / 2.6), static_cast<float>(screenWidth / 1.8), static_cast<float>(screenHeight / 10) }))
         {
-            singlePlayerButton.color = BLUE;
+            singlePlayerButton.color = GOLD;
         }
 
         else
         {
-            singlePlayerButton.color = GOLD;
+            singlePlayerButton.color = WHITE;
         }
 
         //Quit Game Button
         if (CheckCollisionPointRec(mouse.position, Rectangle{ static_cast<float>(screenWidth / 4.5), static_cast<float>(screenHeight / 1.55), static_cast<float>(screenWidth / 1.8), static_cast<float>(screenHeight / 10) }))
         {
-            multiPlayerButton.color = BLUE;
+            multiPlayerButton.color = GOLD;
         }
 
         else
         {
-            multiPlayerButton.color = GOLD;
+            multiPlayerButton.color = WHITE;
         }
     }
 }

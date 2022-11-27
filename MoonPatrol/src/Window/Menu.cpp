@@ -24,7 +24,7 @@ void InitMenu()
 	play.size = 40;
 	play.isActive = false;
 
-	play.color = ORANGE;
+	play.color = WHITE;
 
 	//Controlls Button
 
@@ -35,7 +35,7 @@ void InitMenu()
 	controlls.size = 40;
 	controlls.isActive = false;
 
-	controlls.color = ORANGE;
+	controlls.color = WHITE;
 
 	//Rules Button
 
@@ -46,7 +46,7 @@ void InitMenu()
 	rules.size = 40;
 	rules.isActive = false;
 
-	rules.color = ORANGE;
+	rules.color = WHITE;
 
 	//Credits Button
 
@@ -57,7 +57,7 @@ void InitMenu()
 	credits.size = 40;
 	credits.isActive = false;
 
-	credits.color = ORANGE;
+	credits.color = WHITE;
 
 	//Quit Button
 
@@ -68,7 +68,7 @@ void InitMenu()
 	quit.size = 40;
 	quit.isActive = false;
 
-	quit.color = ORANGE;
+	quit.color = WHITE;
 
 	//ReturnMenu Button
 
@@ -79,7 +79,7 @@ void InitMenu()
 	returnMenu.size = 40;
 	returnMenu.isActive = false;
 
-	returnMenu.color = ORANGE;
+	returnMenu.color = WHITE;
 
 	//itch.io Link Feko_Games
 
@@ -90,7 +90,7 @@ void InitMenu()
 	ichiolinkF.size = 40;
 	ichiolinkF.isActive = false;
 
-	ichiolinkF.color = ORANGE;
+	ichiolinkF.color = WHITE;
 
 	//itch.io Link Nicorm
 
@@ -101,7 +101,7 @@ void InitMenu()
 	ichiolinkN.size = 40;
 	ichiolinkN.isActive = false;
 
-	ichiolinkN.color = ORANGE;
+	ichiolinkN.color = WHITE;
 }
 
 void MenuCollisions(Mouse& mouse, int& optionSelect)
@@ -109,89 +109,89 @@ void MenuCollisions(Mouse& mouse, int& optionSelect)
 	//Play Button
 	if (CheckCollisionPointRec(mouse.position, Rectangle{ static_cast<float>(GetScreenWidth() / 20), static_cast<float>(GetScreenHeight() / 3.5), static_cast<float>(play.width), static_cast<float>(play.height) }) && optionSelect != 1 && optionSelect != 2 && optionSelect != 3 && optionSelect != 4 && optionSelect != 5)
 	{
-		play.color = BLUE;
+		play.color = GOLD;
 	}
 
 	else
 	{
-		play.color = ORANGE;
+		play.color = WHITE;
 	}
 
 	//Controlls Button
 	if (CheckCollisionPointRec(mouse.position, Rectangle{ static_cast<float>(GetScreenWidth() / 20), static_cast<float>(GetScreenHeight() / 2.5), static_cast<float>(controlls.width), static_cast<float>(controlls.height) }) && optionSelect != 1 && optionSelect != 2 && optionSelect != 3 && optionSelect != 4 && optionSelect != 5)
 	{
-		controlls.color = BLUE;
+		controlls.color = GOLD;
 	}
 
 	else
 	{
-		controlls.color = ORANGE;
+		controlls.color = WHITE;
 	}
 
 	//Rules Button
 	if (CheckCollisionPointRec(mouse.position, Rectangle{ static_cast<float>(GetScreenWidth() / 20), static_cast<float>(GetScreenHeight() / 1.94), static_cast<float>(rules.width), static_cast<float>(rules.height) }) && optionSelect != 1 && optionSelect != 2 && optionSelect != 3 && optionSelect != 4 && optionSelect != 5)
 	{
-		rules.color = BLUE;
+		rules.color = GOLD;
 	}
 
 	else
 	{
-		rules.color = ORANGE;
+		rules.color = WHITE;
 	}
 
 	//Credits Button
 	if (CheckCollisionPointRec(mouse.position, Rectangle{ static_cast<float>(GetScreenWidth() / 1.5), static_cast<float>(GetScreenHeight() / 1.13), static_cast<float>(credits.width), static_cast<float>(credits.height) }) && optionSelect != 1 && optionSelect != 2 && optionSelect != 3 && optionSelect != 4 && optionSelect != 5)
 	{
-		credits.color = BLUE;
+		credits.color = GOLD;
 	}
 
 	else
 	{
-		credits.color = ORANGE;
+		credits.color = WHITE;
 	}
 
 	//itch.io Link Feko_Games
 	if (CheckCollisionPointRec(mouse.position, Rectangle{ static_cast<float>(GetScreenWidth() / 8), static_cast<float>(GetScreenHeight() / 2.8), static_cast<float>(ichiolinkF.width), static_cast<float>(ichiolinkF.height) }) && optionSelect == 4)
 	{
-		ichiolinkF.color = BLUE;
+		ichiolinkF.color = GOLD;
 	}
 
 	else
 	{
-		ichiolinkF.color = ORANGE;
+		ichiolinkF.color = WHITE;
 	}
 
 	//itch.io Link Nicorm
 	if (CheckCollisionPointRec(mouse.position, Rectangle{ static_cast<float>(GetScreenWidth() / 1.6), static_cast<float>(GetScreenHeight() / 2.8), static_cast<float>(ichiolinkN.width), static_cast<float>(ichiolinkN.height) }) && optionSelect == 4)
 	{
-		ichiolinkN.color = BLUE;
+		ichiolinkN.color = GOLD;
 	}
 
 	else
 	{
-		ichiolinkN.color = ORANGE;
+		ichiolinkN.color = WHITE;
 	}
 
 	//Quit Button
 	if (CheckCollisionPointRec(mouse.position, Rectangle{ static_cast<float>(GetScreenWidth() / 20), static_cast<float>(GetScreenHeight() / 1.59), static_cast<float>(quit.width), static_cast<float>(quit.height) }) && optionSelect != 1 && optionSelect != 2 && optionSelect != 3 && optionSelect != 4 && optionSelect != 5)
 	{
-		quit.color = BLUE;
+		quit.color = GOLD;
 	}
 
 	else
 	{
-		quit.color = ORANGE;
+		quit.color = WHITE;
 	}
 
 	//ReturnMenu Button
 	if (CheckCollisionPointRec(mouse.position, Rectangle{ static_cast<float>(GetScreenWidth() / 2.5), static_cast<float>(GetScreenHeight() / 1.1), static_cast<float>(quit.width), static_cast<float>(quit.height) }) && optionSelect != 1)
 	{
-		returnMenu.color = BLUE;
+		returnMenu.color = GOLD;
 	}
 
 	else
 	{
-		returnMenu.color = ORANGE;
+		returnMenu.color = WHITE;
 	}
 }
 
@@ -281,7 +281,7 @@ void MenuInputs(Mouse& mouse, int& optionSelect, bool& playGame, SubMenu& gameMo
 void DrawMenu(Font gameFont)
 {
 	ClearBackground(BLACK);
-	DrawTextEx(gameFont, "  Moon\nPatrol", { static_cast<float>(GetScreenWidth() / 20) , static_cast<float>(GetScreenHeight() / 20) }, 60, 0, GOLD);
+	DrawTextEx(gameFont, "  Pingu\nAttack", { static_cast<float>(GetScreenWidth() / 20) , static_cast<float>(GetScreenHeight() / 20) }, 60, 0, PURPLE);
 
 	//Play Button
 
@@ -313,7 +313,7 @@ void DrawControlls(Font gameFont)
 {
 	ClearBackground(BLACK);
 
-	DrawTextEx(gameFont, "Controlls", { static_cast<float>(GetScreenWidth() / 2.8) , static_cast<float>(GetScreenHeight() / 15) }, 60, 0, ORANGE);
+	DrawTextEx(gameFont, "Controlls", { static_cast<float>(GetScreenWidth() / 2.8) , static_cast<float>(GetScreenHeight() / 15) }, 60, 0, PURPLE);
 
 	//ReturnMenu Button
 
@@ -325,10 +325,10 @@ void DrawRules(Font gameFont)
 {
 	ClearBackground(BLACK);
 
-	DrawTextEx(gameFont, "RULES", { static_cast<float>(GetScreenWidth() / 2.7) , static_cast<float>(GetScreenHeight() / 15) }, 60, 0, ORANGE);
+	DrawTextEx(gameFont, "RULES", { static_cast<float>(GetScreenWidth() / 2.7) , static_cast<float>(GetScreenHeight() / 15) }, 60, 0, PURPLE);
 
-	DrawTextEx(gameFont, "Play as a pilot who must escape from a city besieged by aliens.\nYou have 3 lives, if you hit an obstacle or an enemy\nprojectile you lose.",
-		{ static_cast<float>(GetScreenWidth() / 8) , static_cast<float>(GetScreenHeight() / 5) }, 30, 0, ORANGE);
+	DrawTextEx(gameFont, "Play as a pilot who must escape from a city besieged by aliens.\nYou have 1 live, if you hit an obstacle you lose.\n\nTo win you must make 150000 points.\n\nGood luck pilot.",
+		{ static_cast<float>(GetScreenWidth() / 8) , static_cast<float>(GetScreenHeight() / 5) }, 30, 0, WHITE);
 
 	//ReturnMenu Button
 	DrawRectangle(static_cast<int>(GetScreenWidth() / 2.5), static_cast<int>(GetScreenHeight() / 1.1), static_cast<int>(returnMenu.width), static_cast<int>(returnMenu.height), BLANK);
@@ -339,7 +339,7 @@ void DrawCredits(Font gameFont)
 {
 	ClearBackground(BLACK);
 
-	DrawTextEx(gameFont, "CREDITS", { static_cast<float>(GetScreenWidth() / 3.8) , static_cast<float>(GetScreenHeight() / 15) }, 60, 0, ORANGE);
+	DrawTextEx(gameFont, "CREDITS", { static_cast<float>(GetScreenWidth() / 3.8) , static_cast<float>(GetScreenHeight() / 15) }, 60, 0, PURPLE);
 
 	//itch.io Link Feko_Games
 	DrawText("Facundo Santos", static_cast<int>(GetScreenWidth() / 12), static_cast<int>(GetScreenHeight() / 3.8), 50, WHITE);
@@ -351,7 +351,7 @@ void DrawCredits(Font gameFont)
 	DrawRectangle(static_cast<float>(GetScreenWidth() / 1.6), static_cast<float>(GetScreenHeight() / 2.8), static_cast<float>(ichiolinkN.width), static_cast<float>(ichiolinkN.height), BLANK);
 	DrawTextEx(gameFont, "ITCH.IO", ichiolinkN.pos, static_cast<float>(ichiolinkN.size), 0, ichiolinkN.color);
 	
-	DrawTextEx(gameFont, "FONT", { static_cast<float>(GetScreenWidth() / 2.3) , static_cast<float>(GetScreenHeight() / 2) }, 30, 0, GOLD);
+	DrawTextEx(gameFont, "FONT", { static_cast<float>(GetScreenWidth() / 2.3) , static_cast<float>(GetScreenHeight() / 2) }, 30, 0, PURPLE);
 
 	//ReturnMenu Button
 	DrawRectangle(static_cast<int>(GetScreenWidth() / 2.5), static_cast<int>(GetScreenHeight() / 1.1), static_cast<int>(returnMenu.width), static_cast<int>(returnMenu.height), BLANK);
