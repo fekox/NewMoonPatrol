@@ -386,8 +386,13 @@ void DrawCredits(Font gameFont, Texture subMenusBackground)
 	DrawTextEx(gameFont, "ITCH.IO", ichiolinkN.pos, static_cast<float>(ichiolinkN.size), 0, ichiolinkN.color);
 	
 	DrawTextEx(gameFont, "FONT", { static_cast<float>(GetScreenWidth() / 2.3) , static_cast<float>(GetScreenHeight() / 2) }, 30, 0, GOLD);
+	DrawText("https://www.dafont.com/es/babyblocks.font", static_cast<float>(GetScreenWidth() / 7) , static_cast<float>(GetScreenHeight() / 1.8), 30, WHITE);
+
+	DrawTextEx(gameFont, "SPRITES", { static_cast<float>(GetScreenWidth() / 2.6) , static_cast<float>(GetScreenHeight() / 1.6) }, 30, 0, GOLD);
+	DrawText("https://www.wallpaperflare.com/artistic-pixel-art-red-no-people-night-beauty-in-nature-wallpaper-zgmd", static_cast<float>(GetScreenWidth() / 20), static_cast<float>(GetScreenHeight() / 1.5), 18, WHITE);
+	DrawText("https://www.youtube.com/watch?v=ffPSgY7oRh8", static_cast<float>(GetScreenWidth() / 5), static_cast<float>(GetScreenHeight() / 1.4), 20, WHITE);
 
 	//ReturnMenu Button
-	DrawRectangle(static_cast<int>(GetScreenWidth() / 2.5), static_cast<int>(GetScreenHeight() / 1.1), static_cast<int>(returnMenu.width), static_cast<int>(returnMenu.height), BLANK);
+	DrawRectangle(static_cast<int>(GetScreenWidth() / 2), static_cast<int>(GetScreenHeight() / 1.1), static_cast<int>(returnMenu.width), static_cast<int>(returnMenu.height), BLANK);
 	DrawTextEx(gameFont, "MENU", returnMenu.pos, static_cast<float>(returnMenu.size), 0, returnMenu.color);
 }
