@@ -322,8 +322,29 @@ void DrawControlls(Font gameFont, Texture subMenusBackground)
 
 	DrawTextEx(gameFont, "Controlls", { static_cast<float>(GetScreenWidth() / 2.8) , static_cast<float>(GetScreenHeight() / 15) }, 60, 0, GOLD);
 
-	//ReturnMenu Button
+	DrawTextEx(gameFont, "PLAYER ONE\t\t\tPLAYER TWO", { static_cast<float>(GetScreenWidth() / 12) , static_cast<float>(GetScreenHeight() / 5) }, 40, 0, GOLD);
 
+	//Player One
+	DrawTextEx(gameFont, "move\tA D", { static_cast<float>(GetScreenWidth() / 8) , static_cast<float>(GetScreenHeight() / 3) }, 40, 0, WHITE);
+	DrawTextEx(gameFont, "jump\t  W", { static_cast<float>(GetScreenWidth() / 8) , static_cast<float>(GetScreenHeight() / 2.4) }, 40, 0, WHITE);
+	DrawTextEx(gameFont, "shoot\tSPACE",{ static_cast<float>(GetScreenWidth() / 8) , static_cast<float>(GetScreenHeight() / 2) }, 40, 0, WHITE);
+
+	//Player Two
+	DrawTextEx(gameFont, "move", { static_cast<float>(GetScreenWidth() / 1.8) , static_cast<float>(GetScreenHeight() / 3) }, 40, 0, WHITE); 
+	DrawTextEx(gameFont, "LEFT\nARROW", { static_cast<float>(GetScreenWidth() / 1.55) , static_cast<float>(GetScreenHeight() / 3) }, 30, 0, WHITE);
+	DrawTextEx(gameFont, "RIGHT\nARROW", { static_cast<float>(GetScreenWidth() / 1.2) , static_cast<float>(GetScreenHeight() / 3) }, 30, 0, WHITE);
+	DrawTextEx(gameFont, "jump\t", { static_cast<float>(GetScreenWidth() / 1.8) , static_cast<float>(GetScreenHeight() / 2.1) }, 40, 0, WHITE);
+	DrawTextEx(gameFont, "UP\nARROW", { static_cast<float>(GetScreenWidth() / 1.55) , static_cast<float>(GetScreenHeight() / 2.1) }, 30, 0, WHITE);
+	DrawTextEx(gameFont, "shoot\tENTER", { static_cast<float>(GetScreenWidth() / 1.8) , static_cast<float>(GetScreenHeight() / 1.63) }, 40, 0, WHITE);
+
+	//Pause
+	DrawTextEx(gameFont, "PAUSE", { static_cast<float>(GetScreenWidth() / 12) , static_cast<float>(GetScreenHeight() / 1.5) }, 40, 0, GOLD);
+	DrawTextEx(gameFont, "esc\tp ", { static_cast<float>(GetScreenWidth() / 7) , static_cast<float>(GetScreenHeight() / 1.3) }, 40, 0, WHITE);
+	DrawTextEx(gameFont, "pause ", { static_cast<float>(GetScreenWidth() / 7) , static_cast<float>(GetScreenHeight() / 1.2) }, 40, 0, WHITE);
+	DrawTextEx(gameFont, "button", { static_cast<float>(GetScreenWidth() / 7) , static_cast<float>(GetScreenHeight() / 1.15) }, 40, 0, WHITE);
+
+
+	//ReturnMenu Button
 	DrawRectangle(static_cast<int>(GetScreenWidth() / 2.5), static_cast<int>(GetScreenHeight() / 1.1), static_cast<int>(returnMenu.width), static_cast<int>(returnMenu.height), BLANK);
 	DrawTextEx(gameFont, "MENU", returnMenu.pos, static_cast<float>(returnMenu.size), 0, returnMenu.color);
 }
@@ -338,7 +359,7 @@ void DrawRules(Font gameFont, Texture subMenusBackground)
 	DrawTextEx(gameFont, "RULES", { static_cast<float>(GetScreenWidth() / 2.7) , static_cast<float>(GetScreenHeight() / 15) }, 60, 0, GOLD);
 
 	DrawTextEx(gameFont, "Play as a pilot who must escape from a city besieged by aliens.\nYou have 1 live, if you hit an obstacle you lose.\n\nTo win you must make 150000 points.\n\nGood luck pilot.",
-		{ static_cast<float>(GetScreenWidth() / 8) , static_cast<float>(GetScreenHeight() / 5) }, 30, 0, WHITE);
+		{ static_cast<float>(GetScreenWidth() / 8) , static_cast<float>(GetScreenHeight() / 4) }, 30, 0, WHITE);
 
 	//ReturnMenu Button
 	DrawRectangle(static_cast<int>(GetScreenWidth() / 2.5), static_cast<int>(GetScreenHeight() / 1.1), static_cast<int>(returnMenu.width), static_cast<int>(returnMenu.height), BLANK);

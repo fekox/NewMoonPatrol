@@ -1411,4 +1411,7 @@ void UnloadData()
     UnloadTexture(pauseMenu.texture);
     UnloadTexture(pauseButtonOff.texture);
     UnloadTexture(pauseButtonOn.texture);
+
+    UnloadTexture(menuBackground);
+    UnloadTexture(subMenusBackground);
 }
