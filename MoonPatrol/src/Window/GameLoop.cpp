@@ -140,7 +140,7 @@ void PlayGame()
 
 void InitGame()
 {
-    InitWindow(screenWidth, screenHeight, "Moon Patrol v0.4");
+    InitWindow(screenWidth, screenHeight, "Pingu Attack v0.4");
     SetWindowState(FLAG_VSYNC_HINT);
     SetExitKey(NULL);
 
@@ -393,7 +393,7 @@ void SubMenusInputs(bool& gameOn)
         }
     }
 
-    if (pauseMenu.isActive)
+    if (!restartMenu.isActive && pauseMenu.isActive)
     {
         PauseMusicStream(music);
 
@@ -455,24 +455,27 @@ void SubMenusInputs(bool& gameOn)
         }
     }
 
-    else
+    else 
     {
-        if (IsKeyPressed(KEY_ESCAPE) || IsKeyPressed(KEY_P))
+        if (!restartMenu.isActive)
         {
-            pauseMenu.isActive = false;
-            pause = false;
-            HideCursor();
-            ResumeMusicStream(music);
-        }
-
-        if (CheckCollisionPointRec(mouse.position, Rectangle{ pauseButtonOn.pos.x, pauseButtonOn.pos.y, pauseButtonOn.width, pauseButtonOn.height }))
-        {
-            if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT))
+            if (IsKeyPressed(KEY_ESCAPE) || IsKeyPressed(KEY_P))
             {
                 pauseMenu.isActive = false;
                 pause = false;
                 HideCursor();
                 ResumeMusicStream(music);
+            }
+
+            if (CheckCollisionPointRec(mouse.position, Rectangle{ pauseButtonOn.pos.x, pauseButtonOn.pos.y, pauseButtonOn.width, pauseButtonOn.height }))
+            {
+                if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT))
+                {
+                    pauseMenu.isActive = false;
+                    pause = false;
+                    HideCursor();
+                    ResumeMusicStream(music);
+                }
             }
         }
     }
