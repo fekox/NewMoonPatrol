@@ -343,7 +343,6 @@ void DrawControlls(Font gameFont, Texture subMenusBackground)
 	DrawTextEx(gameFont, "pause ", { static_cast<float>(GetScreenWidth() / 7) , static_cast<float>(GetScreenHeight() / 1.2) }, 40, 0, WHITE);
 	DrawTextEx(gameFont, "button", { static_cast<float>(GetScreenWidth() / 7) , static_cast<float>(GetScreenHeight() / 1.15) }, 40, 0, WHITE);
 
-
 	//ReturnMenu Button
 	DrawRectangle(static_cast<int>(GetScreenWidth() / 2.5), static_cast<int>(GetScreenHeight() / 1.1), static_cast<int>(returnMenu.width), static_cast<int>(returnMenu.height), BLANK);
 	DrawTextEx(gameFont, "MENU", returnMenu.pos, static_cast<float>(returnMenu.size), 0, returnMenu.color);
@@ -377,26 +376,26 @@ void DrawCredits(Font gameFont, Texture subMenusBackground)
 
 	//itch.io Link Feko_Games
 	DrawText("Facundo Santos", static_cast<int>(GetScreenWidth() / 12), static_cast<int>(GetScreenHeight() / 5.5), 50, WHITE);
-	DrawRectangle(static_cast<float>(GetScreenWidth() / 8), static_cast<float>(GetScreenHeight() / 3.8), static_cast<float>(ichiolinkF.width), static_cast<float>(ichiolinkF.height), BLANK);
+	DrawRectangle(static_cast<int>(GetScreenWidth() / 8), static_cast<int>(GetScreenHeight() / 3.8), static_cast<int>(ichiolinkF.width), static_cast<int>(ichiolinkF.height), BLANK);
 	DrawTextEx(gameFont, "ITCH.IO", ichiolinkF.pos, static_cast<float>(ichiolinkF.size), 0, ichiolinkF.color);
 	
 	//itch.io Link Nicorm
 	DrawText("Nicolas Ramos Marin", static_cast<int>(GetScreenWidth() / 1.8), static_cast<int>(GetScreenHeight() / 5.4), 40, WHITE);
-	DrawRectangle(static_cast<float>(GetScreenWidth() / 1.6), static_cast<float>(GetScreenHeight() / 3.8), static_cast<float>(ichiolinkN.width), static_cast<float>(ichiolinkN.height), BLANK);
+	DrawRectangle(static_cast<int>(GetScreenWidth() / 1.6), static_cast<int>(GetScreenHeight() / 3.8), static_cast<int>(ichiolinkN.width), static_cast<int>(ichiolinkN.height), BLANK);
 	DrawTextEx(gameFont, "ITCH.IO", ichiolinkN.pos, static_cast<float>(ichiolinkN.size), 0, ichiolinkN.color);
 	
 	DrawTextEx(gameFont, "FONT", { static_cast<float>(GetScreenWidth() / 2.3) , static_cast<float>(GetScreenHeight() / 2.6) }, 30, 0, GOLD);
-	DrawText("https://www.dafont.com/es/babyblocks.font", static_cast<float>(GetScreenWidth() / 7) , static_cast<float>(GetScreenHeight() / 2.2), 30, WHITE);
+	DrawText("https://www.dafont.com/es/babyblocks.font", static_cast<int>(GetScreenWidth() / 7) , static_cast<int>(GetScreenHeight() / 2.2), 30, WHITE);
 
 	DrawTextEx(gameFont, "SPRITES", { static_cast<float>(GetScreenWidth() / 2.6) , static_cast<float>(GetScreenHeight() / 1.9) }, 30, 0, GOLD);
-	DrawText("https://www.wallpaperflare.com/artistic-pixel-art-red-no-people-night-beauty-in-nature-wallpaper-zgmd", static_cast<float>(GetScreenWidth() / 20), static_cast<float>(GetScreenHeight() / 1.7), 18, WHITE);
-	DrawText("https://www.youtube.com/watch?v=ffPSgY7oRh8", static_cast<float>(GetScreenWidth() / 5), static_cast<float>(GetScreenHeight() / 1.6), 20, WHITE);
+	DrawText("https://www.wallpaperflare.com/artistic-pixel-art-red-no-people-night-beauty-in-nature-wallpaper-zgmd", static_cast<int>(GetScreenWidth() / 20), static_cast<int>(GetScreenHeight() / 1.7), 18, WHITE);
+	DrawText("https://www.youtube.com/watch?v=ffPSgY7oRh8", static_cast<int>(GetScreenWidth() / 5), static_cast<int>(GetScreenHeight() / 1.6), 20, WHITE);
 
 	DrawTextEx(gameFont, "MUSIC", { static_cast<float>(GetScreenWidth() / 2.4) , static_cast<float>(GetScreenHeight() / 1.5) }, 30, 0, GOLD);
-	DrawText("https://www.youtube.com/watch?v=_xY64RqfONk", static_cast<float>(GetScreenWidth() / 3.5), static_cast<float>(GetScreenHeight() / 1.4), 18, WHITE);
-	DrawText("https://pixabay.com/sound-effects/shoot02wav-14562/", static_cast<float>(GetScreenWidth() / 4), static_cast<float>(GetScreenHeight() / 1.35), 18, WHITE);
-	DrawText("https://pixabay.com/sound-effects/retro-laser-gun-shot-96367/", static_cast<float>(GetScreenWidth() / 4.5), static_cast<float>(GetScreenHeight() / 1.3), 18, WHITE);
-	DrawText("https://pixabay.com/sound-effects/teleport-14639/", static_cast<float>(GetScreenWidth() / 4), static_cast<float>(GetScreenHeight() / 1.25), 18, WHITE);
+	DrawText("https://www.youtube.com/watch?v=_xY64RqfONk", static_cast<int>(GetScreenWidth() / 3.5), static_cast<int>(GetScreenHeight() / 1.4), 18, WHITE);
+	DrawText("https://pixabay.com/sound-effects/shoot02wav-14562/", static_cast<int>(GetScreenWidth() / 4), static_cast<int>(GetScreenHeight() / 1.35), 18, WHITE);
+	DrawText("https://pixabay.com/sound-effects/retro-laser-gun-shot-96367/", static_cast<int>(GetScreenWidth() / 4.5), static_cast<int>(GetScreenHeight() / 1.3), 18, WHITE);
+	DrawText("https://pixabay.com/sound-effects/teleport-14639/", static_cast<int>(GetScreenWidth() / 4), static_cast<int>(GetScreenHeight() / 1.25), 18, WHITE);
 
 	//ReturnMenu Button
 	DrawRectangle(static_cast<int>(GetScreenWidth() / 2), static_cast<int>(GetScreenHeight() / 1.1), static_cast<int>(returnMenu.width), static_cast<int>(returnMenu.height), BLANK);

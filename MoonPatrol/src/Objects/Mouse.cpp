@@ -34,5 +34,5 @@ Vector2 CreateRecOriginMouse(Rectangle& mouseRec)
 void DrawMouse(Mouse& mouse, Rectangle& mouseRec)
 {
 	DrawRectanglePro(GetRecMouse(mouse), CreateRecOriginMouse(mouseRec), 0.0f, BLANK);
-	DrawTexture(mouse.texture, mouse.position.x - mouse.width / 2, mouse.position.y - mouse.height / 2, WHITE);
+	DrawTexture(mouse.texture, static_cast<int>(mouse.position.x - mouse.width / 2), static_cast<int>(mouse.position.y - mouse.height / 2), WHITE);
 }

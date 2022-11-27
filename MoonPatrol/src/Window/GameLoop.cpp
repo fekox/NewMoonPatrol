@@ -846,14 +846,14 @@ void Player2Movement()
     }
 }
 
-void PlayerJump(Player& player)
+void PlayerJump(Player& players)
 {
-    player.gravity = -250;
-    player.pos.y = player.pos.y + player.gravity * GetFrameTime();
+    players.gravity = -250;
+    players.pos.y = players.pos.y + players.gravity * GetFrameTime();
 
-    if (player.pos.y < 650)
+    if (players.pos.y < 650)
     {
-        player.isJumping = true;
+        players.isJumping = true;
     }
 }
 
@@ -1322,6 +1322,7 @@ void RestartGame()
         player.lifes = 1;
         player.points = 0;
         player.isCollision = false;
+        player.isJumping = false;
         player.isAlive = true;
         player.win = false;
         player.isActive = true;
@@ -1340,6 +1341,7 @@ void RestartGame()
         player.lifes = 1;
         player.points = 0;
         player.isCollision = false;
+        player.isJumping = false;
         player.isAlive = true;
         player.win = false;
         player.isActive = true;
@@ -1353,6 +1355,7 @@ void RestartGame()
         player2.lifes = 1;
         player2.points = 0;
         player2.isCollision = false;
+        player2.isJumping = false;
         player2.isAlive = true;
         player2.win = false;
         player2.isActive = true;
