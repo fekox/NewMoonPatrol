@@ -653,6 +653,7 @@ void Draw()
     {
         if (!IsAlive(player) || PlayerWin(player))
         {
+            player.isActive = false;
             DrawRestarGameMenu();
         }
     }
@@ -669,7 +670,7 @@ void Draw()
             player2.isActive = false;
         }
 
-        if (!player.isActive && !player2.isActive || PlayerWin(player2) && PlayerWin(player))
+        if (!player.isActive && !player2.isActive || PlayerWin(player))
         {
             DrawRestarGameMenu();
         }
@@ -1250,7 +1251,7 @@ void RestartGame()
         player.width = 80;
         player.height = 40;
         player.speed = 420;
-        player.lifes = 3;
+        player.lifes = 1;
         player.points = 0;
         player.isCollision = false;
         player.isAlive = true;
@@ -1268,7 +1269,7 @@ void RestartGame()
         player.width = 80;
         player.height = 40;
         player.speed = 420;
-        player.lifes = 3;
+        player.lifes = 1;
         player.points = 0;
         player.isCollision = false;
         player.isAlive = true;
@@ -1281,7 +1282,7 @@ void RestartGame()
         player2.width = 80;
         player2.height = 40;
         player2.speed = 420;
-        player2.lifes = 3;
+        player2.lifes = 1;
         player2.points = 0;
         player2.isCollision = false;
         player2.isAlive = true;
@@ -1306,7 +1307,7 @@ void RestartGame()
     }
 
     //Obstacle
-    obstacle.pos.x = static_cast<float>(screenWidth - 30);
+    obstacle.pos.x = static_cast<float>(screenWidth - 60);
     obstacle.pos.y = static_cast<float>(screenHeight / 1.25);
     obstacle.width = 60;
     obstacle.height = 100;
@@ -1322,8 +1323,8 @@ void RestartGame()
     //Mouse
     mouse.position.x = 0;
     mouse.position.y = 0;
-    mouse.width = 20.0f;
-    mouse.height = 20.0f;
+    mouse.width = 30.0f;
+    mouse.height = 30.0f;
     mouse.mouseRec = GetRecMouse(mouse);
 
     //Background
@@ -1392,6 +1393,8 @@ void UnloadData()
 
     UnloadTexture(hill.tex);
     UnloadTexture(hill2.tex);
+
+    UnloadTexture(mouse.texture);
 
     UnloadTexture(ground.tex);
 

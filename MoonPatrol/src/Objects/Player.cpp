@@ -16,7 +16,7 @@ Player CreatePlayer(int screenWidth, int screenHeight)
 
 	player.jumpForce = 300;
 
-	player.lifes = 3;
+	player.lifes = 1;
 
 	player.points = 0;
 
@@ -73,7 +73,7 @@ bool IsAlive(Player& player)
 
 bool PlayerWin(Player& player)
 {
-	if (player.points < 150000)
+	if (player.points < 15)
 	{
 		return player.win == true;
 	}

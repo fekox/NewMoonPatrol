@@ -8,8 +8,10 @@ Mouse CreateMouse()
 	mouse.position.x = 0;
 	mouse.position.y = 0;
 
-	mouse.width = 20.0f;
-	mouse.height = 20.0f;
+	mouse.width = 30.0f;
+	mouse.height = 30.0f;
+
+	mouse.texture = LoadTexture("resources/Sprites/Cursor.png");
 
 	return mouse;
 }
@@ -31,5 +33,6 @@ Vector2 CreateRecOriginMouse(Rectangle& mouseRec)
 
 void DrawMouse(Mouse& mouse, Rectangle& mouseRec)
 {
-	DrawRectanglePro(GetRecMouse(mouse), CreateRecOriginMouse(mouseRec), 0.0f, WHITE);
+	DrawRectanglePro(GetRecMouse(mouse), CreateRecOriginMouse(mouseRec), 0.0f, BLANK);
+	DrawTexture(mouse.texture, mouse.position.x - mouse.width / 2, mouse.position.y - mouse.height / 2, WHITE);
 }

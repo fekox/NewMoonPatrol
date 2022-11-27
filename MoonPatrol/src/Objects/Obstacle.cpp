@@ -5,7 +5,7 @@ Obstacle CreateObstacle(int screenWidth, int screenHeight)
 {
 	Obstacle obstacle;
 
-	obstacle.pos.x = static_cast<float>(screenWidth - 30);
+	obstacle.pos.x = static_cast<float>(screenWidth - 60);
 	obstacle.pos.y = static_cast<float>(screenHeight / 1.25);
 
 	obstacle.width = 60;
