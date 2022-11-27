@@ -1,4 +1,4 @@
-# Moon Patrol V0.4
+# Moon Patrol V1.0
 Simple Moon Patrol made whit raylib in c++.
 
 ## itch.io: https://feco-games.itch.io/
