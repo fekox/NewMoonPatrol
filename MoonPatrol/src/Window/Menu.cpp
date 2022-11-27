@@ -2,7 +2,6 @@
 
 #include "Window/GameLoop.h"
 
-
 MenuButton play;
 MenuButton controlls;
 MenuButton rules;
@@ -15,6 +14,7 @@ MenuButton ichiolinkN;
 
 void InitMenu()
 {
+
 	//Play Button
 
 	play.pos.x = static_cast<float>(GetScreenWidth() / 20);
@@ -278,10 +278,14 @@ void MenuInputs(Mouse& mouse, int& optionSelect, bool& playGame, SubMenu& gameMo
 	}
 }
 
-void DrawMenu(Font gameFont)
+void DrawMenu(Font gameFont, Texture menuBackground)
 {
 	ClearBackground(BLACK);
-	DrawTextEx(gameFont, "  Pingu\nAttack", { static_cast<float>(GetScreenWidth() / 20) , static_cast<float>(GetScreenHeight() / 20) }, 60, 0, PURPLE);
+
+	//Menu Background
+	DrawTexture(menuBackground, 0, 0, WHITE);
+
+	DrawTextEx(gameFont, "  Pingu\nAttack", { static_cast<float>(GetScreenWidth() / 20) , static_cast<float>(GetScreenHeight() / 20) }, 60, 0, GOLD);
 
 	//Play Button
 
@@ -309,11 +313,14 @@ void DrawMenu(Font gameFont)
 	DrawTextEx(gameFont, "QUIT", quit.pos, static_cast<float>(quit.size), 0, quit.color);
 }
 
-void DrawControlls(Font gameFont)
+void DrawControlls(Font gameFont, Texture subMenusBackground)
 {
 	ClearBackground(BLACK);
 
-	DrawTextEx(gameFont, "Controlls", { static_cast<float>(GetScreenWidth() / 2.8) , static_cast<float>(GetScreenHeight() / 15) }, 60, 0, PURPLE);
+	//Sub Menu Background
+	DrawTexture(subMenusBackground, 0, 0, WHITE);
+
+	DrawTextEx(gameFont, "Controlls", { static_cast<float>(GetScreenWidth() / 2.8) , static_cast<float>(GetScreenHeight() / 15) }, 60, 0, GOLD);
 
 	//ReturnMenu Button
 
@@ -321,11 +328,14 @@ void DrawControlls(Font gameFont)
 	DrawTextEx(gameFont, "MENU", returnMenu.pos, static_cast<float>(returnMenu.size), 0, returnMenu.color);
 }
 
-void DrawRules(Font gameFont)
+void DrawRules(Font gameFont, Texture subMenusBackground)
 {
 	ClearBackground(BLACK);
 
-	DrawTextEx(gameFont, "RULES", { static_cast<float>(GetScreenWidth() / 2.7) , static_cast<float>(GetScreenHeight() / 15) }, 60, 0, PURPLE);
+	//Sub Menu Background
+	DrawTexture(subMenusBackground, 0, 0, WHITE);
+
+	DrawTextEx(gameFont, "RULES", { static_cast<float>(GetScreenWidth() / 2.7) , static_cast<float>(GetScreenHeight() / 15) }, 60, 0, GOLD);
 
 	DrawTextEx(gameFont, "Play as a pilot who must escape from a city besieged by aliens.\nYou have 1 live, if you hit an obstacle you lose.\n\nTo win you must make 150000 points.\n\nGood luck pilot.",
 		{ static_cast<float>(GetScreenWidth() / 8) , static_cast<float>(GetScreenHeight() / 5) }, 30, 0, WHITE);
@@ -335,11 +345,14 @@ void DrawRules(Font gameFont)
 	DrawTextEx(gameFont, "MENU", returnMenu.pos, static_cast<float>(returnMenu.size), 0, returnMenu.color);
 }
 
-void DrawCredits(Font gameFont)
+void DrawCredits(Font gameFont, Texture subMenusBackground)
 {
 	ClearBackground(BLACK);
 
-	DrawTextEx(gameFont, "CREDITS", { static_cast<float>(GetScreenWidth() / 3.8) , static_cast<float>(GetScreenHeight() / 15) }, 60, 0, PURPLE);
+	//Sub Menu Background
+	DrawTexture(subMenusBackground, 0, 0, WHITE);
+
+	DrawTextEx(gameFont, "CREDITS", { static_cast<float>(GetScreenWidth() / 3.8) , static_cast<float>(GetScreenHeight() / 15) }, 60, 0, GOLD);
 
 	//itch.io Link Feko_Games
 	DrawText("Facundo Santos", static_cast<int>(GetScreenWidth() / 12), static_cast<int>(GetScreenHeight() / 3.8), 50, WHITE);
@@ -351,7 +364,7 @@ void DrawCredits(Font gameFont)
 	DrawRectangle(static_cast<float>(GetScreenWidth() / 1.6), static_cast<float>(GetScreenHeight() / 2.8), static_cast<float>(ichiolinkN.width), static_cast<float>(ichiolinkN.height), BLANK);
 	DrawTextEx(gameFont, "ITCH.IO", ichiolinkN.pos, static_cast<float>(ichiolinkN.size), 0, ichiolinkN.color);
 	
-	DrawTextEx(gameFont, "FONT", { static_cast<float>(GetScreenWidth() / 2.3) , static_cast<float>(GetScreenHeight() / 2) }, 30, 0, PURPLE);
+	DrawTextEx(gameFont, "FONT", { static_cast<float>(GetScreenWidth() / 2.3) , static_cast<float>(GetScreenHeight() / 2) }, 30, 0, GOLD);
 
 	//ReturnMenu Button
 	DrawRectangle(static_cast<int>(GetScreenWidth() / 2.5), static_cast<int>(GetScreenHeight() / 1.1), static_cast<int>(returnMenu.width), static_cast<int>(returnMenu.height), BLANK);

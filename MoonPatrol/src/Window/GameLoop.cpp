@@ -64,6 +64,7 @@ int screenHeight = 768;
 //Menu
 int optionSelect = 0;
 bool playGame = false;
+Texture menuBackground;
 
 //Player
 Player player;
@@ -96,6 +97,9 @@ Background hill2;
 
 //Mouse
 Mouse mouse;
+
+//Sub Menus Background
+Texture subMenusBackground;
 
 //Restart Menu
 SubMenu restartMenu;
@@ -133,6 +137,8 @@ void InitGame()
     SetExitKey(NULL);
 
     //Menu
+    menuBackground = LoadTexture("resources/Sprites/MenuBackground.png");
+    subMenusBackground = LoadTexture("resources/Sprites/SubMenusBackground.png");
     InitMenu();
 
     //Restart Menu
@@ -502,7 +508,7 @@ void GameLoop()
                 BeginDrawing();
                 ClearBackground(BLACK);
                 ShowCursor();
-                DrawMenu(gameFont);
+                DrawMenu(gameFont, menuBackground);
                 EndDrawing();
                 break;
 
@@ -527,21 +533,21 @@ void GameLoop()
             case static_cast<int>(Menu::Controlls):
                 BeginDrawing();
                 ClearBackground(BLACK);
-                DrawControlls(gameFont);
+                DrawControlls(gameFont, subMenusBackground);
                 EndDrawing();
                 break;
 
             case static_cast<int>(Menu::Rules):
                 BeginDrawing();
                 ClearBackground(BLACK);
-                DrawRules(gameFont);
+                DrawRules(gameFont, subMenusBackground);
                 EndDrawing();
                 break;
 
             case static_cast<int>(Menu::Credits):
                 BeginDrawing();
                 ClearBackground(BLACK);
-                DrawCredits(gameFont);
+                DrawCredits(gameFont, subMenusBackground);
                 EndDrawing();
                 break;
 
@@ -1073,7 +1079,7 @@ void DrawPauseMenu()
     DrawRectangle(static_cast<int>(restartMenu.pos.x), static_cast<int>(restartMenu.pos.y), static_cast<int>(restartMenu.width), static_cast<int>(restartMenu.height), BLANK);
     DrawTexture(restartMenu.texture, static_cast<int>(restartMenu.pos.x), static_cast<int>(restartMenu.pos.y), WHITE);
 
-    DrawTextEx(gameFont, "PAUSE", { static_cast<float>(screenWidth / 3), static_cast<float>(screenHeight / 3.1) }, 70, 0, PURPLE);
+    DrawTextEx(gameFont, "PAUSE", { static_cast<float>(screenWidth / 3), static_cast<float>(screenHeight / 3.1) }, 70, 0, GOLD);
 
     //Restart Button
     DrawRectangle(static_cast<int>(screenWidth / 2.5), static_cast<int>(screenHeight / 2.2), static_cast<int>(screenWidth / 3.8), static_cast<int>(screenHeight / 10), BLANK);
@@ -1136,12 +1142,12 @@ void DrawRestarGameMenu()
     
     if (!IsAlive(player) || !IsAlive(player2))
     {
-        DrawTextEx(gameFont, "YOU LOSE", { static_cast<float>(screenWidth / 4.2), static_cast<float>(screenHeight / 3.1) }, 70, 0, PURPLE);
+        DrawTextEx(gameFont, "YOU LOSE", { static_cast<float>(screenWidth / 4.2), static_cast<float>(screenHeight / 3.1) }, 70, 0, GOLD);
     }
 
     if (PlayerWin(player) || PlayerWin(player2))
     {
-        DrawTextEx(gameFont, "YOU WIN", { static_cast<float>(screenWidth / 3.5), static_cast<float>(screenHeight / 3.1) }, 70, 0, PURPLE);
+        DrawTextEx(gameFont, "YOU WIN", { static_cast<float>(screenWidth / 3.5), static_cast<float>(screenHeight / 3.1) }, 70, 0, GOLD);
     }
     
 
@@ -1200,7 +1206,10 @@ void RestarGameMenuCollisions()
 
 void DrawGameModeMenu()
 {
-    DrawTextEx(gameFont, "GAME MODE", { static_cast<float>(screenWidth / 5.5), static_cast<float>(screenHeight / 8) }, 70, 0, PURPLE);
+    //Sub Menus Background
+    DrawTexture(subMenusBackground, 0, 0, WHITE);
+
+    DrawTextEx(gameFont, "GAME MODE", { static_cast<float>(screenWidth / 5.5), static_cast<float>(screenHeight / 8) }, 70, 0, GOLD);
 
     //Single Player Button
     DrawRectangle(static_cast<int>(screenWidth / 4.5), static_cast<int>(screenHeight / 2.6), static_cast<int>(screenWidth / 1.8), static_cast<int>(screenHeight / 10), BLANK);
