@@ -10,6 +10,7 @@ struct Obstacle
 
 	float speed;
 
+	Texture tex;
 	Color color;
 };
 

@@ -592,8 +592,6 @@ void Draw()
 
     DrawGround(ground);
 
-    DrawObstacle(obstacle);
-
     for (int i = 0; i < maxBullets; i++)
     {
         if (player.isActive)
@@ -617,6 +615,8 @@ void Draw()
             DrawFlyEnemy(flyEnemy[i]);
         }
     }
+
+    DrawObstacle(obstacle);
 
     if (player.isActive)
     {
@@ -1307,11 +1307,10 @@ void RestartGame()
 
     //Obstacle
     obstacle.pos.x = static_cast<float>(screenWidth - 30);
-    obstacle.pos.y = static_cast<float>(screenHeight / 1.2);
-    obstacle.width = 30;
-    obstacle.height = 60;
+    obstacle.pos.y = static_cast<float>(screenHeight / 1.25);
+    obstacle.width = 60;
+    obstacle.height = 100;
     obstacle.speed = 400;
-    obstacle.color = BLUE;
 
     //Ground
     ground.pos.x = static_cast<float>(screenWidth / screenWidth);
@@ -1382,6 +1381,8 @@ void UnloadData()
 
     UnloadTexture(player.tex);
     UnloadTexture(player2.tex);
+
+    UnloadTexture(obstacle.tex);
 
     UnloadTexture(sky.tex);
     UnloadTexture(sky2.tex);
