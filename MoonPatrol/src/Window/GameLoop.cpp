@@ -121,6 +121,13 @@ SubMenu gameModeMenu;
 Button singlePlayerButton;
 Button multiPlayerButton;
 
+//Music
+Music music;
+Sound playerDead;
+Sound enemyDead;
+Sound playerShot;
+float musicPitch = 0.9f;
+
 //Font
 Font gameFont;
 
@@ -134,7 +141,26 @@ void PlayGame()
 void InitGame()
 {
     InitWindow(screenWidth, screenHeight, "Moon Patrol v0.4");
+    SetWindowState(FLAG_VSYNC_HINT);
     SetExitKey(NULL);
+
+    //Music
+
+    InitAudioDevice();
+
+    music = LoadMusicStream("resources/Music/Twin Musicom - 8-bit March.mp3");
+    music.looping = true;
+    PlayMusicStream(music);
+    SetMusicVolume(music, 0.5f);
+
+    playerDead = LoadSound("resources/Music/PlayerDead.mp3");
+    SetSoundVolume(playerDead, 0.5f);
+
+    enemyDead = LoadSound("resources/Music/EnemyDead.mp3");
+    SetSoundVolume(enemyDead, 0.5f);
+
+    playerShot = LoadSound("resources/Music/Shoot.mp3");
+    SetSoundVolume(playerShot, 0.2f);
 
     //Menu
     menuBackground = LoadTexture("resources/Sprites/MenuBackground.png");
@@ -369,6 +395,8 @@ void SubMenusInputs(bool& gameOn)
 
     if (pauseMenu.isActive)
     {
+        PauseMusicStream(music);
+
         //Resume Button
         if (CheckCollisionPointRec(mouse.position, Rectangle{ static_cast<float>(screenWidth / 2.5), static_cast<float>(screenHeight / 2.2), static_cast<float>(screenWidth / 4), static_cast<float>(screenHeight / 10) }))
         {
@@ -376,6 +404,7 @@ void SubMenusInputs(bool& gameOn)
             {
                 pause = false;
                 pauseMenu.isActive = false;
+                ResumeMusicStream(music);
             }
         }
 
@@ -391,6 +420,7 @@ void SubMenusInputs(bool& gameOn)
                 playGame = false;
                 pauseMenu.isActive = false;
                 optionSelect = 0;
+                ResumeMusicStream(music);
             }
         }
 
@@ -409,6 +439,7 @@ void SubMenusInputs(bool& gameOn)
     {
         if (IsKeyPressed(KEY_ESCAPE) || IsKeyPressed(KEY_P))
         {
+            PauseMusicStream(music);
             pauseMenu.isActive = true;
             pause = true;
         }
@@ -417,6 +448,7 @@ void SubMenusInputs(bool& gameOn)
         {
             if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT))
             {
+                PauseMusicStream(music);
                 pauseMenu.isActive = true;
                 pause = true;
             }
@@ -430,6 +462,7 @@ void SubMenusInputs(bool& gameOn)
             pauseMenu.isActive = false;
             pause = false;
             HideCursor();
+            ResumeMusicStream(music);
         }
 
         if (CheckCollisionPointRec(mouse.position, Rectangle{ pauseButtonOn.pos.x, pauseButtonOn.pos.y, pauseButtonOn.width, pauseButtonOn.height }))
@@ -439,6 +472,7 @@ void SubMenusInputs(bool& gameOn)
                 pauseMenu.isActive = false;
                 pause = false;
                 HideCursor();
+                ResumeMusicStream(music);
             }
         }
     }
@@ -481,6 +515,9 @@ void GameLoop()
     {
         while (!WindowShouldClose() && gameOn)
         {
+            UpdateMusicStream(music);
+            SetMusicPitch(music, musicPitch);
+
             MouseMovement();
             MenuCollisions(mouse, optionSelect);
             MenuInputs(mouse, optionSelect, playGame, gameModeMenu);
@@ -728,6 +765,11 @@ void PlayerMovement()
 
         if (IsKeyPressed(KEY_SPACE))
         {
+            if (!restartMenu.isActive && !pauseMenu.isActive)
+            {
+                PlaySound(playerShot);
+            }
+
             for (int i = 0; i < maxBullets; i++)
             {
                 if (playerBullet[i].isActive == false)
@@ -773,6 +815,10 @@ void Player2Movement()
 
         if (IsKeyPressed(KEY_ENTER))
         {
+            if (!restartMenu.isActive && !pauseMenu.isActive)
+            {
+                PlaySound(playerShot);
+            }
             for (int i = 0; i < maxBullets; i++)
             {
                 if (player2Bullet[i].isActive == false)
@@ -857,6 +903,7 @@ void BulletCollision()
             {
                 flyEnemy[j].isActive = false;
                 player.points = player.points + 50;
+                PlaySound(enemyDead);
                 FlyEnemyRespawn();
             }
 
@@ -874,6 +921,7 @@ void BulletCollision()
                 {
                     flyEnemy[j].isActive = false;
                     player.points = player.points + 50;
+                    PlaySound(enemyDead);
                     FlyEnemyRespawn();
                 }
             }
@@ -988,41 +1036,49 @@ void FlyEnemyRespawn()
 void PlayerCollision()
 {
     //Player
-    if (CheckCollisionRecRec(player.pos, player.width - 20, player.height - 5, obstacle.pos, obstacle.width, obstacle.height))
+    if (player.isActive == true)
     {
-        player.isCollision = true;
-        LoseLife(player);
-    }
+        if (CheckCollisionRecRec(player.pos, player.width - 20, player.height - 5, obstacle.pos, obstacle.width, obstacle.height))
+        {
+            player.isCollision = true;
+            PlaySound(playerDead);
+            LoseLife(player);
+        }
 
-    if (!CheckCollisionRecRec(player.pos, player.width - 20, player.height - 5, obstacle.pos, obstacle.width, obstacle.height))
-    {
-        player.isCollision = false;
-    }
+        if (!CheckCollisionRecRec(player.pos, player.width - 20, player.height - 5, obstacle.pos, obstacle.width, obstacle.height))
+        {
+            player.isCollision = false;
+        }
 
-    if (CheckCollisionRecRec(player.pos, player.width, player.height, ground.pos, ground.width, ground.height))
-    {
-        player.isJumping = false;
-        player.gravity = 0;
+        if (CheckCollisionRecRec(player.pos, player.width, player.height, ground.pos, ground.width, ground.height))
+        {
+            player.isJumping = false;
+            player.gravity = 0;
+        }
     }
 
     if (multiplayer == true)
     {
-        //Player2
-        if (CheckCollisionRecRec(player2.pos, player2.width - 20, player2.height - 5, obstacle.pos, obstacle.width, obstacle.height))
+        if (player2.isActive == true)
         {
-            player2.isCollision = true;
-            LoseLife(player2);
-        }
+            //Player2
+            if (CheckCollisionRecRec(player2.pos, player2.width - 20, player2.height - 5, obstacle.pos, obstacle.width, obstacle.height))
+            {
+                player2.isCollision = true;
+                PlaySound(playerDead);
+                LoseLife(player2);
+            }
 
-        if (!CheckCollisionRecRec(player2.pos, player2.width - 20, player2.height - 5, obstacle.pos, obstacle.width, obstacle.height))
-        {
-            player2.isCollision = false;
-        }
+            if (!CheckCollisionRecRec(player2.pos, player2.width - 20, player2.height - 5, obstacle.pos, obstacle.width, obstacle.height))
+            {
+                player2.isCollision = false;
+            }
 
-        if (CheckCollisionRecRec(player2.pos, player2.width, player2.height, ground.pos, ground.width, ground.height))
-        {
-            player2.isJumping = false;
-            player2.gravity = 0;
+            if (CheckCollisionRecRec(player2.pos, player2.width, player2.height, ground.pos, ground.width, ground.height))
+            {
+                player2.isJumping = false;
+                player2.gravity = 0;
+            }
         }
     }
 }
@@ -1414,4 +1470,9 @@ void UnloadData()
 
     UnloadTexture(menuBackground);
     UnloadTexture(subMenusBackground);
+
+    UnloadMusicStream(music);
+    UnloadSound(playerDead);
+    UnloadSound(playerShot);
+    UnloadSound(enemyDead);
 }
