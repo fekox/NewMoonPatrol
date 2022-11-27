@@ -14,7 +14,6 @@ MenuButton ichiolinkN;
 
 void InitMenu()
 {
-
 	//Play Button
 
 	play.pos.x = static_cast<float>(GetScreenWidth() / 20);

@@ -1,4 +1,3 @@
-#include <iostream>
 #include "Objects/Obstacle.h"
 
 Obstacle CreateObstacle(int screenWidth, int screenHeight)

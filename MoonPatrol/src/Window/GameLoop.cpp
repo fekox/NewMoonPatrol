@@ -1,5 +1,7 @@
 #include <iostream>
+
 #include "raylib.h"
+
 #include "Window/GameLoop.h"
 #include "Window/Menu.h"
 
@@ -22,17 +24,7 @@ void InitGameModeMenu();
 void SubMenusInputs(bool& gameOn);
 void GameModeMenuInputs();
 
-//Movement
-void MouseMovement();
-void ObstacleMovement();
-void ObstacleTeleport();
-void PlayerMovement();
-void Player2Movement();
-void PlayerJump(Player& player);
-void PlayerBulletMovement();
-void FlyEnemyMovement();
-void BackgroundMovement();
-
+//Update
 void Update();
 
 //Collisions
@@ -46,6 +38,16 @@ void PauseMenuCollisions();
 void RestarGameMenuCollisions();
 void GameModeMenuCollsions();
 
+//Movement
+void MouseMovement();
+void ObstacleMovement();
+void ObstacleTeleport();
+void PlayerMovement();
+void Player2Movement();
+void PlayerJump(Player& player);
+void PlayerBulletMovement();
+void FlyEnemyMovement();
+void BackgroundMovement();
 void FlyEnemyRespawn();
 
 //Draw
@@ -53,8 +55,10 @@ void DrawPauseMenu();
 void DrawRestarGameMenu();
 void DrawGameModeMenu();
 
+//Restart
 void RestartGame();
 
+//Unload
 void UnloadData();
 
 //Window
@@ -140,7 +144,7 @@ void PlayGame()
 
 void InitGame()
 {
-    InitWindow(screenWidth, screenHeight, "Pingu Attack v0.4");
+    InitWindow(screenWidth, screenHeight, "Pingu Attack v1.0");
     SetWindowState(FLAG_VSYNC_HINT);
     SetExitKey(NULL);
 
@@ -747,6 +751,286 @@ bool CheckCollisionRecRec(Vector2 r1, float r1w, float r1h, Vector2 r2, float r2
     return false;
 }
 
+void PlayerCollision()
+{
+    //Player
+    if (player.isActive == true)
+    {
+        if (CheckCollisionRecRec(player.pos, player.width - 20, player.height - 5, obstacle.pos, obstacle.width, obstacle.height))
+        {
+            player.isCollision = true;
+            PlaySound(playerDead);
+            LoseLife(player);
+        }
+
+        if (!CheckCollisionRecRec(player.pos, player.width - 20, player.height - 5, obstacle.pos, obstacle.width, obstacle.height))
+        {
+            player.isCollision = false;
+        }
+
+        if (CheckCollisionRecRec(player.pos, player.width, player.height, ground.pos, ground.width, ground.height))
+        {
+            player.isJumping = false;
+            player.gravity = 0;
+        }
+    }
+
+    if (multiplayer == true)
+    {
+        if (player2.isActive == true)
+        {
+            //Player2
+            if (CheckCollisionRecRec(player2.pos, player2.width - 20, player2.height - 5, obstacle.pos, obstacle.width, obstacle.height))
+            {
+                player2.isCollision = true;
+                PlaySound(playerDead);
+                LoseLife(player2);
+            }
+
+            if (!CheckCollisionRecRec(player2.pos, player2.width - 20, player2.height - 5, obstacle.pos, obstacle.width, obstacle.height))
+            {
+                player2.isCollision = false;
+            }
+
+            if (CheckCollisionRecRec(player2.pos, player2.width, player2.height, ground.pos, ground.width, ground.height))
+            {
+                player2.isJumping = false;
+                player2.gravity = 0;
+            }
+        }
+    }
+}
+
+void BulletCollision()
+{
+    for (int i = 0; i < maxBullets; i++)
+    {
+        for (int j = 0; j < maxflyEnemy; j++)
+        {
+            //Player
+            if (CheckCollisionRecRec(playerBullet[i].pos, playerBullet[i].width, playerBullet[i].height, flyEnemy[j].pos, flyEnemy[j].width, flyEnemy[j].height))
+            {
+                playerBullet[i].isMoving = false;
+                playerBullet[i].isActive = false;
+
+                flyEnemy[j].life--;
+            }
+            if (flyEnemy[j].life <= 0)
+            {
+                flyEnemy[j].isActive = false;
+                player.points = player.points + 50;
+                PlaySound(enemyDead);
+                FlyEnemyRespawn();
+            }
+
+            if (multiplayer == true)
+            {
+                //Player2
+                if (CheckCollisionRecRec(player2Bullet[i].pos, player2Bullet[i].width, player2Bullet[i].height, flyEnemy[j].pos, flyEnemy[j].width, flyEnemy[j].height))
+                {
+                    player2Bullet[i].isMoving = false;
+                    player2Bullet[i].isActive = false;
+
+                    flyEnemy[j].life--;
+                }
+                if (flyEnemy[j].life <= 0)
+                {
+                    flyEnemy[j].isActive = false;
+                    player.points = player.points + 50;
+                    PlaySound(enemyDead);
+                    FlyEnemyRespawn();
+                }
+            }
+        }
+    }
+}
+
+void BulletCollisonLimit()
+{
+    for (int i = 0; i < maxBullets; i++)
+    {
+        //Player
+        if (playerBullet[i].isMoving)
+        {
+            if (playerBullet[i].pos.y < 0)
+            {
+                playerBullet[i].isMoving = false;
+                playerBullet[i].isActive = false;
+            }
+            if (playerBullet[i].pos.y >= screenHeight)
+            {
+                playerBullet[i].isMoving = false;
+                playerBullet[i].isActive = false;
+            }
+        }
+
+        if (multiplayer == true)
+        {
+            //Player2
+            if (player2Bullet[i].isMoving)
+            {
+                if (player2Bullet[i].pos.y < 0)
+                {
+                    player2Bullet[i].isMoving = false;
+                    player2Bullet[i].isActive = false;
+                }
+                if (player2Bullet[i].pos.y >= screenHeight)
+                {
+                    player2Bullet[i].isMoving = false;
+                    player2Bullet[i].isActive = false;
+                }
+            }
+        }
+    }
+}
+
+void FlyEnemyCollisionLimit()
+{
+    for (int i = 0; i < maxflyEnemy; i++)
+    {
+        if (flyEnemy[i].isMoving)
+        {
+            if (flyEnemy[i].pos.x >= screenWidth + flyEnemy[i].width)
+            {
+                flyEnemy[i].pos.x = static_cast<float>(screenWidth / -2.5);
+                flyEnemy[i].pos.y = static_cast<float>(screenHeight / -2.5);
+            }
+        }
+    }
+}
+
+void PauseMenuCollisions()
+{
+    if (pauseMenu.isActive)
+    {
+        //Restart Button
+        if (CheckCollisionPointRec(mouse.position, Rectangle{ static_cast<float>(screenWidth / 2.5), static_cast<float>(screenHeight / 2.2), static_cast<float>(screenWidth / 3.8), static_cast<float>(screenHeight / 10) }))
+        {
+            resumeButton.color = GOLD;
+        }
+
+        else
+        {
+            resumeButton.color = WHITE;
+        }
+
+        //Return Menu Button
+        if (CheckCollisionPointRec(mouse.position, Rectangle{ static_cast<float>(screenWidth / 2.5), static_cast<float>(screenHeight / 1.7), static_cast<float>(screenWidth / 4), static_cast<float>(screenHeight / 12) }))
+        {
+            returnMenuButton.color = GOLD;
+        }
+
+        else
+        {
+            returnMenuButton.color = WHITE;
+        }
+
+        //Quit Game Button
+        if (CheckCollisionPointRec(mouse.position, Rectangle{ static_cast<float>(screenWidth / 2.5), static_cast<float>(screenHeight / 1.4), static_cast<float>(screenWidth / 4), static_cast<float>(screenHeight / 12) }))
+        {
+            quitGameButton.color = GOLD;
+        }
+
+        else
+        {
+            quitGameButton.color = WHITE;
+        }
+    }
+}
+
+void RestarGameMenuCollisions()
+{
+    if (restartMenu.isActive)
+    {
+        //Restart Button
+        if (CheckCollisionPointRec(mouse.position, Rectangle{ static_cast<float>(screenWidth / 2.7), static_cast<float>(screenHeight / 2.2), static_cast<float>(screenWidth / 3.2), static_cast<float>(screenHeight / 10) }))
+        {
+            restartButton.color = GOLD;
+        }
+
+        else
+        {
+            restartButton.color = WHITE;
+        }
+
+        //Return Menu Button
+        if (CheckCollisionPointRec(mouse.position, Rectangle{ static_cast<float>(screenWidth / 2.5), static_cast<float>(screenHeight / 1.7), static_cast<float>(screenWidth / 4), static_cast<float>(screenHeight / 12) }))
+        {
+            returnMenuButton.color = GOLD;
+        }
+
+        else
+        {
+            returnMenuButton.color = WHITE;
+        }
+
+        //Quit Game Button
+        if (CheckCollisionPointRec(mouse.position, Rectangle{ static_cast<float>(screenWidth / 2.5), static_cast<float>(screenHeight / 1.4), static_cast<float>(screenWidth / 4), static_cast<float>(screenHeight / 12) }))
+        {
+            quitGameButton.color = GOLD;
+        }
+
+        else
+        {
+            quitGameButton.color = WHITE;
+        }
+    }
+}
+
+void GameModeMenuCollsions()
+{
+    if (gameModeMenu.isActive)
+    {
+        //Return Menu Button
+        if (CheckCollisionPointRec(mouse.position, Rectangle{ static_cast<float>(screenWidth / 4.5), static_cast<float>(screenHeight / 2.6), static_cast<float>(screenWidth / 1.8), static_cast<float>(screenHeight / 10) }))
+        {
+            singlePlayerButton.color = GOLD;
+        }
+
+        else
+        {
+            singlePlayerButton.color = WHITE;
+        }
+
+        //Quit Game Button
+        if (CheckCollisionPointRec(mouse.position, Rectangle{ static_cast<float>(screenWidth / 4.5), static_cast<float>(screenHeight / 1.55), static_cast<float>(screenWidth / 1.8), static_cast<float>(screenHeight / 10) }))
+        {
+            multiPlayerButton.color = GOLD;
+        }
+
+        else
+        {
+            multiPlayerButton.color = WHITE;
+        }
+    }
+}
+
+void MouseMovement()
+{
+    mouse.position = GetMousePosition();
+}
+
+void ObstacleMovement()
+{
+    obstacle.pos.x -= obstacle.speed * GetFrameTime();
+
+    ObstacleTeleport();
+}
+
+void ObstacleTeleport()
+{
+    if (obstacle.pos.x > screenWidth - obstacle.width)
+    {
+        obstacle.pos.x = static_cast<float>(screenWidth / screenWidth);
+    }
+
+    if (obstacle.pos.x < screenWidth / screenWidth - obstacle.width)
+    {
+        player.points = player.points + 25;
+        obstacle.pos.x = screenWidth - obstacle.width;
+    }
+}
+
 void PlayerMovement()
 {
     if (player.isActive == true)
@@ -888,89 +1172,6 @@ void PlayerBulletMovement()
     }
 }
 
-void BulletCollision()
-{
-    for (int i = 0; i < maxBullets; i++)
-    {
-        for (int j = 0; j < maxflyEnemy; j++)
-        {
-            //Player
-            if (CheckCollisionRecRec(playerBullet[i].pos, playerBullet[i].width, playerBullet[i].height, flyEnemy[j].pos, flyEnemy[j].width, flyEnemy[j].height))
-            {
-                playerBullet[i].isMoving = false;
-                playerBullet[i].isActive = false;
-
-                flyEnemy[j].life--;
-            }
-            if (flyEnemy[j].life <= 0)
-            {
-                flyEnemy[j].isActive = false;
-                player.points = player.points + 50;
-                PlaySound(enemyDead);
-                FlyEnemyRespawn();
-            }
-
-            if (multiplayer == true)
-            {
-                //Player2
-                if (CheckCollisionRecRec(player2Bullet[i].pos, player2Bullet[i].width, player2Bullet[i].height, flyEnemy[j].pos, flyEnemy[j].width, flyEnemy[j].height))
-                {
-                    player2Bullet[i].isMoving = false;
-                    player2Bullet[i].isActive = false;
-
-                    flyEnemy[j].life--;
-                }
-                if (flyEnemy[j].life <= 0)
-                {
-                    flyEnemy[j].isActive = false;
-                    player.points = player.points + 50;
-                    PlaySound(enemyDead);
-                    FlyEnemyRespawn();
-                }
-            }
-        }
-    }
-}
-
-void BulletCollisonLimit()
-{
-    for (int i = 0; i < maxBullets; i++)
-    {
-        //Player
-        if (playerBullet[i].isMoving)
-        {
-            if (playerBullet[i].pos.y < 0)
-            {
-                playerBullet[i].isMoving = false;
-                playerBullet[i].isActive = false;
-            }
-            if (playerBullet[i].pos.y >= screenHeight)
-            {
-                playerBullet[i].isMoving = false;
-                playerBullet[i].isActive = false;
-            }
-        }
-
-        if (multiplayer == true)
-        {
-            //Player2
-            if (player2Bullet[i].isMoving)
-            {
-                if (player2Bullet[i].pos.y < 0)
-                {
-                    player2Bullet[i].isMoving = false;
-                    player2Bullet[i].isActive = false;
-                }
-                if (player2Bullet[i].pos.y >= screenHeight)
-                {
-                    player2Bullet[i].isMoving = false;
-                    player2Bullet[i].isActive = false;
-                }
-            }
-        }
-    }
-}
-
 void FlyEnemyMovement()
 {
     int maxLim = 300;
@@ -1006,112 +1207,6 @@ void FlyEnemyMovement()
     }
 }
 
-void FlyEnemyCollisionLimit()
-{
-    for (int i = 0; i < maxflyEnemy; i++)
-    {
-        if (flyEnemy[i].isMoving)
-        {
-            if (flyEnemy[i].pos.x >= screenWidth + flyEnemy[i].width)
-            {
-                flyEnemy[i].pos.x = static_cast<float>(screenWidth / -2.5);
-                flyEnemy[i].pos.y = static_cast<float>(screenHeight / -2.5);
-            }
-        }
-    }
-}
-
-void FlyEnemyRespawn()
-{
-    for (int i = 0; i < maxflyEnemy; i++)
-    {
-        if (flyEnemy[i].isActive == false)
-        {
-            flyEnemy[i].pos.x = static_cast<float>(screenWidth / -1.13);
-            flyEnemy[i].pos.y = static_cast<float>(screenHeight / -1.13);
-
-            flyEnemy[i].life = 2;
-            flyEnemy[i].isActive = true;
-        }
-    }
-}
-
-void PlayerCollision()
-{
-    //Player
-    if (player.isActive == true)
-    {
-        if (CheckCollisionRecRec(player.pos, player.width - 20, player.height - 5, obstacle.pos, obstacle.width, obstacle.height))
-        {
-            player.isCollision = true;
-            PlaySound(playerDead);
-            LoseLife(player);
-        }
-
-        if (!CheckCollisionRecRec(player.pos, player.width - 20, player.height - 5, obstacle.pos, obstacle.width, obstacle.height))
-        {
-            player.isCollision = false;
-        }
-
-        if (CheckCollisionRecRec(player.pos, player.width, player.height, ground.pos, ground.width, ground.height))
-        {
-            player.isJumping = false;
-            player.gravity = 0;
-        }
-    }
-
-    if (multiplayer == true)
-    {
-        if (player2.isActive == true)
-        {
-            //Player2
-            if (CheckCollisionRecRec(player2.pos, player2.width - 20, player2.height - 5, obstacle.pos, obstacle.width, obstacle.height))
-            {
-                player2.isCollision = true;
-                PlaySound(playerDead);
-                LoseLife(player2);
-            }
-
-            if (!CheckCollisionRecRec(player2.pos, player2.width - 20, player2.height - 5, obstacle.pos, obstacle.width, obstacle.height))
-            {
-                player2.isCollision = false;
-            }
-
-            if (CheckCollisionRecRec(player2.pos, player2.width, player2.height, ground.pos, ground.width, ground.height))
-            {
-                player2.isJumping = false;
-                player2.gravity = 0;
-            }
-        }
-    }
-}
-
-void ObstacleMovement()
-{
-    obstacle.pos.x -= obstacle.speed * GetFrameTime();
-
-    ObstacleTeleport();
-}
-
-void ObstacleTeleport()
-{
-    if (obstacle.pos.x > screenWidth - obstacle.width)
-    {
-        obstacle.pos.x = static_cast<float>(screenWidth / screenWidth);
-    }
-
-    if (obstacle.pos.x < screenWidth / screenWidth - obstacle.width)
-    {
-        player.points = player.points + 25;
-        obstacle.pos.x = screenWidth - obstacle.width;
-    }
-}
-
-void MouseMovement()
-{
-    mouse.position = GetMousePosition();
-}
-
 void BackgroundMovement()
 {
     sky.pos.x -= sky.speed * GetFrameTime();
@@ -1133,6 +1228,21 @@ void BackgroundMovement()
     BackgroundParallax(hill2, screenWidth);
 }
 
+void FlyEnemyRespawn()
+{
+    for (int i = 0; i < maxflyEnemy; i++)
+    {
+        if (flyEnemy[i].isActive == false)
+        {
+            flyEnemy[i].pos.x = static_cast<float>(screenWidth / -1.13);
+            flyEnemy[i].pos.y = static_cast<float>(screenHeight / -1.13);
+
+            flyEnemy[i].life = 2;
+            flyEnemy[i].isActive = true;
+        }
+    }
+}
+
 void DrawPauseMenu()
 {
     DrawRectangle(static_cast<int>(restartMenu.pos.x), static_cast<int>(restartMenu.pos.y), static_cast<int>(restartMenu.width), static_cast<int>(restartMenu.height), BLANK);
@@ -1151,45 +1261,6 @@ void DrawPauseMenu()
     //Quit Game Button
     DrawRectangle(static_cast<int>(screenWidth / 2.5), static_cast<int>(screenHeight / 1.4), static_cast<int>(screenWidth / 4), static_cast<int>(screenHeight / 12), BLANK);
     DrawTextEx(gameFont, "QUIT", { static_cast<float>(quitGameButton.width), static_cast<float>(quitGameButton.height) }, static_cast<float>(quitGameButton.size), 0, quitGameButton.color);
-}
-
-void PauseMenuCollisions()
-{
-    if (pauseMenu.isActive)
-    {
-        //Restart Button
-        if (CheckCollisionPointRec(mouse.position, Rectangle{ static_cast<float>(screenWidth / 2.5), static_cast<float>(screenHeight / 2.2), static_cast<float>(screenWidth / 3.8), static_cast<float>(screenHeight / 10) }))
-        {
-            resumeButton.color = GOLD;
-        }
-
-        else
-        {
-            resumeButton.color = WHITE;
-        }
-
-        //Return Menu Button
-        if (CheckCollisionPointRec(mouse.position, Rectangle{ static_cast<float>(screenWidth / 2.5), static_cast<float>(screenHeight / 1.7), static_cast<float>(screenWidth / 4), static_cast<float>(screenHeight / 12) }))
-        {
-            returnMenuButton.color = GOLD;
-        }
-
-        else
-        {
-            returnMenuButton.color = WHITE;
-        }
-
-        //Quit Game Button
-        if (CheckCollisionPointRec(mouse.position, Rectangle{ static_cast<float>(screenWidth / 2.5), static_cast<float>(screenHeight / 1.4), static_cast<float>(screenWidth / 4), static_cast<float>(screenHeight / 12) }))
-        {
-            quitGameButton.color = GOLD;
-        }
-
-        else
-        {
-            quitGameButton.color = WHITE;
-        }
-    }
 }
 
 void DrawRestarGameMenu()
@@ -1224,45 +1295,6 @@ void DrawRestarGameMenu()
     DrawTextEx(gameFont, "QUIT", { static_cast<float>(quitGameButton.width), static_cast<float>(quitGameButton.height) }, static_cast<float>(quitGameButton.size), 0, quitGameButton.color);
 }
 
-void RestarGameMenuCollisions()
-{
-    if (restartMenu.isActive)
-    {
-        //Restart Button
-        if (CheckCollisionPointRec(mouse.position, Rectangle{ static_cast<float>(screenWidth / 2.7), static_cast<float>(screenHeight / 2.2), static_cast<float>(screenWidth / 3.2), static_cast<float>(screenHeight / 10) }))
-        {
-            restartButton.color = GOLD;
-        }
-
-        else
-        {
-            restartButton.color = WHITE;
-        }
-
-        //Return Menu Button
-        if (CheckCollisionPointRec(mouse.position, Rectangle{ static_cast<float>(screenWidth / 2.5), static_cast<float>(screenHeight / 1.7), static_cast<float>(screenWidth / 4), static_cast<float>(screenHeight / 12) }))
-        {
-            returnMenuButton.color = GOLD;
-        }
-
-        else
-        {
-            returnMenuButton.color = WHITE;
-        }
-
-        //Quit Game Button
-        if (CheckCollisionPointRec(mouse.position, Rectangle{ static_cast<float>(screenWidth / 2.5), static_cast<float>(screenHeight / 1.4), static_cast<float>(screenWidth / 4), static_cast<float>(screenHeight / 12) }))
-        {
-            quitGameButton.color = GOLD;
-        }
-
-        else
-        {
-            quitGameButton.color = WHITE;
-        }
-    }
-}
-
 void DrawGameModeMenu()
 {
     //Sub Menus Background
@@ -1277,34 +1309,6 @@ void DrawGameModeMenu()
     //Multi Player Button
     DrawRectangle(static_cast<int>(screenWidth / 4.5), static_cast<int>(screenHeight / 1.55), static_cast<int>(screenWidth / 1.8), static_cast<int>(screenHeight / 10), BLANK);
     DrawTextEx(gameFont, "MULTI PLAYER", { static_cast<float>(multiPlayerButton.width), static_cast<float>(multiPlayerButton.height) }, static_cast<float>(multiPlayerButton.size), 0, multiPlayerButton.color);
-}
-
-void GameModeMenuCollsions()
-{
-    if (gameModeMenu.isActive)
-    {
-        //Return Menu Button
-        if (CheckCollisionPointRec(mouse.position, Rectangle{ static_cast<float>(screenWidth / 4.5), static_cast<float>(screenHeight / 2.6), static_cast<float>(screenWidth / 1.8), static_cast<float>(screenHeight / 10) }))
-        {
-            singlePlayerButton.color = GOLD;
-        }
-
-        else
-        {
-            singlePlayerButton.color = WHITE;
-        }
-
-        //Quit Game Button
-        if (CheckCollisionPointRec(mouse.position, Rectangle{ static_cast<float>(screenWidth / 4.5), static_cast<float>(screenHeight / 1.55), static_cast<float>(screenWidth / 1.8), static_cast<float>(screenHeight / 10) }))
-        {
-            multiPlayerButton.color = GOLD;
-        }
-
-        else
-        {
-            multiPlayerButton.color = WHITE;
-        }
-    }
 }
 
 void RestartGame()
