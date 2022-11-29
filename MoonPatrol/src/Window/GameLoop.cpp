@@ -120,7 +120,7 @@ void PlayGame()
 
 void InitGame()
 {
-    InitWindow(screenWidth, screenHeight, "Pingu Attack v1.0");
+    InitWindow(screenWidth, screenHeight, "Pingu Attack v1.1");
     SetWindowState(FLAG_VSYNC_HINT);
     SetExitKey(NULL);
 
