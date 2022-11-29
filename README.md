@@ -1,4 +1,4 @@
-# Moon Patrol V1.0
+# Moon Patrol V1.1
 Simple Moon Patrol made whit raylib in c++.
 
 # Game Pingu Attack: 
