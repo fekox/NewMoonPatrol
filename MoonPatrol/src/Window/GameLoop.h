@@ -30,4 +30,8 @@ struct Button
 void PlayGame();
 void InitGame();
 void GameLoop();
+void Update();
 void Draw();
+
+void RestartGame();
+void UnloadData();

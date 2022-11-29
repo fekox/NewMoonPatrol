@@ -4,6 +4,9 @@
 
 #include "Window/GameLoop.h"
 #include "Window/Menu.h"
+#include "Window/RestartMenu.h"
+#include "Window/PauseMenu.h"
+#include "Window/GameModeMenu.h"
 
 #include "Objects/Player.h"
 #include "Objects/PlayerBullet.h"
@@ -15,18 +18,6 @@
 
 using namespace std;
 
-//Init
-void InitRestartMenu();
-void InitPauseMenu();
-void InitGameModeMenu();
-
-//Sub Menu Inputs
-void SubMenusInputs(bool& gameOn);
-void GameModeMenuInputs();
-
-//Update
-void Update();
-
 //Collisions
 void Collisions();
 bool CheckCollisionRecRec(Vector2 r1, float r1w, float r1h, Vector2 r2, float r2w, float r2h);
@@ -34,9 +25,6 @@ void PlayerCollision();
 void BulletCollision();
 void BulletCollisonLimit();
 void FlyEnemyCollisionLimit();
-void PauseMenuCollisions();
-void RestarGameMenuCollisions();
-void GameModeMenuCollsions();
 
 //Movement
 void MouseMovement();
@@ -50,17 +38,6 @@ void FlyEnemyMovement();
 void BackgroundMovement();
 void FlyEnemyRespawn();
 
-//Draw
-void DrawPauseMenu();
-void DrawRestarGameMenu();
-void DrawGameModeMenu();
-
-//Restart
-void RestartGame();
-
-//Unload
-void UnloadData();
-
 //Window
 int screenWidth = 1024;
 int screenHeight = 768;
@@ -69,6 +46,28 @@ int screenHeight = 768;
 int optionSelect = 0;
 bool playGame = false;
 Texture menuBackground;
+
+Texture subMenusBackground;
+
+//Pause
+bool pause = false;
+SubMenu pauseMenu;
+Button pauseButtonOff;
+Button pauseButtonOn;
+Button resumeButton;
+Button returnMenuButton;
+Button quitGameButton;
+
+//Game Mode Menu
+bool multiplayer = false;
+bool runGame = false;
+SubMenu gameModeMenu;
+Button singlePlayerButton;
+Button multiPlayerButton;
+
+//RestartMenu
+SubMenu restartMenu;
+Button restartButton;
 
 //Player
 Player player;
@@ -102,29 +101,6 @@ Background hill2;
 //Mouse
 Mouse mouse;
 
-//Sub Menus Background
-Texture subMenusBackground;
-
-//Restart Menu
-SubMenu restartMenu;
-Button restartButton;
-Button returnMenuButton;
-Button quitGameButton;
-
-//Pause Menu
-bool pause = false;
-SubMenu pauseMenu;
-Button pauseButtonOff;
-Button pauseButtonOn;
-Button resumeButton;
-
-//GameMode Menu
-bool multiplayer = false;
-bool runGame = false;
-SubMenu gameModeMenu;
-Button singlePlayerButton;
-Button multiPlayerButton;
-
 //Music
 Music music;
 Sound playerDead;
@@ -152,6 +128,7 @@ void InitGame()
 
     InitAudioDevice();
 
+
     music = LoadMusicStream("resources/Music/Twin Musicom - 8-bit March.mp3");
     music.looping = true;
     PlayMusicStream(music);
@@ -168,17 +145,18 @@ void InitGame()
 
     //Menu
     menuBackground = LoadTexture("resources/Sprites/MenuBackground.png");
+
     subMenusBackground = LoadTexture("resources/Sprites/SubMenusBackground.png");
     InitMenu();
 
     //Restart Menu
-    InitRestartMenu();
+    InitRestartMenu(restartMenu, restartButton, returnMenuButton, quitGameButton, screenWidth, screenHeight);
 
     //Pause Menu
-    InitPauseMenu();
+    InitPauseMenu(pauseMenu, pauseButtonOff, pauseButtonOn, resumeButton, returnMenuButton, quitGameButton, screenWidth, screenHeight);
 
     //GameMode Menu
-    InitGameModeMenu();
+    InitGameModeMenu(gameModeMenu, singlePlayerButton, multiPlayerButton, screenWidth, screenHeight);
 
     //Mouse
     mouse = CreateMouse();
@@ -276,244 +254,6 @@ void InitGame()
     obstacle = CreateObstacle(screenWidth, screenHeight);
 }
 
-void InitRestartMenu()
-{
-    //Restart menu
-    restartMenu.width = 600;
-    restartMenu.height = 500;
-    restartMenu.pos.x = static_cast<float>(screenWidth / 4.5);
-    restartMenu.pos.y = static_cast<float>(screenHeight / 4.5);
-    restartMenu.isActive = false;
-    restartMenu.texture = LoadTexture("resources/Sprites/RestartGameMenu.png");
-
-    //Restart Button
-    restartButton.width = static_cast<float>(screenWidth / 2.7);
-    restartButton.height = static_cast<float>(screenHeight / 2.1);
-    restartButton.size = 40;
-    restartButton.color = BLACK;
-
-    //Menu Button
-    returnMenuButton.width = static_cast<float>(screenWidth / 2.3);
-    returnMenuButton.height = static_cast<float>(screenHeight / 1.65);
-    returnMenuButton.size = 40;
-    returnMenuButton.color = BLACK;
-
-    //Quit Button
-    quitGameButton.width = static_cast<float>(screenWidth / 2.3);
-    quitGameButton.height = static_cast<float>(screenHeight / 1.37);
-    quitGameButton.size = 40;
-    quitGameButton.color = BLACK;
-}
-
-void InitPauseMenu()
-{
-    //Pause Menu
-    pauseMenu.width = 600;
-    pauseMenu.height = 500;
-    pauseMenu.pos.x = static_cast<float>(screenWidth / 4.5);
-    pauseMenu.pos.y = static_cast<float>(screenHeight / 4.5);
-    pauseMenu.isActive = false;
-    pauseMenu.texture = LoadTexture("resources/Sprites/RestartGameMenu.png");
-
-    //Pause Button Off
-    pauseButtonOff.pos.x = static_cast<float>(screenWidth / 1.2);
-    pauseButtonOff.pos.y = static_cast<float>(screenHeight / 20);
-    pauseButtonOff.width = 64;
-    pauseButtonOff.height = 64;
-    pauseButtonOff.color = WHITE;
-    pauseButtonOff.texture = LoadTexture("resources/Sprites/PauseButtonOff.png");
-
-    //Pause Button On
-    pauseButtonOn.pos.x = static_cast<float>(screenWidth / 1.2);
-    pauseButtonOn.pos.y = static_cast<float>(screenHeight / 20);
-    pauseButtonOn.width = 64;
-    pauseButtonOn.height = 64;
-    pauseButtonOn.color = WHITE;
-    pauseButtonOn.texture = LoadTexture("resources/Sprites/PauseButtonOn.png");
-
-    //Resume Button
-    resumeButton.width = static_cast<float>(screenWidth / 2.5);
-    resumeButton.height = static_cast<float>(screenHeight / 2.1);
-    resumeButton.size = 40;
-    resumeButton.color = BLACK;
-}
-
-void InitGameModeMenu()
-{
-    //GameMode Menu
-    gameModeMenu.width = static_cast<float>(screenWidth);
-    gameModeMenu.height = static_cast<float>(screenHeight);
-    gameModeMenu.isActive = false;
-
-    //Single Button
-    singlePlayerButton.width = static_cast<float>(screenWidth / 4.5);
-    singlePlayerButton.height = static_cast<float>(screenHeight / 2.5);
-    singlePlayerButton.size = 45;
-    singlePlayerButton.color = GOLD;
-
-    //MultiPlayer Button
-    multiPlayerButton.width = static_cast<float>(screenWidth / 4.5);
-    multiPlayerButton.height = static_cast<float>(screenHeight / 1.5);
-    multiPlayerButton.size = 45;
-    multiPlayerButton.color = GOLD;
-}
-
-void SubMenusInputs(bool& gameOn)
-{
-    if (restartMenu.isActive)
-    {
-        pause = true;
-
-        //Restart Button
-        if (CheckCollisionPointRec(mouse.position, Rectangle{ static_cast<float>(screenWidth / 2.5), static_cast<float>(screenHeight / 2.2), static_cast<float>(screenWidth / 4), static_cast<float>(screenHeight / 10) }))
-        {
-            if (IsMouseButtonDown(MOUSE_BUTTON_LEFT))
-            {
-                RestartGame();
-            }
-        }
-
-        //Return Menu Button
-        if (CheckCollisionPointRec(mouse.position, Rectangle{ static_cast<float>(screenWidth / 2.5), static_cast<float>(screenHeight / 1.7), static_cast<float>(screenWidth / 4), static_cast<float>(screenHeight / 12) }))
-        {
-            if (IsMouseButtonDown(MOUSE_BUTTON_LEFT))
-            {
-                RestartGame();
-                runGame = false;
-
-                restartMenu.isActive = false;
-                playGame = false;
-                optionSelect = 0;
-            }
-        }
-
-        //Quit Game Button
-        if (CheckCollisionPointRec(mouse.position, Rectangle{ static_cast<float>(screenWidth / 2.5), static_cast<float>(screenHeight / 1.4), static_cast<float>(screenWidth / 4), static_cast<float>(screenHeight / 12) }))
-        {
-            if (IsMouseButtonDown(MOUSE_BUTTON_LEFT))
-            {
-                gameOn = false;
-            }
-        }
-    }
-
-    if (!restartMenu.isActive && pauseMenu.isActive)
-    {
-        PauseMusicStream(music);
-
-        //Resume Button
-        if (CheckCollisionPointRec(mouse.position, Rectangle{ static_cast<float>(screenWidth / 2.5), static_cast<float>(screenHeight / 2.2), static_cast<float>(screenWidth / 4), static_cast<float>(screenHeight / 10) }))
-        {
-            if (IsMouseButtonDown(MOUSE_BUTTON_LEFT))
-            {
-                pause = false;
-                pauseMenu.isActive = false;
-                ResumeMusicStream(music);
-            }
-        }
-
-        //Return Menu Button
-        if (CheckCollisionPointRec(mouse.position, Rectangle{ static_cast<float>(screenWidth / 2.5), static_cast<float>(screenHeight / 1.7), static_cast<float>(screenWidth / 4), static_cast<float>(screenHeight / 12) }))
-        {
-            if (IsMouseButtonDown(MOUSE_BUTTON_LEFT))
-            {
-                RestartGame();
-                runGame = false;
-
-                pause = false;
-                playGame = false;
-                pauseMenu.isActive = false;
-                optionSelect = 0;
-                ResumeMusicStream(music);
-            }
-        }
-
-        //Quit Game Button
-        if (CheckCollisionPointRec(mouse.position, Rectangle{ static_cast<float>(screenWidth / 2.5), static_cast<float>(screenHeight / 1.4), static_cast<float>(screenWidth / 4), static_cast<float>(screenHeight / 12) }))
-        {
-            if (IsMouseButtonDown(MOUSE_BUTTON_LEFT))
-            {
-                gameOn = false;
-            }
-        }
-    }
-
-    //Pause menu
-    if (!restartMenu.isActive && !pauseMenu.isActive)
-    {
-        if (IsKeyPressed(KEY_ESCAPE) || IsKeyPressed(KEY_P))
-        {
-            PauseMusicStream(music);
-            pauseMenu.isActive = true;
-            pause = true;
-        }
-
-        if (CheckCollisionPointRec(mouse.position, Rectangle{ pauseButtonOff.pos.x, pauseButtonOff.pos.y, pauseButtonOff.width, pauseButtonOff.height }))
-        {
-            if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT))
-            {
-                PauseMusicStream(music);
-                pauseMenu.isActive = true;
-                pause = true;
-            }
-        }
-    }
-
-    else 
-    {
-        if (!restartMenu.isActive)
-        {
-            if (IsKeyPressed(KEY_ESCAPE) || IsKeyPressed(KEY_P))
-            {
-                pauseMenu.isActive = false;
-                pause = false;
-                HideCursor();
-                ResumeMusicStream(music);
-            }
-
-            if (CheckCollisionPointRec(mouse.position, Rectangle{ pauseButtonOn.pos.x, pauseButtonOn.pos.y, pauseButtonOn.width, pauseButtonOn.height }))
-            {
-                if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT))
-                {
-                    pauseMenu.isActive = false;
-                    pause = false;
-                    HideCursor();
-                    ResumeMusicStream(music);
-                }
-            }
-        }
-    }
-}
-
-void GameModeMenuInputs()
-{
-    if (gameModeMenu.isActive)
-    {
-        //Single Player Button
-        if (CheckCollisionPointRec(mouse.position, Rectangle{ static_cast<float>(screenWidth / 4.5), static_cast<float>(screenHeight / 2.6), static_cast<float>(screenWidth / 1.8), static_cast<float>(screenHeight / 10) }))
-        {
-            if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT))
-            {
-                multiplayer = false;
-                runGame = true;
-                gameModeMenu.isActive = false;
-            }
-        }
-
-        //Multi Player Button
-        if (CheckCollisionPointRec(mouse.position, Rectangle{ static_cast<float>(screenWidth / 4.5), static_cast<float>(screenHeight / 1.55), static_cast<float>(screenWidth / 1.8), static_cast<float>(screenHeight / 10) }))
-        {
-            if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT))
-            {
-                multiplayer = true;
-                player2.isActive = true;
-                runGame = true;
-                gameModeMenu.isActive = false;
-            }
-        }
-    }
-}
-
 void GameLoop()
 {
     bool gameOn = true;
@@ -529,12 +269,13 @@ void GameLoop()
             MenuCollisions(mouse, optionSelect);
             MenuInputs(mouse, optionSelect, playGame, gameModeMenu);
 
-            GameModeMenuCollsions();
-            GameModeMenuInputs();
+            GameModeMenuCollsions(mouse, gameModeMenu, singlePlayerButton, multiPlayerButton, screenWidth, screenHeight);
+            GameModeMenuInputs(mouse, player2, gameModeMenu, screenWidth, screenHeight, multiplayer, runGame);
 
             if (playGame == true && runGame == true)
             {
-                SubMenusInputs(gameOn);
+                RestartMenuInputs(restartMenu, pause, runGame, playGame, gameOn, optionSelect, mouse, screenWidth, screenHeight);
+                PauseMenusInputs(gameOn, runGame, playGame, optionSelect, pause, restartMenu, pauseMenu, pauseButtonOff, pauseButtonOn, music, mouse, screenWidth, screenHeight);
 
                 if (!pause)
                 {
@@ -542,8 +283,8 @@ void GameLoop()
                     Collisions();
                 }
 
-                PauseMenuCollisions();
-                RestarGameMenuCollisions();
+                PauseMenuCollisions(pauseMenu, mouse, resumeButton, returnMenuButton, quitGameButton, screenWidth, screenHeight);
+                RestarGameMenuCollisions(restartMenu, restartButton, returnMenuButton, quitGameButton, mouse, screenWidth, screenHeight);
             }
 
             switch (optionSelect)
@@ -562,7 +303,7 @@ void GameLoop()
                 {
                     BeginDrawing();
                     ClearBackground(BLACK);
-                    DrawGameModeMenu();
+                    DrawGameModeMenu(gameFont, subMenusBackground, singlePlayerButton, multiPlayerButton, screenWidth, screenHeight);
                     DrawMouse(mouse, mouse.mouseRec);
                     EndDrawing();
                 }
@@ -696,7 +437,7 @@ void Draw()
         DrawRectangle(static_cast<int>(pauseButtonOff.pos.x), static_cast<int>(pauseButtonOff.pos.y), static_cast<int>(pauseButtonOff.width), static_cast<int>(pauseButtonOff.height), BLANK);
         DrawTexture(pauseButtonOn.texture, static_cast<int>(pauseButtonOn.pos.x), static_cast<int>(pauseButtonOn.pos.y), pauseButtonOn.color);
 
-        DrawPauseMenu();
+        DrawPauseMenu(pauseMenu, resumeButton, returnMenuButton, quitGameButton, gameFont, screenWidth, screenHeight);
     }
    
     if (multiplayer == false)
@@ -704,7 +445,7 @@ void Draw()
         if (!IsAlive(player) || PlayerWin(player))
         {
             player.isActive = false;
-            DrawRestarGameMenu();
+            DrawRestarGameMenu(restartMenu, restartButton, returnMenuButton, quitGameButton, player, player2, gameFont, screenWidth, screenHeight);
         }
     }
 
@@ -722,7 +463,7 @@ void Draw()
 
         if (!player.isActive && !player2.isActive || PlayerWin(player))
         {
-            DrawRestarGameMenu();
+            DrawRestarGameMenu(restartMenu, restartButton, returnMenuButton, quitGameButton, player, player2, gameFont, screenWidth, screenHeight);
         }
     }
 
@@ -895,112 +636,6 @@ void FlyEnemyCollisionLimit()
                 flyEnemy[i].pos.x = static_cast<float>(screenWidth / -2.5);
                 flyEnemy[i].pos.y = static_cast<float>(screenHeight / -2.5);
             }
-        }
-    }
-}
-
-void PauseMenuCollisions()
-{
-    if (pauseMenu.isActive)
-    {
-        //Restart Button
-        if (CheckCollisionPointRec(mouse.position, Rectangle{ static_cast<float>(screenWidth / 2.5), static_cast<float>(screenHeight / 2.2), static_cast<float>(screenWidth / 3.8), static_cast<float>(screenHeight / 10) }))
-        {
-            resumeButton.color = GOLD;
-        }
-
-        else
-        {
-            resumeButton.color = WHITE;
-        }
-
-        //Return Menu Button
-        if (CheckCollisionPointRec(mouse.position, Rectangle{ static_cast<float>(screenWidth / 2.5), static_cast<float>(screenHeight / 1.7), static_cast<float>(screenWidth / 4), static_cast<float>(screenHeight / 12) }))
-        {
-            returnMenuButton.color = GOLD;
-        }
-
-        else
-        {
-            returnMenuButton.color = WHITE;
-        }
-
-        //Quit Game Button
-        if (CheckCollisionPointRec(mouse.position, Rectangle{ static_cast<float>(screenWidth / 2.5), static_cast<float>(screenHeight / 1.4), static_cast<float>(screenWidth / 4), static_cast<float>(screenHeight / 12) }))
-        {
-            quitGameButton.color = GOLD;
-        }
-
-        else
-        {
-            quitGameButton.color = WHITE;
-        }
-    }
-}
-
-void RestarGameMenuCollisions()
-{
-    if (restartMenu.isActive)
-    {
-        //Restart Button
-        if (CheckCollisionPointRec(mouse.position, Rectangle{ static_cast<float>(screenWidth / 2.7), static_cast<float>(screenHeight / 2.2), static_cast<float>(screenWidth / 3.2), static_cast<float>(screenHeight / 10) }))
-        {
-            restartButton.color = GOLD;
-        }
-
-        else
-        {
-            restartButton.color = WHITE;
-        }
-
-        //Return Menu Button
-        if (CheckCollisionPointRec(mouse.position, Rectangle{ static_cast<float>(screenWidth / 2.5), static_cast<float>(screenHeight / 1.7), static_cast<float>(screenWidth / 4), static_cast<float>(screenHeight / 12) }))
-        {
-            returnMenuButton.color = GOLD;
-        }
-
-        else
-        {
-            returnMenuButton.color = WHITE;
-        }
-
-        //Quit Game Button
-        if (CheckCollisionPointRec(mouse.position, Rectangle{ static_cast<float>(screenWidth / 2.5), static_cast<float>(screenHeight / 1.4), static_cast<float>(screenWidth / 4), static_cast<float>(screenHeight / 12) }))
-        {
-            quitGameButton.color = GOLD;
-        }
-
-        else
-        {
-            quitGameButton.color = WHITE;
-        }
-    }
-}
-
-void GameModeMenuCollsions()
-{
-    if (gameModeMenu.isActive)
-    {
-        //Return Menu Button
-        if (CheckCollisionPointRec(mouse.position, Rectangle{ static_cast<float>(screenWidth / 4.5), static_cast<float>(screenHeight / 2.6), static_cast<float>(screenWidth / 1.8), static_cast<float>(screenHeight / 10) }))
-        {
-            singlePlayerButton.color = GOLD;
-        }
-
-        else
-        {
-            singlePlayerButton.color = WHITE;
-        }
-
-        //Quit Game Button
-        if (CheckCollisionPointRec(mouse.position, Rectangle{ static_cast<float>(screenWidth / 4.5), static_cast<float>(screenHeight / 1.55), static_cast<float>(screenWidth / 1.8), static_cast<float>(screenHeight / 10) }))
-        {
-            multiPlayerButton.color = GOLD;
-        }
-
-        else
-        {
-            multiPlayerButton.color = WHITE;
         }
     }
 }
@@ -1241,74 +876,6 @@ void FlyEnemyRespawn()
             flyEnemy[i].isActive = true;
         }
     }
-}
-
-void DrawPauseMenu()
-{
-    DrawRectangle(static_cast<int>(restartMenu.pos.x), static_cast<int>(restartMenu.pos.y), static_cast<int>(restartMenu.width), static_cast<int>(restartMenu.height), BLANK);
-    DrawTexture(restartMenu.texture, static_cast<int>(restartMenu.pos.x), static_cast<int>(restartMenu.pos.y), WHITE);
-
-    DrawTextEx(gameFont, "PAUSE", { static_cast<float>(screenWidth / 3), static_cast<float>(screenHeight / 3.1) }, 70, 0, GOLD);
-
-    //Restart Button
-    DrawRectangle(static_cast<int>(screenWidth / 2.5), static_cast<int>(screenHeight / 2.2), static_cast<int>(screenWidth / 3.8), static_cast<int>(screenHeight / 10), BLANK);
-    DrawTextEx(gameFont, "RESUME", { static_cast<float>(resumeButton.width), static_cast<float>(resumeButton.height) }, static_cast<float>(resumeButton.size), 0, resumeButton.color);
-
-    //Return Menu Button
-    DrawRectangle(static_cast<int>(screenWidth / 2.5), static_cast<int>(screenHeight / 1.7), static_cast<int>(screenWidth / 4), static_cast<int>(screenHeight / 12), BLANK);
-    DrawTextEx(gameFont, "MENU", { static_cast<float>(returnMenuButton.width), static_cast<float>(returnMenuButton.height) }, static_cast<float>(returnMenuButton.size), 0, returnMenuButton.color);
-
-    //Quit Game Button
-    DrawRectangle(static_cast<int>(screenWidth / 2.5), static_cast<int>(screenHeight / 1.4), static_cast<int>(screenWidth / 4), static_cast<int>(screenHeight / 12), BLANK);
-    DrawTextEx(gameFont, "QUIT", { static_cast<float>(quitGameButton.width), static_cast<float>(quitGameButton.height) }, static_cast<float>(quitGameButton.size), 0, quitGameButton.color);
-}
-
-void DrawRestarGameMenu()
-{
-    DrawRectangle(static_cast<int>(restartMenu.pos.x), static_cast<int>(restartMenu.pos.y), static_cast<int>(restartMenu.width), static_cast<int>(restartMenu.height), BLANK);
-    restartMenu.isActive = true;
-
-    DrawTexture(restartMenu.texture, static_cast<int>(restartMenu.pos.x), static_cast<int>(restartMenu.pos.y), WHITE);
-    
-    if (!IsAlive(player) || !IsAlive(player2))
-    {
-        DrawTextEx(gameFont, "YOU LOSE", { static_cast<float>(screenWidth / 4.2), static_cast<float>(screenHeight / 3.1) }, 70, 0, GOLD);
-    }
-
-    if (PlayerWin(player) || PlayerWin(player2))
-    {
-        DrawTextEx(gameFont, "YOU WIN", { static_cast<float>(screenWidth / 3.5), static_cast<float>(screenHeight / 3.1) }, 70, 0, GOLD);
-    }
-    
-
-    //Restart Button
-    DrawRectangle(static_cast<int>(screenWidth / 2.7), static_cast<int>(screenHeight / 2.2), static_cast<int>(screenWidth / 3.2), static_cast<int>(screenHeight / 10), BLANK);
-    DrawTextEx(gameFont, "RESTART", { static_cast<float>(restartButton.width), static_cast<float>(restartButton.height) }, static_cast<float>(restartButton.size), 0, restartButton.color);
-
-
-    //Return Menu Button
-    DrawRectangle(static_cast<int>(screenWidth / 2.5), static_cast<int>(screenHeight / 1.7), static_cast<int>(screenWidth / 4), static_cast<int>(screenHeight / 12), BLANK);
-    DrawTextEx(gameFont, "MENU", { static_cast<float>(returnMenuButton.width), static_cast<float>(returnMenuButton.height) }, static_cast<float>(returnMenuButton.size), 0, returnMenuButton.color);
-
-    //Quit Game Button
-    DrawRectangle(static_cast<int>(screenWidth / 2.5), static_cast<int>(screenHeight / 1.4), static_cast<int>(screenWidth / 4), static_cast<int>(screenHeight / 12), BLANK);
-    DrawTextEx(gameFont, "QUIT", { static_cast<float>(quitGameButton.width), static_cast<float>(quitGameButton.height) }, static_cast<float>(quitGameButton.size), 0, quitGameButton.color);
-}
-
-void DrawGameModeMenu()
-{
-    //Sub Menus Background
-    DrawTexture(subMenusBackground, 0, 0, WHITE);
-
-    DrawTextEx(gameFont, "GAME MODE", { static_cast<float>(screenWidth / 5.5), static_cast<float>(screenHeight / 8) }, 70, 0, GOLD);
-
-    //Single Player Button
-    DrawRectangle(static_cast<int>(screenWidth / 4.5), static_cast<int>(screenHeight / 2.6), static_cast<int>(screenWidth / 1.8), static_cast<int>(screenHeight / 10), BLANK);
-    DrawTextEx(gameFont, "SIGLE PLAYER", { static_cast<float>(singlePlayerButton.width), static_cast<float>(singlePlayerButton.height) }, static_cast<float>(singlePlayerButton.size), 0, singlePlayerButton.color);
-
-    //Multi Player Button
-    DrawRectangle(static_cast<int>(screenWidth / 4.5), static_cast<int>(screenHeight / 1.55), static_cast<int>(screenWidth / 1.8), static_cast<int>(screenHeight / 10), BLANK);
-    DrawTextEx(gameFont, "MULTI PLAYER", { static_cast<float>(multiPlayerButton.width), static_cast<float>(multiPlayerButton.height) }, static_cast<float>(multiPlayerButton.size), 0, multiPlayerButton.color);
 }
 
 void RestartGame()

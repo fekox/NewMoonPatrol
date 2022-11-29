@@ -51,6 +51,15 @@
     <ClCompile Include="src\Objects\Obstacle.cpp">
       <Filter>src\Objects</Filter>
     </ClCompile>
+    <ClCompile Include="src\Window\RestartMenu.cpp">
+      <Filter>src\Windows</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Window\PauseMenu.cpp">
+      <Filter>src\Windows</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Window\GameModeMenu.cpp">
+      <Filter>src\Windows</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Window\GameLoop.h">
@@ -79,6 +88,15 @@
     </ClInclude>
     <ClInclude Include="src\Objects\Obstacle.h">
       <Filter>src\Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Window\RestartMenu.h">
+      <Filter>src\Windows</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Window\PauseMenu.h">
+      <Filter>src\Windows</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Window\GameModeMenu.h">
+      <Filter>src\Windows</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
