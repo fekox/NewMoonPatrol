@@ -8,7 +8,6 @@ Simple Moon Patrol made whit raylib in c++.
 
 # Web page of the developer who forked the project:
 ## itch.io: https://feco-games.itch.io/
-## Instagram:https://www.instagram.com/feco_games/?hl=es
 
 # Web page of the developer who started the project:
 ## itch.io: https://nicorm.itch.io/
